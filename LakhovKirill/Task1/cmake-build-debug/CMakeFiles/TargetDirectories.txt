@@ -1,0 +1,3 @@
+C:/Projects/hello/Programming_practice_381908-1-2/LakhovKirill/Task1/cmake-build-debug/CMakeFiles/Task1.dir
+C:/Projects/hello/Programming_practice_381908-1-2/LakhovKirill/Task1/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Projects/hello/Programming_practice_381908-1-2/LakhovKirill/Task1/cmake-build-debug/CMakeFiles/rebuild_cache.dir
