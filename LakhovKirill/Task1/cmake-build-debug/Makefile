@@ -122,6 +122,33 @@ Task1/fast:
 	$(MAKE) -f CMakeFiles\Task1.dir\build.make CMakeFiles/Task1.dir/build
 .PHONY : Task1/fast
 
+Time.obj: Time.cpp.obj
+
+.PHONY : Time.obj
+
+# target to build an object file
+Time.cpp.obj:
+	$(MAKE) -f CMakeFiles\Task1.dir\build.make CMakeFiles/Task1.dir/Time.cpp.obj
+.PHONY : Time.cpp.obj
+
+Time.i: Time.cpp.i
+
+.PHONY : Time.i
+
+# target to preprocess a source file
+Time.cpp.i:
+	$(MAKE) -f CMakeFiles\Task1.dir\build.make CMakeFiles/Task1.dir/Time.cpp.i
+.PHONY : Time.cpp.i
+
+Time.s: Time.cpp.s
+
+.PHONY : Time.s
+
+# target to generate assembly for a file
+Time.cpp.s:
+	$(MAKE) -f CMakeFiles\Task1.dir\build.make CMakeFiles/Task1.dir/Time.cpp.s
+.PHONY : Time.cpp.s
+
 main.obj: main.cpp.obj
 
 .PHONY : main.obj
@@ -158,6 +185,9 @@ help:
 	@echo ... Task1
 	@echo ... edit_cache
 	@echo ... rebuild_cache
+	@echo ... Time.obj
+	@echo ... Time.i
+	@echo ... Time.s
 	@echo ... main.obj
 	@echo ... main.i
 	@echo ... main.s

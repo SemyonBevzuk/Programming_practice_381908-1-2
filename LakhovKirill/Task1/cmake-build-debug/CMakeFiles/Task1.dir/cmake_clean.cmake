@@ -1,4 +1,5 @@
 file(REMOVE_RECURSE
+  "CMakeFiles/Task1.dir/Time.cpp.obj"
   "CMakeFiles/Task1.dir/main.cpp.obj"
   "Task1.exe"
   "Task1.exe.manifest"

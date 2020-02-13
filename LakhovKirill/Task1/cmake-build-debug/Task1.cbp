@@ -80,7 +80,16 @@
 				</MakeCommands>
 			</Target>
 		</Build>
+		<Unit filename="C:/Projects/hello/Programming_practice_381908-1-2/LakhovKirill/Task1/Time.cpp">
+			<Option target="Task1"/>
+		</Unit>
+		<Unit filename="C:/Projects/hello/Programming_practice_381908-1-2/LakhovKirill/Task1/Time.h">
+			<Option target="Task1"/>
+		</Unit>
 		<Unit filename="C:/Projects/hello/Programming_practice_381908-1-2/LakhovKirill/Task1/main.cpp">
+			<Option target="Task1"/>
+		</Unit>
+		<Unit filename="C:/Projects/hello/Programming_practice_381908-1-2/LakhovKirill/Task1/main.h">
 			<Option target="Task1"/>
 		</Unit>
 		<Unit filename="C:/Projects/hello/Programming_practice_381908-1-2/LakhovKirill/Task1/CMakeLists.txt">
