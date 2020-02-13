@@ -6,15 +6,19 @@
 
 #IncludeRegexTransform: 
 
+C:/Projects/hello/Programming_practice_381908-1-2/LakhovKirill/Task1/Time.cpp
+iostream
+-
+utility
+-
+Time.h
+C:/Projects/hello/Programming_practice_381908-1-2/LakhovKirill/Task1/Time.h
+regex
+C:/Projects/hello/Programming_practice_381908-1-2/LakhovKirill/Task1/regex
+
 C:/Projects/hello/Programming_practice_381908-1-2/LakhovKirill/Task1/Time.h
 string
 -
 vector
 C:/Projects/hello/Programming_practice_381908-1-2/LakhovKirill/Task1/vector
-
-C:/Projects/hello/Programming_practice_381908-1-2/LakhovKirill/Task1/main.cpp
-iostream
--
-Time.h
-C:/Projects/hello/Programming_practice_381908-1-2/LakhovKirill/Task1/Time.h
 

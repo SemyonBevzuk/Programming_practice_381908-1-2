@@ -15,6 +15,7 @@ public:
     Time();
     Time(string s);
     Time(int n);
+    ~Time();
     void setHour(int _h);
     void setMin(int _m);
     void setSec(int _s);

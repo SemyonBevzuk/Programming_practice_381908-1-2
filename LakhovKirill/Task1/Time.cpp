@@ -28,6 +28,9 @@ Time::Time(int n){
     this->setForwardingZeros();
     this->calculateFullTime();
 }
+Time::~Time(){
+//    cout<<"Time destroyed"<<endl;
+}
 void Time::setHour(int _h) {
     this->hours = _h;
     if(_h>=24) this->castOverflow();
