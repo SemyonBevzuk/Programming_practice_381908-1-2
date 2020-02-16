@@ -48,16 +48,46 @@ int main() {
     //индексация с контролем
     auto *e = new Matrix(3);
     e->randomInit();
-    std::cout<<e->get(0,0)<<std::endl; // получить значение по индексам
+    int val = e->get(0,0); // получить значение по индексам
 //    e->get(5,5); // вызовет ошибку range_error
 
-    //запись в файл/чтение из файла
+    e->set(1,1,val); // установить значение по индексу true/false в зависимости от успеха
+
+    //Запись в файл
     auto *f = new Matrix(4);
     f->randomInit();
     f->out("matrixOut.txt");
 
     //Чтение матрицы из файла (желательно сначала записать ее с помощью matrix->out() )
-    Matrix *j = Matrix::in("matrixIn.txt");
-    j->print();
+    Matrix *g = Matrix::in("matrixIn.txt");
+//    g->print();
+
+    //Транспонирование матрицы
+    auto *h = new Matrix(3);
+    h->randomInit();
+    h->transpose();
+
+    //Диагональное преобладание true/false
+    Matrix *k = Matrix::in("matrixIn.txt");
+    if(k->diagonalPrevalence()) std::cout<<"matrix has diagonal prevalence property"<<std::endl;
+
+    //Произведение матриц
+    auto *l = new Matrix(3);
+    auto *m = new Matrix(3);
+    l->randomInit();
+    m->randomInit();
+    Matrix *n = Matrix::multiply(*l,*m);
+
+    //или
+    auto *o = new Matrix(4);
+    auto *p = new Matrix(4);
+    o->randomInit();
+    p->randomInit();
+    o->multiplyBy(*p); // true/false  зависимости от успеха операции
+
+    //умножение на скаляр
+    auto *q = new Matrix(4);
+    q->randomInit();
+    q->multiplyBy(5);
     return 0;
 }

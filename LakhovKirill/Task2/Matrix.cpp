@@ -14,10 +14,10 @@ Matrix::Matrix(int size) {
     for (int i = 0; i < size; ++i) {
         this->contents[i]=new int[size];
     }
-    this->initZero();
+    this->init();
 }
 
-void Matrix::initZero() {
+void Matrix::init() {
     for (int i = 0; i < this->size; ++i) {
         for (int j = 0; j < this->size; ++j) {
             this->contents[i][j] = 0;
@@ -64,7 +64,14 @@ int Matrix::get(int _i, int _j) {
         throw std::range_error("Matrix indexing out of range.");
     }
 }
-
+bool Matrix::set(int _i, int _j, int val) {
+    if(_i < this->size && _j < this->size){
+        this->contents[_i][_j] = val;
+        return true;
+    }else{
+        return false;
+    }
+}
 bool Matrix::out(const std::string& filename){
     std::fstream f;
     f.open(filename,std::fstream::out);
@@ -80,7 +87,7 @@ bool Matrix::out(const std::string& filename){
         return true;
     }
     return false;
-};
+}
 
 Matrix* Matrix::in(const std::string &filename) {
         std::fstream f;
@@ -101,15 +108,93 @@ Matrix* Matrix::in(const std::string &filename) {
             auto *m = new Matrix(size);
             m->init(size,arr);
             return m;
+        }else{
+            throw std::exception();
         }
 }
 void Matrix::print(){
     for (int i = 0; i < this->size; ++i) {
-        std::cout<<"line #"<<i<<std::endl;
         for (int j = 0; j < this->size; ++j) {
             std::cout<<this->contents[i][j]<<" ";
         }
         std::cout<<"\n"<<"";
     }
 }
-int Matrix::matrixCount = 0;
+
+void Matrix::transpose() {
+    int**temp = new int*[this->size];
+    for (int i = 0; i < this->size; ++i) {
+        temp[i] = new int[size];
+    }
+    for (int i = 0; i < this->size; ++i) {
+        for (int j = 0; j < this->size; ++j) {
+            temp[i][j] = this->contents[i][j];
+        }
+    }
+    for (int i = 0; i < this->size; ++i) {
+        for (int j = 0; j < this->size; ++j) {
+            this->contents[i][j] = temp[j][i];
+        }
+    }
+}
+bool Matrix::diagonalPrevalence() {
+    for (int i = 0; i < this->size; ++i) {
+        int diagonalElement = abs(this->contents[i][i]);
+        int sum = 0;
+        for (int j = 0; j < this->size; ++j) {
+            if(i!=j) sum+= abs(this->contents[i][j]);
+        }
+        if(diagonalElement < sum) return false;
+    }
+    return true;
+}
+Matrix* Matrix::multiply(Matrix _a, Matrix _b) {
+    if(_a.size == _b.size){
+        auto *matrix = new Matrix(_a.size);
+        int**arr = new int*[matrix->size];
+        for (int i = 0; i < matrix->size; ++i) {
+            arr[i] = new int[matrix->size];
+        }
+        for (int i = 0; i < matrix->size; ++i) {
+            for (int j = 0; j < matrix->size; ++j) {
+                arr[i][j] = 0;
+                for (int k = 0; k < matrix->size; ++k) {
+                    arr[i][j]+= _a.contents[i][k]*_b.contents[k][j];
+                }
+            }
+        }
+        matrix->init(matrix->size, arr);
+        return matrix;
+    }else{
+        throw std::range_error("To multiply two square matrices they should have equal size");
+    }
+}
+
+bool Matrix::multiplyBy(Matrix _m) {
+    if(this->size == _m.size){
+        int**arr = new int*[this->size];
+        for (int i = 0; i < this->size; ++i) {
+            arr[i] = new int[this->size];
+        }
+        for (int i = 0; i < this->size; ++i) {
+            for (int j = 0; j < this->size; ++j) {
+                arr[i][j] = 0;
+                for (int k = 0; k < this->size; ++k) {
+                    arr[i][j]+= this->contents[i][k]*_m.contents[k][j];
+                }
+            }
+        }
+        this->init(this->size, arr);
+        return true;
+    }else{
+        return false;
+    }
+}
+
+void Matrix::multiplyBy(int _n) {
+    for (int i = 0; i < this->size; ++i) {
+        for (int j = 0; j < this->size; ++j) {
+            this->contents[i][j]*=_n;
+        }
+    }
+}
