@@ -11,6 +11,7 @@
 class Matrix {
 public:
     explicit Matrix(int size);
+    ~Matrix();
     void init();
     bool init(int size, int **arr);
     bool add(Matrix _m);

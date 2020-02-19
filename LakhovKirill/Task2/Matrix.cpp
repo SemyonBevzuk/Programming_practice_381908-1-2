@@ -34,6 +34,7 @@ void Matrix::randomInit() {
         }
     }
 }
+
 bool Matrix::add(Matrix _m) {
     if(this->size == _m.size){
         for (int i = 0; i < this->size; ++i) {
@@ -57,6 +58,7 @@ bool Matrix::init(int size, int**arr) {
     }
     return false;
 }
+
 int Matrix::get(int _i, int _j) {
     if(_i<this->size && _j<this->size){
         return this->contents[_i][_j];
@@ -64,6 +66,7 @@ int Matrix::get(int _i, int _j) {
         throw std::range_error("Matrix indexing out of range.");
     }
 }
+
 bool Matrix::set(int _i, int _j, int val) {
     if(_i < this->size && _j < this->size){
         this->contents[_i][_j] = val;
@@ -72,6 +75,7 @@ bool Matrix::set(int _i, int _j, int val) {
         return false;
     }
 }
+
 bool Matrix::out(const std::string& filename){
     std::fstream f;
     f.open(filename,std::fstream::out);
@@ -197,4 +201,8 @@ void Matrix::multiplyBy(int _n) {
             this->contents[i][j]*=_n;
         }
     }
+}
+
+Matrix::~Matrix(){
+//  std::cout<<"Matrix destroyed"<<std::endl;
 }
