@@ -3,6 +3,7 @@
 //
 #include "Word.h"
 #include <vector>
+#include <iostream>
 #include "regex"
 
 using namespace std;
@@ -39,6 +40,7 @@ void Word::setTranslation(string translation) {
         this->translations = a;
     }
 }
+
 void Word::setTranslation(vector<string> translations) {
     if(Word::parser(translations)) this->translations = translations;
 }
@@ -61,15 +63,16 @@ void Word::addTranslation(vector<string> translations) {
 
 bool Word::haveTranslation(string translation) {
     for (const auto & i : this->translations) {
-        if(i == translation) return false;
+        if(i == translation) return true;
     }
-    return true;
+    return false;
 }
 
 bool Word::parser(string word){
     regex onlyWord(R"(^[a-zA-ZÀ-ßà-ÿ¸¨]+$)");
     smatch match;
-    return regex_search(word,match, onlyWord) && match.size() > 1;
+    bool res = regex_search(word,match, onlyWord);
+    return res;
 }
 
 bool Word::parser(vector<string> words) {
@@ -82,4 +85,18 @@ void Word::setNull(){
     this->word = "";
     this->translations = vector<string>();
     this->id = 0;
+}
+
+void Word::setId(int _id) {
+    this->id = _id;
+}
+
+string Word::getWord() {
+    return this->word;
+}
+int Word::getId(){
+    return this->id;
+}
+vector<string> Word::getTranslations() {
+    return this->translations;
 }

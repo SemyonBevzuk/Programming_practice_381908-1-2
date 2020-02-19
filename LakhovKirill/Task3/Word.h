@@ -18,7 +18,11 @@ public:
     void addTranslation(string translation);
     void addTranslation(vector<string> translations);
     void setWord(string word);
+    void setId(int _id);
     bool haveTranslation(string translation);
+    string getWord();
+    int getId();
+    vector<string> getTranslations();
 private:
     int id;
     string word;

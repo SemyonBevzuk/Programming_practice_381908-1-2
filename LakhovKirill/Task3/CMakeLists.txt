@@ -3,4 +3,4 @@ project(Task3)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(Task3 main.cpp Word.cpp Word.h)
+add_executable(Task3 main.cpp Word.cpp Word.h Dictionary.cpp Dictionary.h)
