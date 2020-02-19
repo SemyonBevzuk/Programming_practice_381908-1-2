@@ -3,51 +3,83 @@
 //
 #include "Word.h"
 #include <vector>
+#include "regex"
 
+using namespace std;
 Word::Word(){
-    this->word = "";
-    this->translations = std::vector<std::string>();
+    this->setNull();
 }
 
-Word::Word(std::string eng, std::string translation) {
-    this->word = eng;
-    std::vector<std::string> a;
-    a.push_back(translation);
-    this->translations = a;
-}
-
-Word::Word(std::string eng, std::vector<std::string> translations) {
-    this->word = eng;
-    this->translations = translations;
-}
-
-void Word::setTranslation(std::string translation) {
-    std::vector<std::string> a;
-    a.push_back(translation);
-    this->translations = a;
-}
-void Word::setTranslation(std::vector<std::string> translations) {
-    this->translations = translations;
-}
-
-void Word::setWord(std::string word){
-    this->word = word;
-}
-void Word::addTranslation(std::string translation) {
-    if(this->haveTranslation(translation)) return;
-    this->translations.push_back(translation);
-}
-
-void Word::addTranslation(std::vector<std::string> translations) {
-    for (const auto & translation : translations) {
-        if(this->haveTranslation(translation)) continue;
-        this->translations.push_back(translation);
+Word::Word(string eng, string translation) {
+    if(Word::parser(eng) && Word::parser(translation)){
+        this->word = eng;
+        vector<string> a;
+        a.push_back(translation);
+        this->translations = a;
+        this->id = 0;
+    }else{
+        this->setNull();
     }
 }
 
-bool Word::haveTranslation(std::string translation) {
+Word::Word(string eng, vector<string> translations) {
+    if(Word::parser(eng) && Word::parser(translations)){
+        this->word = eng;
+        this->translations = translations;
+        this->id = 0;
+    }else{
+        this->setNull();
+    }
+}
+
+void Word::setTranslation(string translation) {
+    if(Word::parser(translation)){
+        vector<string> a;
+        a.push_back(translation);
+        this->translations = a;
+    }
+}
+void Word::setTranslation(vector<string> translations) {
+    if(Word::parser(translations)) this->translations = translations;
+}
+
+void Word::setWord(string word){
+    if(Word::parser(word)) this->word = word;
+}
+
+void Word::addTranslation(string translation) {
+    if(this->haveTranslation(translation)) return;
+    if(Word::parser(translation)) this->translations.push_back(translation);
+}
+
+void Word::addTranslation(vector<string> translations) {
+    for (const auto & translation : translations) {
+        if(this->haveTranslation(translation)) continue;
+        if(Word::parser(translation)) this->translations.push_back(translation);
+    }
+}
+
+bool Word::haveTranslation(string translation) {
     for (const auto & i : this->translations) {
         if(i == translation) return false;
     }
     return true;
+}
+
+bool Word::parser(string word){
+    regex onlyWord(R"(^[a-zA-ZÀ-ßà-ÿ¸¨]+$)");
+    smatch match;
+    return regex_search(word,match, onlyWord) && match.size() > 1;
+}
+
+bool Word::parser(vector<string> words) {
+    for(const auto& item : words){
+        if(!Word::parser(item)) return false;
+    }
+    return true;
+}
+void Word::setNull(){
+    this->word = "";
+    this->translations = vector<string>();
+    this->id = 0;
 }

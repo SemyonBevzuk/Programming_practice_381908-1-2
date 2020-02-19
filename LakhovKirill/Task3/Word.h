@@ -7,22 +7,25 @@
 
 #include <string>
 #include <vector>
-
+using namespace std;
 class Word {
 public:
     Word();
-    Word(std::string eng, std::string translation);
-    Word(std::string eng, std::vector<std::string> translations);
-    void setTranslation(std::string translation);
-    void setTranslation(std::vector<std::string> translations);
-    void addTranslation(std::string translation);
-    void addTranslation(std::vector<std::string> translations);
-    void setWord(std::string word);
+    Word(string eng, string translation);
+    Word(string eng, vector<string> translations);
+    void setTranslation(string translation);
+    void setTranslation(vector<string> translations);
+    void addTranslation(string translation);
+    void addTranslation(vector<string> translations);
+    void setWord(string word);
+    bool haveTranslation(string translation);
 private:
     int id;
-    std::string word;
-    std::vector<std::string> translations;
-    bool haveTranslation(std::string translation);
+    string word;
+    vector<string> translations;
+    static bool parser(string word);
+    static bool parser(vector<string> words);
+    void setNull();
 };
 
 
