@@ -33,6 +33,15 @@ Word::Word(string eng, vector<string> translations) {
     }
 }
 
+Word::Word(string eng, vector<string> translations, int _id) {
+    if(Word::parser(eng) && Word::parser(translations)){
+        this->word = eng;
+        this->translations = translations;
+        this->id = _id;
+    }else{
+        this->setNull();
+    }
+}
 void Word::setTranslation(string translation) {
     if(Word::parser(translation)){
         vector<string> a;

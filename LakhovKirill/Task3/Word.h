@@ -13,6 +13,7 @@ public:
     Word();
     Word(string eng, string translation);
     Word(string eng, vector<string> translations);
+    Word(string eng, vector<string> translations, int _id);
     void setTranslation(string translation);
     void setTranslation(vector<string> translations);
     void addTranslation(string translation);

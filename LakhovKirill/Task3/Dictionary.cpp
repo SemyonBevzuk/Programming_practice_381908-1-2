@@ -13,6 +13,10 @@ Dictionary::Dictionary(){
     this->words = vector<Word*>{};
 }
 
+Dictionary::Dictionary(string filename){
+    this->in(filename);
+}
+
 bool Dictionary::addWord(Word *word) {
     if(word->getWord().length() && word->getTranslations().size()){
         if(!this->find(*word)){
@@ -127,8 +131,11 @@ bool Dictionary::in(string filename){
             vector<string> translations;
             file>>word;
             file>>translationCount;
-            for (int j = 0; j < translationCount; ++j) file>>translations[j];
-            newWords.push_back(new Word(word, translations));
+            for (int j = 0; j < translationCount; ++j){
+                file>>word;
+                translations.push_back(word);
+            }
+            newWords.push_back(new Word(word, translations, i));
         }
         this->words = newWords;
         return true;

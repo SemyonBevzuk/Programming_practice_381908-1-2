@@ -61,6 +61,20 @@ int main(){
 
     //«аписать словарь со всеми изменени€ми в текстовый файл (.txt)
     dictionary->out("myDictionary.txt");
+
+    //ѕолучить словарь из файла
+    auto inDictionary = new Dictionary("readDictionary.txt");
+
+    //совершить некоторые действи€ со словарем
+    if(inDictionary->find("cake")) {
+        Word* myWord = inDictionary->get("cake");
+        myWord->setTranslation("кекс");
+    }
+    auto word6 = new Word("beauty", "красота");
+    inDictionary->mergeAddWord(word6);
+
+    //вновь записать его куда либо
+    inDictionary->out("testReadDictionary.txt");
     return 0;
 }
 

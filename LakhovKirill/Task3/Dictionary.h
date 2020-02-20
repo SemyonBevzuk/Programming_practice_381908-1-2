@@ -13,6 +13,7 @@ using namespace std;
 class Dictionary {
 public:
     Dictionary();
+    Dictionary(string filename);
     bool addWord(Word* word);
     bool mergeAddWord(Word *word);
     bool deleteWord(string word);
