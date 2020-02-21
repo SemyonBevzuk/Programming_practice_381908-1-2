@@ -68,6 +68,10 @@ Word* Dictionary::get(string word){
     return this->words[id];
 }
 
+vector<Word*> Dictionary::getAll(){
+    return this->words;
+}
+
 bool Dictionary::deleteWord(Word word) {
     for (int i = 0; i < this->wordsCount(); ++i) {
         if(this->words[i]->getWord() == word.getWord()){
@@ -132,8 +136,8 @@ bool Dictionary::in(string filename){
             file>>word;
             file>>translationCount;
             for (int j = 0; j < translationCount; ++j){
-                file>>word;
-                translations.push_back(word);
+                string translation;  file>>translation;
+                translations.push_back(translation);
             }
             newWords.push_back(new Word(word, translations, i));
         }
@@ -146,4 +150,38 @@ bool Dictionary::in(string filename){
 
 void Dictionary::destroy() {
     this->words = vector<Word*> {};
+}
+
+Dictionary::~Dictionary() {
+//    std::cout<<"dictionary destroyed"<<std::endl;
+}
+
+bool Dictionary::merge(Dictionary* toMerge){
+    for (Word* word : toMerge->getAll()) {
+        if(!this->find(*word)) this->addWord(word);
+    }
+    return true;
+}
+
+bool Dictionary::merge(string filename) {
+    auto toMerge = new Dictionary();
+    if(toMerge->in(filename)){
+        this->merge(toMerge);
+        return true;
+    }
+    return false;
+}
+
+bool Dictionary::merge(Dictionary& toMerge) {
+    for (Word* word : toMerge.getAll()) {
+        if(!this->find(*word)) this->addWord(word);
+    }
+    return true;
+}
+
+Dictionary operator+(Dictionary& first, Dictionary& second){
+    Dictionary dictionary = Dictionary();
+    dictionary.merge(first);
+    dictionary.merge(second);
+    return dictionary;
 }

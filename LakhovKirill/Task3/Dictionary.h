@@ -13,7 +13,8 @@ using namespace std;
 class Dictionary {
 public:
     Dictionary();
-    Dictionary(string filename);
+    explicit Dictionary(string filename);
+    ~Dictionary();
     bool addWord(Word* word);
     bool mergeAddWord(Word *word);
     bool deleteWord(string word);
@@ -22,11 +23,14 @@ public:
     int find(Word word);
     Word* get(string word);
     Word* get(Word word);
+    vector<Word*> getAll();
     int wordsCount();
     bool out(string filename);
     bool in(string filename);
     bool merge(string filename);
     bool merge(Dictionary* toMerge);
+    bool merge(Dictionary &toMerge);
+    friend Dictionary operator+ (Dictionary& first, Dictionary& second);
 private:
     void shuffleIds();
     vector<Word*> words;

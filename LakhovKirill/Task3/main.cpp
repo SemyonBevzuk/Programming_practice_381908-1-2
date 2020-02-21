@@ -27,6 +27,13 @@ int main(){
 
     word3->setTranslation(vector<string>{"торт123","!@#."}); //строки не из букв не будут допущены
 
+    //ѕолучить значение слова
+    string val = word1->getWord();
+
+    //ѕолучить vector переводов
+    vector<string> translations = word1->getTranslations();
+
+
     //–абота со словарем
 
     //ѕустой словарь
@@ -63,7 +70,10 @@ int main(){
     dictionary->out("myDictionary.txt");
 
     //ѕолучить словарь из файла
-    auto inDictionary = new Dictionary("readDictionary.txt");
+    auto inDictionary = new Dictionary("myDictionary.txt");
+
+    //ћожно полностью переписать уже готовый
+    //dictionary->in("myDictionary.txt");
 
     //совершить некоторые действи€ со словарем
     if(inDictionary->find("cake")) {
@@ -74,7 +84,30 @@ int main(){
     inDictionary->mergeAddWord(word6);
 
     //вновь записать его куда либо
-    inDictionary->out("testReadDictionary.txt");
+    inDictionary->out("changedDictionary.txt");
+
+    //—ли€ние словарей
+    auto mergeDictionary1 = new Dictionary();
+    mergeDictionary1->addWord(new Word("foraging","фуражировка"));
+    mergeDictionary1->addWord(new Word("steelmaker",vector<string>{"сталевар","металлург"}));
+
+    //сли€ние с проинициализированным ранее
+    mergeDictionary1->merge(dictionary);
+    mergeDictionary1->out("firstMerge.txt");
+
+    auto mergeDictionary2 = new Dictionary();
+    mergeDictionary2->addWord(new Word("mindless",vector<string>{"бессмысленный","глупый"}));
+    mergeDictionary2->addWord(new Word("capsule", "капсула"));
+
+    //сли€ние с словарем из файла
+    mergeDictionary2->merge("changedDictionary.txt");
+    mergeDictionary2->out("secondMerge.txt");
+
+    //слить два словар€ в новый с помощью "+"
+    Dictionary md1 = *mergeDictionary1;
+    Dictionary md2 = *mergeDictionary2;
+    Dictionary md3 = md1 + md2;
+    md3.out("thirdMerge.txt");
     return 0;
 }
 
