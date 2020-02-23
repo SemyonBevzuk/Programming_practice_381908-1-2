@@ -14,6 +14,7 @@ class Dictionary {
 public:
     Dictionary();
     explicit Dictionary(string filename);
+    explicit Dictionary(Dictionary* dictionary);
     ~Dictionary();
     bool addWord(Word* word);
     bool mergeAddWord(Word *word);
@@ -31,6 +32,7 @@ public:
     bool merge(Dictionary* toMerge);
     bool merge(Dictionary &toMerge);
     friend Dictionary operator+ (Dictionary& first, Dictionary& second);
+    Dictionary operator= (Dictionary &copy);
 private:
     void shuffleIds();
     vector<Word*> words;

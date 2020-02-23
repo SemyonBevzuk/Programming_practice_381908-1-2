@@ -108,6 +108,21 @@ int main(){
     Dictionary md2 = *mergeDictionary2;
     Dictionary md3 = md1 + md2;
     md3.out("thirdMerge.txt");
+
+    //перегрузка присваивания
+
+    //через оператор присваивания
+    auto copiedDict1 = md1;
+    copiedDict1.addWord(new Word("astronomy", "астрономия"));
+    //через конструктор
+    auto copiedDict2 = Dictionary(md1);
+    copiedDict2.addWord(new Word("hotel","гостиница"));
+
+    //внесенные изменения не влияют на словарь-основу (в выходном файле не должно быть слов astronomy или hotel)
+    md1.out("firstMerge.txt");
+
+    copiedDict1.out("firstCopy.txt");
+    copiedDict2.out("secondCopy.txt");
     return 0;
 }
 

@@ -17,6 +17,10 @@ Dictionary::Dictionary(string filename){
     this->in(filename);
 }
 
+Dictionary::Dictionary(Dictionary* dictionary){
+    this->words = dictionary->getAll();
+}
+
 bool Dictionary::addWord(Word *word) {
     if(word->getWord().length() && word->getTranslations().size()){
         if(!this->find(*word)){
@@ -184,4 +188,10 @@ Dictionary operator+(Dictionary& first, Dictionary& second){
     dictionary.merge(first);
     dictionary.merge(second);
     return dictionary;
+}
+
+Dictionary Dictionary::operator=(Dictionary &copy) {
+    Dictionary dict = Dictionary();
+    dict.words = copy.getAll();
+    return dict;
 }
