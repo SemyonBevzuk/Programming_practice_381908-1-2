@@ -10,42 +10,51 @@ Time::Time(const Time& t)
 }
 Time::Time(string s)
 {
-	string st = "";
-	st += s[0];
-	st += s[1];
-	hour = atoi(st.c_str());
-	st = "";
-	st += s[3];
-	st += s[4];
-	min = atoi(st.c_str());
-	st = "";
-	st += s[6];
-	st += s[7];
-	sec = atoi(st.c_str());
-
+	if (s.size() != 8 || !isdigit(s[0]) || !isdigit(s[1]) || !isdigit(s[3]) || !isdigit(s[4]) || !isdigit(s[6]) || !isdigit(s[7]) || s[2] != ':' || s[5] != ':')
+	{
+		cout << "Invalid string";
+		exit(13);
+	}
+	else
+	{
+		string st = "";
+		st += s[0];
+		st += s[1];
+		hour = atoi(st.c_str());
+		st = "";
+		st += s[3];
+		st += s[4];
+		min = atoi(st.c_str());
+		st = "";
+		st += s[6];
+		st += s[7];
+		sec = atoi(st.c_str());
+	}
 }
-void Time::get_time()const
+const string Time::get_time()const
 {
+	string s = "";
 	if (hour < 10)
-		cout << "0";
-	cout << hour;
-	cout << ":";
+		s += '0';
+	s += to_string(hour);
+	s += ':';
 	if (min < 10)
-		cout << "0";
-	cout << min;
-	cout << ":";
+		s += '0';
+	s += to_string(min);
+	s += ':';
 	if (sec < 10)
-		cout << "0";
-	cout << sec << endl;
+		s += '0';
+	s += to_string(sec);
+	return s;
 }
-Time& Time::operator=(Time t)
+Time& Time::operator=(const Time& t)
 {
 	hour = t.hour;
 	min = t.min;
 	sec = t.sec;
 	return *this;
 }
-Time& Time:: operator+=(Time t)
+Time& Time:: operator+=(const Time& t)
 {
 	sec += t.sec;
 	min += sec / 60;
@@ -57,7 +66,7 @@ Time& Time:: operator+=(Time t)
 	hour %= 24;
 	return *this;
 }
-Time& Time:: operator-=(Time t)
+Time& Time:: operator-=(const Time& t)
 {
 	sec -= t.sec;
 	if (sec < 0)
@@ -75,32 +84,19 @@ Time& Time:: operator-=(Time t)
 	hour = (hour + 24) % 24;
 	return *this;
 }
-Time Time::operator+(Time t)const
+const Time Time::operator+(const Time& t)const
 {
-	int s = (sec + t.sec) % 60;
-	int m = (min + t.min + (sec + t.sec) / 60) % 60;
-	int h = (hour + t.hour + (min + t.min + (sec + t.sec) / 60) / 60) % 24;
-	return Time(h, m, s);
+	Time t1 = *this;
+	t1 += t;
+	return t1;
 }
-Time Time::operator-(Time t)const
+const Time Time::operator-(const Time& t)const
 {
-	int s, m = 0, h = 0;
-	s = sec - t.sec;
-	if (s < 0)
-	{
-		m--;
-		s += 60;
-	}
-	m += min - t.min;
-	if (m < 0)
-	{
-		h--;
-		m += 60;
-	}
-	h += (hour + 24 - t.hour) % 24;
-	return Time(h, m, s);
+	Time t1 = *this;
+	t1 -= t;
+	return t1;
 }
-bool Time:: operator>(Time t)const
+bool Time:: operator>(const Time& t)const
 {
 	int t1 = hour * 3600 + min * 60 + sec;
 	int t2 = t.hour * 3600 + t.min * 60 + t.sec;
@@ -109,7 +105,7 @@ bool Time:: operator>(Time t)const
 	else
 		return false;
 }
-bool Time:: operator<(Time t)const
+bool Time:: operator<(const Time& t)const
 {
 	int t1 = hour * 3600 + min * 60 + sec;
 	int t2 = t.hour * 3600 + t.min * 60 + t.sec;
@@ -118,25 +114,15 @@ bool Time:: operator<(Time t)const
 	else
 		return false;
 }
-bool Time::operator<=(Time t)const
+bool Time::operator<=(const Time& t)const
 {
-	int t1 = hour * 3600 + min * 60 + sec;
-	int t2 = t.hour * 3600 + t.min * 60 + t.sec;
-	if (t1 <= t2)
-		return true;
-	else
-		return false;
+	return !(*this > t);
 }
-bool Time::operator>=(Time t)const
+bool Time::operator>=(const Time& t)const
 {
-	int t1 = hour * 3600 + min * 60 + sec;
-	int t2 = t.hour * 3600 + t.min * 60 + t.sec;
-	if (t1 >= t2)
-		return true;
-	else
-		return false;
+	return !(*this < t);
 }
-bool Time:: operator==(Time t)const
+bool Time:: operator==(const Time& t)const
 {
 	int t1 = hour * 3600 + min * 60 + sec;
 	int t2 = t.hour * 3600 + t.min * 60 + t.sec;
@@ -145,14 +131,9 @@ bool Time:: operator==(Time t)const
 	else
 		return false;
 }
-bool Time:: operator!=(Time t)const
+bool Time:: operator!=(const Time& t)const
 {
-	int t1 = hour * 3600 + min * 60 + sec;
-	int t2 = t.hour * 3600 + t.min * 60 + t.sec;
-	if (t1 != t2)
-		return true;
-	else
-		return false;
+	return !(*this == t);
 }
 istream& operator>>(istream& in, Time& t)
 {

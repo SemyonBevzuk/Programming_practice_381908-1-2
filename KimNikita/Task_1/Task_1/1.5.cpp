@@ -15,17 +15,17 @@ int main()
 {
 	Time t1, t2(13, 12, 11), t3(t2), t4("23:45:00");
 	cout << "t1: ";
-	t1.get_time();
+	cout << t1.get_time() << endl;
 	cout << "t2: ";
-	t2.get_time();
+	cout << t2.get_time() << endl;
 	cout << "t3: ";
-	t3.get_time();
+	cout << t3.get_time() << endl;
 	cout << "t4: ";
-	t4.get_time();
+	cout << t4.get_time() << endl;
 	cout << "t1 += t4 - t3" << endl;
 	t1 += t4 - t3;
 	cout << "t1: ";
-	t1.get_time();
+	cout << t1.get_time() << endl;
 	Time t5;
 	cout << "t5: ";
 	cin >> t5;
