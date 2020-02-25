@@ -5,6 +5,7 @@ class Rational
 {
 private:
 	int n, m;
+	void simplify();
 public:
 	Rational();
 	Rational(int, int);

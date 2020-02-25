@@ -1,19 +1,20 @@
 #include "Rational.h"
 
 
+void Rational::simplify()
+{
+	for (int i = (n < m) ? n : m; i > 1; i--)
+		if ((n % i == 0) && (m % i == 0)) {
+			n = n / i;
+			m = m / i;
+			simplify();
+			break;
+		}
+}
+
 Rational::Rational()
 {
 	n = 0; m = 1;
-}
-
-void sokrati(int& a, int& b) {
-	for (int i = (a < b) ? a : b; i > 1; i--)
-		if ((a % i == 0) && (b % i == 0)) {
-			a = a / i;
-			b = b / i;
-			sokrati(a, b);
-			break;
-		}
 }
 
 Rational::Rational(int a, int b)
@@ -25,8 +26,9 @@ Rational::Rational(int a, int b)
 	}
 	int x = (a < 0) ? -1 : 1;
 	a *= x;
-	sokrati(a, b);
-	n = a * x; m = b;
+	n = a; m = b;
+	simplify();
+	n = n * x;
 }
 
 Rational::Rational(int x)
