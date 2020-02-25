@@ -7,17 +7,20 @@ Time::Time()
 {
 	hour = min = sec = 0;
 }
+
 Time::Time(const Time& _d)
 {
 	hour = _d.hour;
 	min = _d.min;
 	sec = _d.sec;
 }
+
 Time::Time(int _hour, int _min, int _sec)
 {
 	hour = _hour;
 	min = _min;
 	sec = _sec;
+	(*this).peregon_samogon();
 }
 
 Time::Time(string s)
@@ -26,6 +29,7 @@ Time::Time(string s)
 	hour = (s[0] - '0') * 10 + (s[1] - '0');
 	min = (s[3] - '0') * 10 + (s[4] - '0');
 	sec = (s[6] - '0') * 10 + (s[7] - '0');
+	(*this).peregon_samogon();
 }
 
 Time::~Time()
@@ -259,4 +263,15 @@ bool Time::operator==(const Time& _d)
 	bool res;
 	res = (hour == _d.hour && min == _d.min && sec == _d.sec);
 	return res;
+}
+
+//контроль ввода
+Time Time::peregon_samogon()
+{
+	min += sec / 60;
+	sec %= 60;
+	hour += min / 60;
+	min %= 60;
+	hour %= 24;
+	return *this;
 }

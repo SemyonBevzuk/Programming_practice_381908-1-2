@@ -1,5 +1,6 @@
 #include<iostream>
 #include<string>
+#include<locale>
 
 using namespace std;
 
@@ -9,10 +10,11 @@ private:
 	int hour;
 	int min;
 	int sec;
+	Time peregon_samogon();// контроль ввода
 public:
 	Time();//по умолчанию
 	Time(const Time& _d);//копироdание
-	Time(int _hour, int _min, int _sec);//установление
+	Time(int _hour, int _min, int _sec);//инициализация
 	Time(string s);//преобразование
 	~Time();//дестркутор
 	void setHour(int _hour);

@@ -19,5 +19,7 @@ int main()
 	b.addMin(1);
 	a.addSec(1);
 	cout << d << "\n" << b << "\n" << a << "\n";
-	cout << d.getHour();
+	cout << d.getHour()<<"\n";
+	Time per("25:61:61");
+	cout << per;
 }
