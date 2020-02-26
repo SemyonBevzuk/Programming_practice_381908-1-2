@@ -9,33 +9,60 @@
 #include <string>
 #include <vector>
 #include "Word.h"
+
 using namespace std;
+
 class Dictionary {
 public:
     Dictionary();
+
     explicit Dictionary(string filename);
-    explicit Dictionary(Dictionary* dictionary);
+
+    explicit Dictionary(Dictionary *dictionary);
+
     ~Dictionary();
-    bool addWord(Word* word);
+
+    bool addWord(Word *word);
+
     bool mergeAddWord(Word *word);
+
     bool deleteWord(string word);
+
     bool deleteWord(Word word);
+
     int find(string word);
+
     int find(Word word);
-    Word* get(string word);
-    Word* get(Word word);
-    vector<Word*> getAll();
+
+    Word *get(string word);
+
+    Word *get(Word word);
+
+    vector<Word *> getAll() const;
+
     int wordsCount();
+
     bool out(string filename);
+
     bool in(string filename);
+
     bool merge(string filename);
-    bool merge(Dictionary* toMerge);
-    bool merge(Dictionary &toMerge);
-    friend Dictionary operator+ (Dictionary& first, Dictionary& second);
-    Dictionary operator= (Dictionary &copy);
+
+    bool merge(Dictionary *toMerge);
+
+    bool merge(const Dictionary &toMerge);
+
+    Dictionary &operator+=(const Dictionary &toAdd);
+
+    friend Dictionary operator+(const Dictionary &first, const Dictionary &second);
+
+    Dictionary &operator=(const Dictionary &copy);
+
 private:
     void shuffleIds();
-    vector<Word*> words;
+
+    vector<Word *> words;
+
     void destroy();
 };
 
