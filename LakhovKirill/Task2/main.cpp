@@ -2,6 +2,8 @@
 #include "Matrix.h"
 #include <random>
 #include <chrono>
+#include <fstream>
+
 using namespace std;
 
 int** generator(int size){
@@ -29,65 +31,58 @@ void print(int**arr, int size){
 }
 
 
-int main() {
-    //Конструктор
-    auto *a = new Matrix(5); // создает квадратную матрицу и инициализирует ее нулями
+int main(){
+    //Создание матриц
+    Matrix a = Matrix(5);
+    Matrix b = Matrix(4);
 
-    //операция присваивания
-    int**test = generator(3); // двумерный массив с int'ами
-    auto *b = new Matrix(3); // матрица нужного размера
-    b->init(3,test); // сработает только если (размеры массива == размеры матрицы) Вернет true в случае успеха
+    //инициализация некоторым массивом (подходящего размера)
+    a.init(5,generator(5));
+    //инициализация нулями
+    b.init();
+    //копией другой матрицы
+    Matrix c = Matrix(a);
 
-    //операция суммирования двух матриц
-    auto *c = new Matrix(2);
-    auto *d = new Matrix(2);
-    c->randomInit(); //заполнение случайными числами
-    d->randomInit();
-    c->add(*d); // Прибавляем одну матрицу к другой, true если операция удалась
+    //сумма двух матриц
+    Matrix d = a + c;
+    d+=a;
 
-    //индексация с контролем
-    auto *e = new Matrix(3);
-    e->randomInit();
-    int val = e->get(0,0); // получить значение по индексам
-//    e->get(5,5); // вызовет ошибку range_error
+    //Индексация
+    int number = d(2,2);
+    //d(6,6) - вызовет ошибку out_of_range
 
-    e->set(1,1,val); // установить значение по индексу true/false в зависимости от успеха
+    //вывод матрицы в поток
+    cout<<d;
+    //вывод матрицы в файл
+    d.out("Dmatrix.txt");
 
-    //Запись в файл
-    auto *f = new Matrix(4);
-    f->randomInit();
-    f->out("matrixOut.txt");
+    //считывание матрицы откуда либо
+    Matrix e = Matrix::in("Dmatrix.txt");
+    e(0,0) = 100; e(1,1) = 100;
+    e.out("Ematrix.txt");
 
-    //Чтение матрицы из файла (желательно сначала записать ее с помощью matrix->out() )
-    Matrix *g = Matrix::in("matrixIn.txt");
-//    g->print();
+    //или из открытого файла
+    fstream someFile;
+    someFile.open("Ematrix.txt", fstream::in);
+    if (someFile.is_open()) {
+        Matrix k = Matrix();
+        someFile >> k;
+    }
 
-    //Транспонирование матрицы
-    auto *h = new Matrix(3);
-    h->randomInit();
-    h->transpose();
+    //Умножение матриц (range_error в случае несопостовимих размеров матриц)
+    Matrix f = d*e;
+    f*=a;
 
-    //Диагональное преобладание true/false
-    Matrix *k = Matrix::in("matrixIn.txt");
-    if(k->diagonalPrevalence()) std::cout<<"matrix has diagonal prevalence property"<<std::endl;
+    //Умножение на скаляр
+    Matrix g = f*3;
+    f*=2;
 
-    //Произведение матриц
-    auto *l = new Matrix(3);
-    auto *m = new Matrix(3);
-    l->randomInit();
-    m->randomInit();
-    Matrix *n = Matrix::multiply(*l,*m);
+    //Диагональное преобладание
+    if(f.diagonalPrevalence()) std::cout<<"f matrix has diagonal prevalence"<<std::endl;
 
-    //или
-    auto *o = new Matrix(4);
-    auto *p = new Matrix(4);
-    o->randomInit();
-    p->randomInit();
-    o->multiplyBy(*p); // true/false  зависимости от успеха операции
+    //Транспонирование
+    a.transpose();
 
-    //умножение на скаляр
-    auto *q = new Matrix(4);
-    q->randomInit();
-    q->multiplyBy(5);
     return 0;
 }
+
