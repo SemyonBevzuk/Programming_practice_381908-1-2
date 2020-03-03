@@ -8,17 +8,19 @@
 #include <string>
 #include <vector>
 
+template<typename T>
 class matrix {
 public:
-    typedef int T;
+    matrix<T>();
 
-    matrix();
-
-    explicit matrix(size_t size);
-    matrix(size_t size_n, size_t size_m);
+    explicit matrix<T>(size_t size);
+    matrix<T>(size_t size_n, size_t size_m);
 
     matrix(const matrix& other);
-    matrix(size_t size, T **arr = nullptr);
+    matrix<T>(size_t size_strs, size_t size_rows,
+            const T **arr = nullptr);
+    matrix operator=(const T **arr);
+    void init(const T **arr = nullptr);
 
     matrix operator=(const matrix &other);
     matrix operator+(const matrix &other);
@@ -28,10 +30,63 @@ public:
 
     std::string to_string();
 private:
-    T **value;
+    const T **value;
     size_t size_rows;
     size_t size_strs;
 };
+
+
+
+template<typename T>
+matrix<T>::matrix() {
+    this->size_rows = 0;
+    this->size_strs = 0;
+    this->init();
+}
+
+template<typename T>
+matrix<T>::matrix(const size_t size) {
+    this->size_rows = size;
+    this->size_strs = size;
+    this->init();
+}
+
+template<typename T>
+matrix<T>::matrix(size_t size_rows, size_t size_strs) {
+    this->size_rows = size_rows;
+    this->size_strs = size_strs;
+    this->init();
+}
+
+template<typename T>
+matrix<T>::matrix(const matrix<T>& other) {
+    this->size_rows = other.size_rows;
+    this->size_strs = other.size_strs;
+    this->init(other.value);
+}
+
+template<typename T>
+matrix<T>::matrix(size_t size_rows, size_t size_strs, const T **arr) {
+    this->size_rows = size_rows;
+    this->size_strs = size_strs;
+    this->init(arr);
+}
+
+template<typename T>
+void matrix<T>::init(const T **arr) {
+    this->value = new T*[const_cast<size_t>(size_rows)];
+    auto setter = arr == nullptr?
+                  ([arr](size_t i, size_t j) -> T { return arr[i][j]; }):
+                  ([arr](size_t i, size_t j) -> T { return 0; });
+
+    for (size_t i = 0; i < size_rows; ++i) {
+        this->value[i] = new T*[const_cast<size_t>(size_strs)];
+        for (size_t j = 0; j < size_strs; ++j) {
+            this->value[i][j] = setter(i, j);
+        }
+    }
+}
+
 
 
 
