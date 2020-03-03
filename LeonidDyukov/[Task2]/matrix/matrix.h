@@ -20,7 +20,7 @@ public:
     matrix<T>(size_t size_strs, size_t size_rows,
             const T **arr = nullptr);
     matrix operator=(const T **arr);
-    void init(const T **arr = nullptr);
+    void init(T **arr = nullptr);
 
     matrix operator=(const matrix &other);
     matrix operator+(const matrix &other);
@@ -30,7 +30,7 @@ public:
 
     std::string to_string();
 private:
-    const T **value;
+    T **value;
     size_t size_rows;
     size_t size_strs;
 };
@@ -73,16 +73,16 @@ matrix<T>::matrix(size_t size_rows, size_t size_strs, const T **arr) {
 }
 
 template<typename T>
-void matrix<T>::init(const T **arr) {
-    this->value = new T*[const_cast<size_t>(size_rows)];
-    auto setter = arr == nullptr?
+void matrix<T>::init(T **arr) {
+    this->value = new T*[size_rows];
+    auto setter = ((arr)?
                   ([arr](size_t i, size_t j) -> T { return arr[i][j]; }):
-                  ([arr](size_t i, size_t j) -> T { return 0; });
+                  ([arr](size_t i, size_t j) -> T { return T(0); }));
 
     for (size_t i = 0; i < size_rows; ++i) {
-        this->value[i] = new T*[const_cast<size_t>(size_strs)];
+        this->value[i] = new T[size_strs];
         for (size_t j = 0; j < size_strs; ++j) {
-            this->value[i][j] = setter(i, j);
+            this->value[i][j] = arr[i][j];
         }
     }
 }
