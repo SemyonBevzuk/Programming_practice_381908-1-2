@@ -23,7 +23,7 @@ public:
 	const Matrix operator+(const Matrix&)const;
 	const Matrix operator*(const Matrix&)const;
 	const Matrix operator*(int)const;
-	const int& operator()(int, int)const;
+	int& operator()(int, int);
 	friend ifstream& operator>>(ifstream& in, Matrix& m);
 	friend ofstream& operator<<(ofstream& out, Matrix& m);
 	bool check()const;

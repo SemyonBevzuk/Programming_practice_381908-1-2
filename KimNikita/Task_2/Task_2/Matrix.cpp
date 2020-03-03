@@ -101,7 +101,7 @@ const Matrix Matrix::operator*(int d)const {
 	tm *= d;
 	return tm;
 }
-const int& Matrix::operator()(int i, int j)const {
+int& Matrix::operator()(int i, int j){
 	if (i >= n || j >= n || i < 0 || j < 0)
 		throw exception("Выход за границы матрицы!");
 	return mat[i][j];
