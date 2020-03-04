@@ -36,8 +36,11 @@ public:
 
     matrix<T> operator*(const matrix&) const;
     matrix<T> operator*(std::vector<std::vector<T>>) const;
-    matrix<T> operator*=(const matrix&) const;
-    matrix<T> operator*=(std::vector<std::vector<T>>) const;
+    matrix<T> operator*=(const matrix&);
+    matrix<T> operator*=(std::vector<std::vector<T>>);
+
+    matrix<T> operator*=(T);
+    matrix<T> operator*(T) const;
 
 
     bool operator==(const matrix&) const;
@@ -369,6 +372,59 @@ matrix<T> matrix<T>::operator-(const matrix& other) const {
     return result;
 }
 
+template<typename T>
+matrix<T> matrix<T>::operator*(const matrix &other) const {
+    auto result = matrix<T>(*this);
+    result.operator*=(other);
+    return result;
+}
+
+template<typename T>
+matrix<T> matrix<T>::operator*=(const matrix &other) {
+    if (this->size_strs != other.size_rows)
+        throw std::invalid_argument("Size not equals");
+
+    auto result = matrix<T>(this->size_rows, other.size_strs);
+    for (int i = 0; i < this->size_rows; ++i) {
+        for (int j = 0; j < other.size_strs; ++j) {
+            result.value[i][j] = 0;
+            for (int k = 0; k < this->size_strs; ++k) {
+                result.value[i][j] += this->value[i][k] * other.value[k][j];
+            }
+        }
+    }
+    this->size_rows = result.size_rows;
+    this->size_strs = result.size_strs;
+    this->init(result.value);
+    return *this;
+}
+
+template<typename T>
+matrix<T> matrix<T>::operator*=(std::vector<std::vector<T>> val) {
+    return this->operator*=(matrix<T>(val));
+}
+
+template<typename T>
+matrix<T> matrix<T>::operator*(std::vector<std::vector<T>> val) const {
+    return this->operator*(matrix<T>(val));
+}
+
+template<typename T>
+matrix<T> matrix<T>::operator*=(T val) {
+    for (int i = 0; i < this->size_rows; ++i) {
+        for (int j = 0; j < this->size_strs; ++j) {
+            this->value[i][j] *= val;
+        }
+    }
+    return *this;
+}
+
+template<typename T>
+matrix<T> matrix<T>::operator*(T val) const {
+    auto result = matrix<T>(*this);
+    result.operator*=(val);
+    return result;
+}
 
 #endif //TASK2_MATRIX_H
 
