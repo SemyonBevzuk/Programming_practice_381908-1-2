@@ -1,6 +1,6 @@
 set(BINARY ${CMAKE_PROJECT_NAME})
 
-set(SOURCES Matrix.cpp Matrix.h templates.cpp)
+set(SOURCES matrix.h matrix.cpp templates.cpp)
 
 add_executable(${BINARY}_run ${SOURCES})
 
