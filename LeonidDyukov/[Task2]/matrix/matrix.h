@@ -19,11 +19,13 @@ public:
     matrix<T>(size_t, size_t, T);
     matrix(const matrix&);
     matrix<T>(size_t, size_t, T**);
-    matrix<T>(std::vector<std::vector<T>>);
+    explicit matrix<T>(std::vector<std::vector<T>>);
     ~matrix() { delete [] value; }
 
     matrix<T>& operator=(const std::vector<std::vector<T>>&);
     matrix<T>& operator=(const matrix<T>&);
+
+    matrix<T> operator()(std::vector<std::vector<T>>);
 
     T* operator[](size_t);
     T& at(size_t, size_t);
@@ -61,6 +63,7 @@ public:
     void init(T** = nullptr, T val = T(0));
     void init(std::vector<std::vector<T>>);
     std::string to_string() const;
+    std::string to_string(size_t) const;
 private:
     T **value;
     size_t size_rows{};
@@ -150,14 +153,14 @@ void matrix<T>::init(std::vector<std::vector<T>> val) {
     for (const auto & i : val)
         this->size_strs = i.size() > this->size_strs? i.size(): this->size_strs;
 
-    this->value = new int*[this->size_rows];
-    for (int i = 0; i < this->size_rows; ++i) {
-        this->value[i] = new int[this->size_strs];
-        for (int j = 0; j < val.at(i).size(); ++j) {
+    this->value = new T*[this->size_rows];
+    for (size_t i = 0; i < this->size_rows; ++i) {
+        this->value[i] = new T[this->size_strs];
+        for (size_t j = 0; j < val.at(i).size(); ++j) {
             this->value[i][j] = val.at(i).at(j);
         }
 
-        for (int j = val.at(i).size(); j < this->size_strs; ++j) {
+        for (size_t j = val.at(i).size(); j < this->size_strs; ++j) {
             this->value[i][j] = 0;
         }
     }
@@ -169,8 +172,8 @@ template<typename T> std::ostream& operator<<(std::ostream& os, const matrix<T> 
 }
 
 template<typename T> std::istream& operator>>(std::istream& is, const matrix<T> &other) {
-    for (int i = 0; i < other.size_rows; ++i) {
-        for (int j = 0; j < other.size_strs; ++j) {
+    for (size_t i = 0; i < other.size_rows; ++i) {
+        for (size_t j = 0; j < other.size_strs; ++j) {
             is >> other.value[i][j];
         }
     }
@@ -179,10 +182,16 @@ template<typename T> std::istream& operator>>(std::istream& is, const matrix<T> 
 
 template<typename T>
 std::string matrix<T>::to_string() const {
+    size_t chars = pow(2, sizeof(T)) + 1;
+    return this->to_string(chars);
+}
+
+template<typename T>
+std::string matrix<T>::to_string(size_t size) const {
     std::stringstream res;
-    for (int i = 0; i < size_rows; ++i) {
-        for (int j = 0; j < size_strs; ++j) {
-            res << std::setw(pow(2, sizeof(this->value[0][0])) + 1) << std::setfill(' ') << this->value[i][j];
+    for (size_t i = 0; i < size_rows; ++i) {
+        for (size_t j = 0; j < size_strs; ++j) {
+            res << std::setw(size) << std::setfill(' ') << this->value[i][j];
         }
         res << std::endl;
     }
@@ -191,7 +200,7 @@ std::string matrix<T>::to_string() const {
 
 template<typename T>
 matrix<T>& matrix<T>::operator=(const matrix &other) {
-    if(this == other)
+    if(this->operator==(other))
         return *this;
     this->size_rows = other.size_rows;
     this->size_strs = other.size_strs;
@@ -208,8 +217,8 @@ matrix<T>& matrix<T>::operator=(const std::vector<std::vector<T>>& val) {
 template<typename T>
 matrix<T> matrix<T>::trans() const {
     auto res = matrix<T>(this->size_strs, this->size_rows);
-    for (int i = 0; i < this->size_rows; ++i) {
-        for (int j = 0; j < this->size_strs; ++j) {
+    for (size_t i = 0; i < this->size_rows; ++i) {
+        for (size_t j = 0; j < this->size_strs; ++j) {
             res.value[j][i] = this->value[i][j];
         }
     }
@@ -233,8 +242,8 @@ matrix<T> matrix<T>::operator+=(const matrix& other) const {
     if (this->size_strs != other.size_strs || this->size_rows != other.size_rows)
         throw std::invalid_argument("Size is not equals");
 
-    for (int i = 0; i < this->size_rows; ++i) {
-        for (int j = 0; j < this->size_strs; ++j) {
+    for (size_t i = 0; i < this->size_rows; ++i) {
+        for (size_t j = 0; j < this->size_strs; ++j) {
             this->value[i][j] += other.value[i][j];
         }
     }
@@ -246,8 +255,8 @@ matrix<T> matrix<T>::operator-=(const matrix& other) const {
     if (this->size_strs != other.size_strs || this->size_rows != other.size_rows)
         throw std::invalid_argument("Size is not equals");
 
-    for (int i = 0; i < this->size_rows; ++i) {
-        for (int j = 0; j < this->size_strs; ++j) {
+    for (size_t i = 0; i < this->size_rows; ++i) {
+        for (size_t j = 0; j < this->size_strs; ++j) {
             this->value[i][j] -= other.value[i][j];
         }
     }
@@ -257,8 +266,8 @@ matrix<T> matrix<T>::operator-=(const matrix& other) const {
 template<typename T>
 bool matrix<T>::is_upper_triangle() {
     bool result = true;
-    for (int i = 0; i < this->size_rows && result; ++i) {
-        for (int j = 0; j < this->size_strs && result; ++j) {
+    for (size_t i = 0; i < this->size_rows && result; ++i) {
+        for (size_t j = 0; j < this->size_strs && result; ++j) {
             result &= ((i <= j) || this->value[i][j] == T(0));
         }
     }
@@ -268,8 +277,8 @@ bool matrix<T>::is_upper_triangle() {
 template<typename T>
 bool matrix<T>::is_lower_triangle() {
     bool result = true;
-    for (int i = 0; i < this->size_rows && result; ++i) {
-        for (int j = 0; j < this->size_strs && result; ++j) {
+    for (size_t i = 0; i < this->size_rows && result; ++i) {
+        for (size_t j = 0; j < this->size_strs && result; ++j) {
             result &= ((i >= j) || this->value[i][j] == T(0));
         }
     }
@@ -279,8 +288,8 @@ bool matrix<T>::is_lower_triangle() {
 template<typename T>
 bool matrix<T>::is_zero() {
     bool result = true;
-    for (int i = 0; i < this->size_rows && result; ++i) {
-        for (int j = 0; j < this->size_strs && result; ++j) {
+    for (size_t i = 0; i < this->size_rows && result; ++i) {
+        for (size_t j = 0; j < this->size_strs && result; ++j) {
             result &= this->value[i][j] == T(0);
         }
     }
@@ -290,8 +299,8 @@ bool matrix<T>::is_zero() {
 template<typename T>
 bool matrix<T>::is_diagonal() {
     bool result = true;
-    for (int i = 0; i < this->size_rows && result; ++i) {
-        for (int j = 0; j < this->size_strs && result; ++j) {
+    for (size_t i = 0; i < this->size_rows && result; ++i) {
+        for (size_t j = 0; j < this->size_strs && result; ++j) {
             result &= ((i == j) || this->value[i][j] == T(0));
         }
     }
@@ -308,9 +317,9 @@ bool matrix<T>::is_diagonal_prevalence() {
     if (!this->is_square())
         return false;
     bool hard = false;
-    for (int i = 0; i < this->size_rows; ++i) {
+    for (size_t i = 0; i < this->size_rows; ++i) {
         T sum = T(0);
-        for (int j = 0; j < this->size_strs; ++j) {
+        for (size_t j = 0; j < this->size_strs; ++j) {
             sum += abs(this->value[i][j]);
         }
 
@@ -336,8 +345,8 @@ bool matrix<T>::operator!=(const matrix& other) const {
         return true;
 
     bool result = false;
-    for (int i = 0; i < this->size_rows && !result; ++i) {
-        for (int j = 0; j < this->size_strs && !result; ++j) {
+    for (size_t i = 0; i < this->size_rows && !result; ++i) {
+        for (size_t j = 0; j < this->size_strs && !result; ++j) {
             result |= this->value[i][j] == other.value[i][j];
         }
     }
@@ -350,8 +359,8 @@ bool matrix<T>::operator==(const matrix& other) const {
         return false;
 
     bool result = true;
-    for (int i = 0; i < this->size_rows && result; ++i) {
-        for (int j = 0; j < this->size_strs && result; ++j) {
+    for (size_t i = 0; i < this->size_rows && result; ++i) {
+        for (size_t j = 0; j < this->size_strs && result; ++j) {
             result &= this->value[i][j] == other.value[i][j];
         }
     }
@@ -385,10 +394,10 @@ matrix<T> matrix<T>::operator*=(const matrix &other) {
         throw std::invalid_argument("Size not equals");
 
     auto result = matrix<T>(this->size_rows, other.size_strs);
-    for (int i = 0; i < this->size_rows; ++i) {
-        for (int j = 0; j < other.size_strs; ++j) {
+    for (size_t i = 0; i < this->size_rows; ++i) {
+        for (size_t j = 0; j < other.size_strs; ++j) {
             result.value[i][j] = 0;
-            for (int k = 0; k < this->size_strs; ++k) {
+            for (size_t k = 0; k < this->size_strs; ++k) {
                 result.value[i][j] += this->value[i][k] * other.value[k][j];
             }
         }
@@ -411,8 +420,8 @@ matrix<T> matrix<T>::operator*(std::vector<std::vector<T>> val) const {
 
 template<typename T>
 matrix<T> matrix<T>::operator*=(T val) {
-    for (int i = 0; i < this->size_rows; ++i) {
-        for (int j = 0; j < this->size_strs; ++j) {
+    for (size_t i = 0; i < this->size_rows; ++i) {
+        for (size_t j = 0; j < this->size_strs; ++j) {
             this->value[i][j] *= val;
         }
     }
@@ -424,6 +433,12 @@ matrix<T> matrix<T>::operator*(T val) const {
     auto result = matrix<T>(*this);
     result.operator*=(val);
     return result;
+}
+
+template<typename T>
+matrix<T> matrix<T>::operator()(std::vector<std::vector<T>> val) {
+    this->operator=(val);
+    return *this;
 }
 
 #endif //TASK2_MATRIX_H

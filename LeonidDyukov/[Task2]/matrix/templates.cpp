@@ -1,7 +1,7 @@
-////
-//// Created by Leo on 03.03.2020.
-////
 //
+// Created by Leo on 03.03.2020.
+//
+
 //#include "matrix.h"
 //#include "matrix.cpp"
 //
