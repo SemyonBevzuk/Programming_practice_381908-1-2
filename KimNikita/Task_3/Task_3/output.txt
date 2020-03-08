@@ -1,0 +1,45 @@
+d1:
+2
+alive Р¶РёРІРѕР№
+rain РґРѕР¶РґСЊ
+d2:
+4
+car машина
+dog собака
+girl девушка
+pen ручка
+d3:
+4
+car машина
+dog собака
+girl девушка
+pen ручка
+d2.add(andromeda, Андромеда):
+5
+andromeda андромеда
+car машина
+dog собака
+girl девушка
+pen ручка
+d3.add(Vasya, вася):
+5
+car машина
+dog собака
+girl девушка
+pen ручка
+vasya вася
+d3.change_translate(vasya, Василий)
+d3.get_translate(vasya):
+василий
+d1 += d2 + d3:
+8
+alive Р¶РёРІРѕР№
+andromeda андромеда
+car машина
+dog собака
+girl девушка
+pen ручка
+rain РґРѕР¶РґСЊ
+vasya василий
+d1.size:
+8
