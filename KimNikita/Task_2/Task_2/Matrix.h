@@ -26,6 +26,6 @@ public:
 	int& operator()(int, int);
 	friend ifstream& operator>>(ifstream& in, Matrix& m);
 	friend ofstream& operator<<(ofstream& out, Matrix& m);
-	bool check()const;
-	Matrix& transpon();
+	bool check_diagonal_dominant()const;
+	const Matrix transpon();
 };

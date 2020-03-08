@@ -37,12 +37,15 @@ Matrix::Matrix(vector<vector<int>> a) {
 	}
 }
 Matrix& Matrix::operator=(const Matrix& m) {
-	n = m.n;
-	for (int i = 0; i < n; i++)
+	if (this != &m)
 	{
-		for (int j = 0; j < n; j++)
+		n = m.n;
+		mat.resize(m.n);
+		for (int i = 0; i < n; i++)
 		{
-			mat[i][j] = m.mat[i][j];
+			mat[i].resize(n);
+			for (int j = 0; j < n; j++)
+				mat[i][j] = m.mat[i][j];
 		}
 	}
 	return *this;
@@ -71,7 +74,7 @@ Matrix& Matrix::operator*=(const Matrix& m) {
 			{
 				mat[nstr][nstb] = 0;
 				for (int j = 0; j < n; j++)
-					mat[nstr][nstb]+= tm.mat[nstr][j] * m.mat[j][nstb];
+					mat[nstr][nstb] += tm.mat[nstr][j] * m.mat[j][nstb];
 			}
 		return *this;
 	}
@@ -101,16 +104,17 @@ const Matrix Matrix::operator*(int d)const {
 	tm *= d;
 	return tm;
 }
-int& Matrix::operator()(int i, int j){
+int& Matrix::operator()(int i, int j) {
 	if (i >= n || j >= n || i < 0 || j < 0)
 		throw exception("Выход за границы матрицы!");
 	return mat[i][j];
 }
 ifstream& operator>>(ifstream& in, Matrix& m) {
 	in >> m.n;
+	m.mat.resize(m.n);
 	for (int i = 0; i < m.n; i++)
 	{
-		m.mat.push_back(vector<int>(m.n));
+		m.mat[i].resize(m.n);
 		for (int j = 0; j < m.n; j++)
 			in >> m.mat[i][j];
 	}
@@ -128,7 +132,7 @@ ofstream& operator<<(ofstream& out, Matrix& m) {
 	}
 	return out;
 }
-bool Matrix::check()const {
+bool Matrix::check_diagonal_dominant()const {
 	int strog = 0;
 	for (int i = 0; i < n; i++)
 	{
@@ -149,13 +153,13 @@ bool Matrix::check()const {
 		return true;
 	return false;
 }
-Matrix& Matrix::transpon() {
+const Matrix Matrix::transpon() {
 	Matrix tm = *this;
 	for (int i = 0; i < n; i++)
 		for (int j = 0; j < n; j++)
 		{
-			mat[j][i] = tm.mat[i][j];
+			tm.mat[j][i] = mat[i][j];
 		}
-	return *this;
+	return tm;
 }
 

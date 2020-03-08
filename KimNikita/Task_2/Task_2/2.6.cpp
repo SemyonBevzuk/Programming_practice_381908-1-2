@@ -31,12 +31,12 @@ int main()
 	fin >> m1;
 	fout << "m1:" << endl;
 	fout << m1;
-	if (m1.check())
+	if (m1.check_diagonal_dominant())
 		fout << "m1 обладает диагональным преобладанием" << endl;
 	else
 		fout << "m1 не обладает диагональным преобладанием" << endl;
-	m4.transpon();
 	fout << "m4.transpon:" << endl;
+	m4 = m4.transpon();
 	fout << m4;
 	m2 = m1 + m4;
 	fout << "m2 = m1 + m4:" << endl;
