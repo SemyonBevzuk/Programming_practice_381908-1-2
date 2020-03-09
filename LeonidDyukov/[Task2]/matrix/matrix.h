@@ -319,16 +319,7 @@ T& matrix<T>::at(size_t a, size_t b) {
 
 template<typename T>
 bool matrix<T>::operator!=(const matrix& other) const {
-    if (this->size_strs != other.size_strs || this->size_rows != other.size_rows)
-        return true;
-
-    bool result = false;
-    for (size_t i = 0; i < this->size_rows && !result; ++i) {
-        for (size_t j = 0; j < this->size_strs && !result; ++j) {
-            result |= this->value[i][j] == other.value[i][j];
-        }
-    }
-    return !result;
+    return !this->operator==(other);
 }
 
 template<typename T>
