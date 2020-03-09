@@ -13,10 +13,8 @@
 
 template<typename T> class matrix {
 public:
-    matrix<T>();
-    explicit matrix<T>(size_t);
-    matrix<T>(size_t, size_t);
-    matrix<T>(size_t, size_t, T);
+    matrix<T>(size_t = 0, size_t = 0, T = 0);
+
     matrix(const matrix&);
     matrix<T>(size_t, size_t, T**);
     explicit matrix<T>(std::vector<std::vector<T>>);
@@ -80,27 +78,6 @@ template<typename T> std::ostream& operator>>(std::istream&, matrix<T>&);
 
 
 template<typename T>
-matrix<T>::matrix() {
-    this->size_rows = 0;
-    this->size_strs = 0;
-    this->init();
-}
-
-template<typename T>
-matrix<T>::matrix(const size_t size) {
-    this->size_rows = size;
-    this->size_strs = size;
-    this->init();
-}
-
-template<typename T>
-matrix<T>::matrix(size_t size_rows, size_t size_strs) {
-    this->size_rows = size_rows;
-    this->size_strs = size_strs;
-    this->init();
-}
-
-template<typename T>
 matrix<T>::matrix(const matrix<T>& other) {
     this->size_rows = other.size_rows;
     this->size_strs = other.size_strs;
@@ -116,6 +93,7 @@ matrix<T>::matrix(size_t size_rows, size_t size_strs, T **arr) {
 
 template<typename T>
 matrix<T>::matrix(size_t size_rows, size_t size_strs, T val) {
+    if (size_strs == 0) size_strs = size_rows;
     this->size_rows = size_rows;
     this->size_strs = size_strs;
     this->init(nullptr, val);
