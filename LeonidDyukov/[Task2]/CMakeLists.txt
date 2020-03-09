@@ -7,4 +7,4 @@ include_directories(matrix)
 
 add_subdirectory(matrix)
 add_subdirectory(matrix_tests)
-add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/../lib ${CMAKE_CURRENT_BINARY_DIR}/lib)
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/../gtest ${CMAKE_CURRENT_BINARY_DIR}/gtest)
