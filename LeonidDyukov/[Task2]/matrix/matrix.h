@@ -18,7 +18,7 @@ public:
     matrix(const matrix&);
     matrix<T>(size_t, size_t, T**);
     explicit matrix<T>(std::vector<std::vector<T>>);
-    ~matrix() { delete [] value; }
+    ~matrix();
 
     matrix<T>& operator=(const std::vector<std::vector<T>>&);
     matrix<T>& operator=(const matrix<T>&);
@@ -417,6 +417,14 @@ template<typename T>
 matrix<T> matrix<T>::operator()(std::vector<std::vector<T>> val) {
     this->operator=(val);
     return *this;
+}
+
+template<typename T>
+matrix<T>::~matrix() {
+    for (size_t i = 0; i < size_rows; ++i) {
+        delete [] value[i];
+    }
+    delete [] value;
 }
 
 #endif //TASK2_MATRIX_H
