@@ -10,7 +10,7 @@ void main() {
 	is.open("matrixIn.txt");
 	is >> A >> D >> E;
 	is.close();
-	if (E.diagPredom()) E.transpose();
+	if (E.IsDiagonallyDominant()) E = E.transpose();
 	C = 2 * A + B * 3;
 	A = D * C;
 	ofstream os;

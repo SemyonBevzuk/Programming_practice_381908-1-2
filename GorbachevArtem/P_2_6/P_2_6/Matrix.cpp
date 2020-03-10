@@ -9,9 +9,9 @@ Matrix::Matrix(int a, int b)
 	try {
 		if ((m < 0) || (n < 0))
 			throw "Ошибка - число строк и столбцов не может быть отрицательным!";
-		A.resize(m);
+		Elements.resize(m);
 		for (int i = 0; i < m; i++)
-			A[i].resize(n);
+			Elements[i].resize(n);
 	}
 	catch (const char* str) {
 		cout << str << endl;
@@ -31,11 +31,11 @@ Matrix & Matrix::operator=(const Matrix & Mat)
 {
 	m = Mat.m;
 	n = Mat.n;
-	A = Mat.A;
+	Elements = Mat.Elements;
 	return *this;
 }
 
-Matrix Matrix::operator+(const Matrix & Mat)
+Matrix Matrix::operator+(const Matrix & Mat) const
 {
 	Matrix tmp(m, n);
 	try {
@@ -43,7 +43,7 @@ Matrix Matrix::operator+(const Matrix & Mat)
 			throw "Ошибка - матрицы должны быть одинакового размера!";
 		for (int i = 0; i < m; i++)
 			for (int j = 0; j < n; j++)
-				tmp.A[i][j] = A[i][j] + Mat.A[i][j];
+				tmp.Elements[i][j] = Elements[i][j] + Mat.Elements[i][j];
 	}
 	catch (const char* str) {
 		cout << str << endl;
@@ -56,7 +56,7 @@ int & Matrix::operator()(int i, int j)
 	try {
 		if ((i < 1) || (i > m) || (j < 1) || (j > n))
 			throw "Ошибка - выход за границы массива!";
-		return A[i - 1][j - 1];
+		return Elements[i - 1][j - 1];
 	}
 	catch (const char* str) {
 		cout << str << endl;
@@ -65,16 +65,16 @@ int & Matrix::operator()(int i, int j)
 	}
 }
 
-void Matrix::transpose()
+Matrix Matrix::transpose()
 {
 	Matrix T(n, m);
 	for (int i = 1; i <= n; i++)
 		for (int j = 1; j <= m; j++)
 			T(i, j) = (*this)(j, i);
-	*this = T;
+	return T;
 }
 
-bool Matrix::diagPredom()
+bool Matrix::IsDiagonallyDominant()
 {
 	try {
 		if (m != n)
