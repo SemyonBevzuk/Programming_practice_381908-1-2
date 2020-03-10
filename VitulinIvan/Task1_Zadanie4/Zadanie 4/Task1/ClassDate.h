@@ -6,14 +6,19 @@ class Date
 {
 	private:
 		int d, m, y;
+
 	public:
-		Date();//конструктор по умолчанию
-		Date TRS(string TRSdate);
+		Date(int days=1, int month=1, int year=1);
+		Date(string TRSdate);
 		Date operator= (const Date& dt);
-		Date Minus(const Date& dt, int dm);
-		Date Plus(const Date& dt, int dp);
 		friend std::istream& operator>>(istream& stream, Date& dt);
 		friend std::ostream& operator<<(ostream& stream, const Date& dt);
-		void Comparsion(const Date& dt1);
-		
+		const Date operator+(int dp);
+		const Date operator-(int dm);
+		bool operator==(const Date& dt);
+		bool operator>(const Date& dt);
+		bool operator<(const Date& dt);
+		bool operator>=(const Date& dt);
+		bool operator<=(const Date& dt);
+		bool operator!=(const Date& dt);	
 };

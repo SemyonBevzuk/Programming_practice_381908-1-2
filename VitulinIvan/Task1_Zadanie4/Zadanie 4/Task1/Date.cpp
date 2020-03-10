@@ -32,7 +32,7 @@ int main()
 				cin >> DT1;
 				cout << "Введите количество дней: ";
 				cin >> days;
-				res = DT1.Plus(DT1, days);
+				res = DT1+days;
 				cout << "Новая дата: " << res;
 				cout << "---------------------\n";
 			}
@@ -42,10 +42,10 @@ int main()
 				Date DT2;
 				cout << "Введите дату: \n";
 				cin >> DT1;
-				DT2 = DT2.TRS(DT1);
+				DT2 = DT1;
 				cout << "Введите количество дней: ";
 				cin >> days;
-				res = DT2.Plus(DT2, days);
+				res = DT2+days;
 				cout << "Новая дата: " << res;
 				cout << "---------------------\n";
 			}
@@ -63,7 +63,7 @@ int main()
 				cin >> DT1;
 				cout << "Введите количество дней: ";
 				cin >> days;
-				res = DT1.Minus(DT1, days);
+				res = DT1-days;
 				cout << "Новая дата: " << res;
 				cout << "---------------------\n";
 			}
@@ -73,10 +73,10 @@ int main()
 				Date DT2;
 				cout << "Введите дату: \n";
 				cin >> DT1;
-				DT2 = DT2.TRS(DT1);
+				DT2 = DT1;
 				cout << "Введите количество дней: ";
 				cin >> days;
-				res = DT2.Minus(DT2, days);
+				res = DT2-days;
 				cout << "Новая дата: " << res;
 				cout << "---------------------\n";
 			}
@@ -91,19 +91,14 @@ int main()
 				cout << "Введите первую и вторую даты: \n";
 				cin >> DT1;
 				cin >> DT2;
-				DT2.Comparsion(DT1);
 				cout << "---------------------\n";
 			}
 			else
 			{
 				string DT1,DT2;
-				Date DT1A, DT2A;
 				cout << "Введите первую и вторую даты: \n";
 				cin >> DT1;
 				cin >> DT2;
-				DT1A = DT1A.TRS(DT1);
-				DT2A = DT2A.TRS(DT2);
-				DT2A.Comparsion(DT1A);
 				cout << "---------------------\n";
 			}
 		}
@@ -117,6 +112,7 @@ int main()
 			cout << "-----------------------------------------------ЗАВЕРШЕНИЕ РАБОТЫ--------------------------------------------------------\n";
 			return 0;
 		}
+		
 		cout << "Продолжить работу? 0-Нет; Любое другое- Да\n";
 		cin >> z;
 		cout << "\n";
