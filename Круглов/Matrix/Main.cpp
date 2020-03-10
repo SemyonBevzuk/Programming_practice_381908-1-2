@@ -4,6 +4,7 @@
 
 int main()
 {
+	setlocale(LC_ALL, "rus");
 	Matrix m(2, 2), n(2, 1);
 	Matrix c = n + m;
 	c(0,0) = 1;
@@ -11,14 +12,14 @@ int main()
 	cout << n * m;
 	cout << "\n";
 	cin >> c;
-	c.Transposition();
+	c=c.Transposition();
 	cout << c;
 	cout << "\n";
 	c(1, 1) = 10;
 	c(0, 0) = 10;
-	cout << c.Diag() << "\n";
+	cout << c.IsDiagonalDomination() << "\n";
 	Matrix d(2, 2);
-	d.MultiNum(2);
+	d = d * 2;
 	cout << d;
 }
 

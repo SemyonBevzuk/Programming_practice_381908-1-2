@@ -1,10 +1,14 @@
 #include"matrix.h"
 
 //Конструкторы и деструкторы ----------------------------------------------
-Matrix::Matrix()
+
+void Matrix::Create()
 {
-	Row = 1;
-	Create();
+	Matr = new int* [Row];
+	for (int i = 0; i < Row; i++)
+	{
+		Matr[i] = new int[Row];
+	}
 }
 
 Matrix::Matrix(const Matrix& m)
@@ -18,12 +22,6 @@ Matrix::Matrix(const Matrix& m)
 			Matr[i][j] = m.Matr[i][j];
 		}
 	}
-}
-
-Matrix::Matrix(int _row)
-{
-	Row = _row;
-	Create();
 }
 
 Matrix::Matrix(int _row, int elem)
@@ -49,31 +47,36 @@ Matrix :: ~Matrix()
 //методы ---------------------------------------------------------------------
 
 
-bool Matrix::Diag()
+bool Matrix::IsDiagonalDomination()
 {
 	for (int i = 0; i < Row; i++)
 	{
+		long long sum = 0;
 		for (int j = 0; j < Row; j++)
 		{
 			if (j == i) continue;
-			if (Matr[i][i] < Matr[i][j]) return 0;
+			sum += abs(Matr[i][j]);
 		}
+		if(sum>abs(Matr[i][i]))
+			return 0;
 	}
 	return 1;
 }
 
-void Matrix::MultiNum(int x)
+Matrix Matrix::operator*(const int x)
 {
+	Matrix res(Row);
 	for (int i = 0; i < Row; i++)
 	{
 		for (int j = 0; j < Row; j++)
 		{
-			Matr[i][j] *= x;
+			res = Matr[i][j] * x;
 		}
 	}
+	return res;
 }
 
-void Matrix::Transposition()
+Matrix Matrix::Transposition()
 {
 	Matrix res(Row);
 	for (int i = 0; i < Row; i++)
@@ -83,14 +86,7 @@ void Matrix::Transposition()
 			res(j,i)=Matr[i][j];
 		}
 	}
-	for (int i = 0; i < Row; i++)
-	{
-		for (int j = 0; j < Row; j++)
-		{
-			Matr[i][j]=res(i,j);
-		}
-	}
-	//~res;
+	return res;
 }
 
 Matrix& Matrix::operator=(const Matrix& m)
@@ -169,9 +165,12 @@ ostream& operator<<(ostream& ofstream, const Matrix& m)
 
 istream& operator>>(istream& ofstream, Matrix& m)
 {
-	for (int i = 0; i < m.Row; i++)
+	cout << "Введите количество элементов в строке";
+	int r;
+	cin >> r;
+	for (int i = 0; i < r; i++)
 	{
-		for (int j = 0; j < m.Row; j++)
+		for (int j = 0; j < r; j++)
 		{
 			ofstream >> m.Matr[i][j];
 		}

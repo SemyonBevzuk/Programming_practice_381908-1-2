@@ -8,26 +8,15 @@ class Matrix
 private:
 	int** Matr;
 	int Row;
-
-	void Create()
-	{
-		Matr = new int* [Row];
-		for (int i = 0; i < Row; i++)
-		{
-			Matr[i] = new int[Row];
-		}
-	}
-
+	void Create();
 public:
-	Matrix();
 	Matrix(const Matrix& m);
-	Matrix(int _row);
-	Matrix(int _row, int _elem);
+	Matrix(int _row = 1, int _elem = 0);
 	~Matrix();
 	//methods
-	bool Diag();
-	void MultiNum(int x);
-	void Transposition();
+	bool IsDiagonalDomination();
+	Matrix Transposition();
+	Matrix operator*(const int x);
 	Matrix operator+(const Matrix& m);
 	Matrix operator*(const Matrix& m);
 	Matrix& operator=(const Matrix& m);
