@@ -16,6 +16,9 @@ public:
 
     word& operator=(const word& other);
 
+    std::string getKey() const;
+    std::vector<std::string> getValue() const;
+
     bool add(const std::string& value);
     bool add(const std::vector<std::string>& value);
 

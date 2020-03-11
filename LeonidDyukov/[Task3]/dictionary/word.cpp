@@ -6,6 +6,8 @@
 #include <algorithm>
 #include <sstream>
 #include <regex>
+#include <iostream>
+#include <codecvt>
 #include "word.h"
 
 word::word(std::string key) {
@@ -17,7 +19,7 @@ word::word(std::string key) {
 word::word(std::string key, const std::string& new_value) {
     if (!check(key)) throw std::invalid_argument("Invalid symbol in: " + key);
     this->key = std::move(key);
-    if (!check(new_value)) {
+    if (check(new_value)) {
         this->value = std::vector<std::string>(1, new_value);
     } else {
         this->value = std::vector<std::string>(0);
@@ -27,7 +29,7 @@ word::word(std::string key, const std::string& new_value) {
 word::word(std::string key, const std::vector<std::string>& new_value) {
     if (!check(key)) throw std::invalid_argument("Invalid symbol in: " + key);
     this->key = std::move(key);
-    if (!check(new_value)) {
+    if (check(new_value)) {
         this->value = new_value;
     } else {
         this->value = std::vector<std::string>(0);
@@ -72,7 +74,7 @@ bool word::del(const std::vector<std::string>& new_value) {
 }
 
 bool word::change(const std::string& old_value, const std::string& new_value) {
-    if(std::find(this->value.begin(), this->value.end(), new_value) != this->value.end() || !check(new_value)) {
+    if(std::find(this->value.begin(), this->value.end(), old_value) != this->value.end() || !check(new_value)) {
         std::replace(this->value.begin(), this->value.end(), old_value, new_value);
         return true;
     } else {
@@ -90,10 +92,10 @@ std::string word::to_string() const {
         auto start = this->value.begin();
         out << *start++;
         while (start < this->value.end()) {
-            out << "," << *start++;
+            out << ":" << *start++;
         }
     }
-    out << std::endl;
+    out << ";" << std::endl;
     return out.str();
 }
 
@@ -103,30 +105,40 @@ std::ostream &operator<<(std::ostream &os, const word &other) {
 }
 
 bool word::check(const std::string& word) {
-    std::regex filter(R"(^[a-zA-Zа-яА-Я]+$)");
-    return std::regex_search(word, filter);
+    std::wregex filter(L"([^a-zA-Zа-яА-ЯёЁ])");
+    return !std::regex_search(
+            std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t>().
+                    from_bytes(word),
+                    filter);
 }
 
 bool word::check(const std::vector<std::string>& words) {
-    bool result = true;
-    for (const std::string& word: words) {
-        result &= check(word);
+    for (const auto& word: words) {
+        if (!check(word))
+            return false;
     }
-    return result;
+    return true;
 }
 
-std::istream &operator<<(std::istream &is, word &other) {
+std::vector<std::string> word::getValue() const {
+    return this->value;
+}
+
+std::string word::getKey() const {
+    return this->key;
+}
+
+std::istream &operator>>(std::istream &is, word &other) {
     std::string key;
     std::string val;
     is >> key;
-    while (!other.check(key)) {
+    while (!other.check(key))
         is >> key;
-    }
 
     is >> val;
-    while (!other.check(val)) {
+    while (!other.check(val))
         is >> val;
-    }
+
     other = word(key, val);
     return is;
 }
