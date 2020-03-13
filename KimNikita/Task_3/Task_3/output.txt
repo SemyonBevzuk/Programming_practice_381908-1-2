@@ -1,7 +1,7 @@
 d1:
 2
-alive Р¶РёРІРѕР№
-rain РґРѕР¶РґСЊ
+alive живой
+rain дождь
 d2:
 4
 car машина
@@ -33,13 +33,13 @@ d3.get_translate(vasya):
 василий
 d1 += d2 + d3:
 8
-alive Р¶РёРІРѕР№
+alive живой
 andromeda андромеда
 car машина
 dog собака
 girl девушка
 pen ручка
-rain РґРѕР¶РґСЊ
+rain дождь
 vasya василий
 d1.size:
 8

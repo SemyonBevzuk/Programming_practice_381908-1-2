@@ -6,12 +6,12 @@ void Dictionary::check(string& s, char c) {
 		s[i] = tolower(s[i]);
 		if (c == 'e')
 		{
-			if (!(s[i] > 96 && s[i] < 123))
+			if (!(s[i] >='a' && s[i] <= 'z'))
 				throw exception("Строка не является английским словом!");
 		}
 		else
 		{
-			if (!(s[i] > -33 && s[i] < 0))
+			if (!(s[i] >= 'а' && s[i] <= 'я'))
 				throw exception("Строка не является русским словом!");
 		}
 	}
