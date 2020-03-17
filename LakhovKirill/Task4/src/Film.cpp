@@ -7,17 +7,17 @@
 #include "../include/Film.h"
 #include "regex"
 
-Film::Film(string name, string producer, string writer, string composer, Date date, int fees) {
-    this->name = Film::parser(name) ? name : "НеУстановлено";
+Film::Film(string name, string producer, string screenwriter, string composer, Date date, int fees) {
+    this->name =name;
     this->producer = Film::parser(producer) ? producer : "НеУстановлено";
-    this->writer = Film::parser(writer) ? writer : "НеУстановлено";
+    this->screenwriter = Film::parser(screenwriter) ? screenwriter : "НеУстановлено";
     this->composer = Film::parser(composer) ? composer : "НеУстановлено";
     this->date = date;
     this->fees = fees;
 }
 
 bool Film::parser(const string &str) {
-    wregex oneWord(L"(^[a-zA-Zа-яА-ЯёЁ]+$)");
+    regex oneWord(R"(^[a-zA-Z]+$)");
     smatch match;
-    return regex_search(wstring_convert<codecvt_utf8<wchar_t>, wchar_t>().from_bytes(str), oneWord);
+    return regex_search(str,match,oneWord);
 }

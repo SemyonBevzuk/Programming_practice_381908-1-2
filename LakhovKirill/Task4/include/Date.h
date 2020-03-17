@@ -21,6 +21,9 @@ public:
     bool setMonth(int month);
     bool setYear(int year);
     string getDate();
+    inline int getDay(){ return this->day;}
+    inline int getMonth(){ return this->month;}
+    inline int getYear(){ return this->year;}
 };
 
 
