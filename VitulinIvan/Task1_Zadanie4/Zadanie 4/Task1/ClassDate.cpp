@@ -166,7 +166,10 @@ const Date Date::operator-(int dm)
 
 bool Date::operator==(const Date& dt)
 {
-	return (*this == dt);
+	if ((dt.y == y) && (dt.m == m) && (dt.d == d))
+		return true;
+	else
+		return false;
 }
 
 bool Date::operator>(const Date& dt)
@@ -223,7 +226,7 @@ bool Date::operator<(const Date& dt)
 
 bool Date::operator>=(const Date& dt)
 {
-	if ((y > dt.y)||((y == dt.y) && (m > dt.m))||((y == dt.y) && (m == dt.m) && (d > dt.d))|| ((y == dt.y) && (m == dt.m) && (d == dt.d)))
+	if ((*this>dt)||(*this==dt))
 	{
 		return true;
 	}
@@ -231,11 +234,12 @@ bool Date::operator>=(const Date& dt)
 	{
 		return false;
 	}
+	//((y > dt.y) || ((y == dt.y) && (m > dt.m)) || ((y == dt.y) && (m == dt.m) && (d > dt.d)) || ((y == dt.y) && (m == dt.m) && (d == dt.d)))
 }
 
 bool Date::operator<=(const Date& dt)
 {
-	if ((y < dt.y) || ((y == dt.y) && (m <= dt.m)) || ((y == dt.y) && (m == dt.m) && (d <= dt.d))|| ((y == dt.y) && (m == dt.m) && (d == dt.d)))
+	if ((*this<dt)||(*this==dt))
 	{
 		return true;
 	}
@@ -243,6 +247,7 @@ bool Date::operator<=(const Date& dt)
 	{
 		return false;
 	}
+	//((y < dt.y) || ((y == dt.y) && (m <= dt.m)) || ((y == dt.y) && (m == dt.m) && (d <= dt.d)) || ((y == dt.y) && (m == dt.m) && (d == dt.d)))
 }
 
 bool Date::operator!=(const Date& dt)
