@@ -6,6 +6,8 @@ using namespace std;
 
 int main()
 {
+	try
+	{
 	setlocale(LC_ALL, "rus");
 	Dictionary d1, d2;
 	map<string, string> ::iterator it;
@@ -16,9 +18,20 @@ int main()
 	{
 		cout << it->first << " " << it->second << "\n";
 	}
-	//d3 = d1 + d2;
-	cout << d1.size() << "- Размер \n";
-	cout << d1.Presence("good") << "- есть ли слово" << "\n";
-	cout << d1.Translate("translate");
+	d3 = d1 + d2;
+	for (it = d3.begin(); it != d3.end(); it++)
+	{
+		cout << it->first << " " << it->second << "\n";
+	}
+	cout << d1.getSize() << "- Размер \n";
+	cout << d1.presence("good") << "- есть ли слово" << "\n";
+	cout << d1.translateToRussian("translate") << "\n";
+	cout << d1.translateToRussian("пер");
+    }
+	catch(string s)
+	{
+		for (int i = 0; i < s.length(); i++)
+			cout << "&";
+	}
 }
 

@@ -1,21 +1,15 @@
 #include"Dictionary.h"
 #include <fstream>
 #include<iostream>
+#include<algorithm>
 
 Dictionary::Dictionary()
 {
 }
 
-Dictionary::Dictionary(Dictionary& d)
+Dictionary::Dictionary(const Dictionary& d)
 {
-	string eng, rus;
-	it = d.begin();
-	for (it; it != d.end(); it++)
-	{
-		eng = it->first;
-		rus = it->second;
-		Dict[eng] = rus;
-	}
+	Dict = d.Dict;
 }
 
 void Dictionary::insert(string eng, string rus)
@@ -30,9 +24,7 @@ void Dictionary::insert(pair<string, string> p)
 
 map <string, string> ::iterator Dictionary::begin()
 {
-	{
-		return Dict.begin();
-	}
+	return Dict.begin();
 }
 
 map <string, string> ::iterator Dictionary::end()
@@ -40,38 +32,50 @@ map <string, string> ::iterator Dictionary::end()
 	return Dict.end();
 }
 
-int Dictionary::size()
+int Dictionary::getSize()
 {
 	return Dict.size();
 }
 
-string Dictionary::Translate(string eng)
+string Dictionary::translateToRussian(string eng)
 {
 	it = Dict.find(eng);
 	if (it != Dict.end())
 		return Dict[eng];
 	else
-		return "Такого слова нет";
+		throw eng;
 }
 
-void Dictionary::ChangeTranslation(string eng, string rus)
+string Dictionary::translateToEnglish(string rus)
+{
+	it = Dict.begin();
+	while (it != Dict.end()) 
+	{
+		if (it->second == rus)
+		{
+			return it->first;
+		}
+		it++;
+	}
+	throw rus;
+}
+
+void Dictionary::changeTranslation(string eng, string rus)
 {
 	it = Dict.find(eng);
 	if (it != Dict.end())
 		Dict[eng] = rus;
-	else
-		cout << "Такого слова нет";
 }
 
-bool Dictionary::Presence(string eng)
+bool Dictionary::presence(string eng)
 {
 	it = Dict.find(eng);
 	if (it == Dict.end())
-		return 0;
-	return 1;
+		return false;
+	return true;
 }
 
-void Dictionary::Save()
+void Dictionary::save()
 {
 	ofstream fout( "Dictionary.txt");
 	for (it=Dict.begin(); it != Dict.end(); it++)
@@ -81,7 +85,7 @@ void Dictionary::Save()
 	fout.close();
 }
 
-void Dictionary::Read()
+void Dictionary::read()
 {
 	ifstream fout("Dictionary.txt");
 	string eng, rus;
@@ -93,30 +97,23 @@ void Dictionary::Read()
 	fout.close();
 }
 
-Dictionary& Dictionary::operator=(Dictionary& d)
+Dictionary& Dictionary::operator=(const Dictionary& d)
 {
-	string eng, rus;
-	it = d.begin();
-	Dict.clear();
-	for (it; it != d.end(); it++)
-	{
-		eng = it->first;
-		rus = it->second;
-		Dict[eng] = rus;
-	}
+	if (this == &d) return *this;
+	Dict = d.Dict;
 	return *this;
 }
 
 Dictionary Dictionary:: operator+(Dictionary& d)
 {
 	string eng, rus;
-	Dictionary res(d);
+	Dictionary res = *this;
 	it = d.begin();
-	for (it; it != d.end(); it++)
+	for (it; it != d.end(); it++)	
 	{
 		eng = it->first;
 		rus = it->second;
 		res.insert(eng, rus);
 	}
-	return *this;
+	return res;
 }
