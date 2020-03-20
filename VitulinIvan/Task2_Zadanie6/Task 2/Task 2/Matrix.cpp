@@ -1,8 +1,8 @@
 #include <iostream>
 #include <cstdlib>
-#include "ClassMatrix.h"
 #include <fstream>
 #include <clocale>
+#include "ClassMatrix.h"
 
 using namespace std;
 
