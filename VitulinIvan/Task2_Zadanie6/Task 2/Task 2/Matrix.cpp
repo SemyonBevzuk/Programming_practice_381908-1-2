@@ -1,7 +1,7 @@
+#include <clocale>
 #include <iostream>
 #include <cstdlib>
 #include <fstream>
-#include <clocale>
 #include "ClassMatrix.h"
 
 using namespace std;
