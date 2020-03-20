@@ -166,10 +166,7 @@ const Date Date::operator-(int dm)
 
 bool Date::operator==(const Date& dt)
 {
-	if ((d == dt.m) && (m == dt.m) && (y == dt.y))
-		return true;
-	else
-		return false;
+	return (*this == dt);
 }
 
 bool Date::operator>(const Date& dt)
@@ -250,8 +247,5 @@ bool Date::operator<=(const Date& dt)
 
 bool Date::operator!=(const Date& dt)
 {
-	if ((d != dt.d) || (m != dt.m) || (y != dt.y))
-		return true;
-	else
-		return false;
+	return !(*this == dt);
 }
