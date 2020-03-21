@@ -12,8 +12,8 @@ using namespace std;
 
 class Film {
 public:
-    Film(string name = "Фильм", string producer = "Пригожин", string screenwriter = "Хелебников",
-         string composer = "Уильямс", Date date = Date(), int fees = 100000);
+    Film(string name = "Film", string producer = "Cameron", string screenwriter = "Tarantino",
+         string composer = "Zimmer", Date date = Date(), int box_office = 100000);
     inline string getName(){ return this->name;}
     inline string getProducer(){ return this->producer;}
     inline string getScreenwriter(){return this->screenwriter;}
@@ -21,7 +21,8 @@ public:
     inline int getDay(){ return this->date.getDay();}
     inline int getMonth(){ return this->date.getMonth();}
     inline int getYear(){ return this->date.getYear();}
-    inline int getFees(){ return this->fees;}
+    inline int getBoxOffice(){ return this->box_office;}
+    inline string getDate(){ return this->date.getDate();}
 
 private:
     string name;
@@ -29,7 +30,7 @@ private:
     string screenwriter;
     string composer;
     Date date;
-    int fees;
+    int box_office;
     static bool parser(const string &str);
 };
 
