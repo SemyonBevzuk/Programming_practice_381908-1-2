@@ -3,39 +3,48 @@
 #include <ctime>
 
 //Конструктор
-void Matrix::Create()
+void Matrix::Create(int xx)
 {
-    mat = new int* [row];
-    for (int i = 0; i < row; i++)
+    row = xx;
+    mat = new int* [xx];
+    for (int i = 0; i < xx; i++)
     {
-        mat[i] = new int[row];
+        mat[i] = new int[xx];
     }
 }
 
 Matrix::Matrix(const Matrix& m)
 {
-    row = m.row;
-    Create();
-    for (int i = 0; i < row; i++)
+    Create(m.row);
+    for (int i = 0; i < m.row; i++)
     {
-        for (int j = 0; j < row; j++)
+        for (int j = 0; j < m.row; j++)
         {
             mat[i][j] = m.mat[i][j];
         }
     }
 }
 
-Matrix::Matrix(int _row, int elem)
+Matrix::Matrix(int nrow, int elem)
 {
-    row = _row;
-    Create();
-    for (int i = 0; i < row; i++)
+    Create(nrow);
+    for (int i = 0; i < nrow; i++)
     {
-        for (int j = 0; j < row; j++)
+        for (int j = 0; j < nrow; j++)
         {
             mat[i][j] = elem;
         }
     }
+}
+
+Matrix::Matrix(string name)
+{
+    ifstream in(name);  //Файл находится в папке проекта
+    in >> row;
+    Create(row);
+    for (int i = 0; i < row; i++)
+        for (int j = 0; j < row; j++)
+            in >> mat[i][j];
 }
 
 //Деструктор
@@ -49,7 +58,7 @@ Matrix :: ~Matrix()
 }
 
 //Методы
-bool Matrix::Diagonal()
+bool Matrix::IsDiagonal()
 {
     for (int i = 0; i < row; i++)
     {
@@ -60,9 +69,11 @@ bool Matrix::Diagonal()
             sum += abs(mat[i][j]);
         }
         if (sum > abs(mat[i][i]))
-            return 0;
+        {
+            return false;
+        }
     }
-    return 1;
+    return true;
 }
 
 Matrix Matrix::Transpos()
@@ -110,13 +121,21 @@ Matrix Matrix::operator*(const Matrix& m)
     else
     {
         cout << "Матрицы имеют разрый ранг" << endl;
-        system("pause");
-        exit(0);
+        throw 1;
     }
 }
 
 Matrix& Matrix::operator=(const Matrix& m)
 {
+    if (row == m.row)
+    {
+        for (int i = 0; i < row; i++)
+            delete[] mat[i];
+        if (mat != NULL)
+            delete[] mat;
+        row = m.row;
+        Create(row);
+    }
     if (this == &m) return *this;
     for (int i = 0; i < row; i++)
     {
@@ -145,8 +164,7 @@ Matrix Matrix::operator+(const Matrix& m)
     else
     {
         cout << "Матрицы имеют разрый ранг" << endl;
-        system("pause");
-        exit(0);
+        throw 1;
     }
 }
 
@@ -154,14 +172,12 @@ int& Matrix::operator()(int i, int j)
 {
     if (i < row && j < row && i >= 0 && j >= 0)
     {
-        //cout << mat[i][j];
         return mat[i][j];
     }
     else
     {
         cout << "Такого элемента нет" << endl;
-        system("pause");
-        exit(0);
+        throw 1;
     }
 }
 

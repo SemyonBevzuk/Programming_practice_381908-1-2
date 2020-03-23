@@ -8,13 +8,14 @@ class Matrix
 private:
 	int** mat;
 	int row;
-	void Create();
+	void Create(int xx);
 public:
 	Matrix(const Matrix& m);
+	Matrix(string file);
 	Matrix(int _row = 1, int _elem = 0);
 	~Matrix();
 	//Ìועמהû
-	bool Diagonal();
+	bool IsDiagonal();
 	Matrix Transpos();
 	Matrix operator*(const int x);
 	Matrix operator+(const Matrix& m);

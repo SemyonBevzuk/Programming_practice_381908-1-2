@@ -6,7 +6,8 @@ int main()
 {
     setlocale(LC_ALL, "rus");
     int q, w, t;
-    Matrix m1(4, 7), m2(4, 6), m3(4), m4(4);
+    string file = "matrix.txt";
+    Matrix m1(file), m2(4, 6), m3(4), m4(4);  //m1 read from file
     m3 = m1; //Присваивание
     cout << m3 << endl;
     cout << "Результат умножения матриц: " << endl;
@@ -29,9 +30,8 @@ int main()
     cout << "Транспонированная матрица" << endl;
     cout << m5.Transpos() << endl; //Транспонирование
 
-    //cin >> m5;
     cout << "Диагональное преобладание: ";
-    cout << m5.Diagonal() << endl; //Диагональное преобладание
+    cout << m5.IsDiagonal() << endl; //Диагональное преобладание
   
     cout << "Введите индексы искомого элемента: "; 
     cin >> q >> w; //Ввод индексов элемента
