@@ -24,5 +24,5 @@ public:
 	void save();
 	void read();
 	Dictionary& operator=(const Dictionary& d);
-	Dictionary operator+(Dictionary& d);
+	const Dictionary operator+(const Dictionary& d);
 };

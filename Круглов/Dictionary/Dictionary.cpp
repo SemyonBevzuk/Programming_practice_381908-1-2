@@ -104,12 +104,12 @@ Dictionary& Dictionary::operator=(const Dictionary& d)
 	return *this;
 }
 
-Dictionary Dictionary:: operator+(Dictionary& d)
+const Dictionary Dictionary:: operator+(const Dictionary& d)
 {
 	string eng, rus;
-	Dictionary res = *this;
-	it = d.begin();
-	for (it; it != d.end(); it++)	
+	Dictionary res = d;
+	it = Dict.begin();
+	for (it; it != Dict.end(); it++)	
 	{
 		eng = it->first;
 		rus = it->second;
