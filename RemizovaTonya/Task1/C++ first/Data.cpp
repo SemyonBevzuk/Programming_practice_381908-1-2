@@ -25,20 +25,28 @@ Data::Data(const Data& _c)
 
 Data::Data(string _stroka)
 {
-	string FullDate = "";
-	FullDate += _stroka[0];
-	FullDate += _stroka[1];
-	day = atoi(FullDate.c_str());
-	FullDate = "";
-	FullDate += _stroka[3];
-	FullDate += _stroka[4];
-	month = atoi(FullDate.c_str());
-	FullDate = "";
-	FullDate += _stroka[6];
-	FullDate += _stroka[7];
-	FullDate += _stroka[8];
-	FullDate += _stroka[9];
-	year = atoi(FullDate.c_str());
+	int m[] = { 0,31,28,31,30,31,30,31,31,30,31,30,31 };
+	int m1[] = { 0,31,29,31,30,31,30,31,31,30,31,30,31 };
+	{
+		string FullDate = "";
+		FullDate += _stroka[0];
+		FullDate += _stroka[1];
+		day = atoi(FullDate.c_str());
+		FullDate = "";
+		FullDate += _stroka[3];
+		FullDate += _stroka[4];
+		month = atoi(FullDate.c_str());
+		FullDate = "";
+		FullDate += _stroka[6];
+		FullDate += _stroka[7];
+		FullDate += _stroka[8];
+		FullDate += _stroka[9];
+		year = atoi(FullDate.c_str());
+	}
+	if (((year % 100 % 4 == 0) && (year / 1000 > 0) && (0 < month <= 12) && (0 < day <= m1[month])) ||
+		((year % 100 % 4 != 0) && (year / 1000 > 0) && (0 < month <= 12) && (0 < day <= m[month])))
+		Print();
+	else cout << "INVALID date" << endl;
 }
 
 void Data::Print()
@@ -52,8 +60,7 @@ void Data::Print()
 	cout << year << endl;
 }
 
-
-Data Data::operator+(int n)
+Data const Data::operator+(int n)
 {
 	Data number;
 	
@@ -159,7 +166,7 @@ Data Data::operator+(int n)
 	}
 	return number;
 }
-Data Data::operator-(int n)
+Data const Data::operator-(int n)
 {
 	Data number;
 

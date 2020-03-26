@@ -10,10 +10,6 @@ class Data
 private:
 	int day, month, year;
 public:
-	class chislo
-	{
-		
-	};
 	Data();//по умолчанию
 	Data(int _day, int _month, int _year);//инициализатор
 	Data(const Data& _c);//копирование
@@ -21,8 +17,8 @@ public:
 	//~Data();//деструктор выполняет освобождение использованных объектом ресурсов и удаление нестатических переменных объекта
 
 	void Print();
-	Data operator+(int n);
-	Data operator-(int n);
+	const Data operator+(int n);
+	const Data operator-(int n);
 	friend bool operator==(const Data& c1, const Data& c2);
 	friend bool operator!=(const Data& c1, const Data& c2);
 	friend bool operator>(const Data& c1, const Data& c2);

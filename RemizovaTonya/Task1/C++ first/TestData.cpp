@@ -7,19 +7,22 @@
 int main()
 {
 	int numeric; // ѕеременна€ дл€ прибавлени€ или вычитани€ дней из даты
-	string line = "12.11.2002";
+	int m[] = { 0,31,28,31,30,31,30,31,31,30,31,30,31 };
+	int m1[] = { 0,31,29,31,30,31,30,31,31,30,31,30,31 };
 	Data date1;
-	Data date2(2, 3, 1999);
-	Data date3(date2);
-	Data date4(line);
 	cout << "First date is a leap year ";
 	date1.Print();
+	Data date2(2, 3, 1999);
 	cout << "Second date___Initialization ";
 	date2.Print();
+	Data date3(date2);
 	cout << "Third date___Copy ";
 	date3.Print();
-	cout << "Fourth date___String ";
-	date4.Print();
+	string line;
+	cout << "Enter the date in a string in the format: dd/mm/yyyy" << endl;
+	cin >> line;
+	Data date4(line);
+	cout << "Fourth date___String-->int ";
 	if (date1 == date2)
 		cout << "dates are equal" << endl;
 	if (date1 != date2)
