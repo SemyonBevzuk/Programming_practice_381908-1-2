@@ -20,10 +20,10 @@ public:
     bool setDay(int day);
     bool setMonth(int month);
     bool setYear(int year);
-    string getDate();
-    inline int getDay(){ return this->day;}
-    inline int getMonth(){ return this->month;}
-    inline int getYear(){ return this->year;}
+    string getDate() const;
+    inline int getDay() const { return this->day;}
+    inline int getMonth() const { return this->month;}
+    inline int getYear() const { return this->year;}
 };
 
 

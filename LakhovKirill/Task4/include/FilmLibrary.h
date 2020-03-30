@@ -5,17 +5,19 @@
 
 #include "SQLiteCpp/SQLiteCpp.h"
 #include "Film.h"
+#include "Connector.h"
+#include "View.h"
 
 using namespace std;
 using namespace SQLite;
 
 class FilmLibrary {
 private:
-    string database;
+    string database="films.db3";
+    Connector connector;
+    View view;
 public:
-    explicit FilmLibrary(const string &database);
-
-    bool init();
+    FilmLibrary(const string& database="films.db3", const string& title="film-library-1");
 
     void start();
 
@@ -24,19 +26,11 @@ private:
 
     void createNewFilmCommand();
 
-    void createNewFilm(Film film);
-
     void findFilmCommand();
-
-    void printFilmCommand(Film film);
 
     bool printFilmsByQuery(Statement &query, const string &error, int amount = 0);
 
-    void changeFilmCommand(Film to_change);
-
-    void changeFilm(Film to_change, Film new_film);
-
-    void deleteFilmCommand(Film film);
+    void changeFilmCommand(const Film &to_change);
 
     void allProducerFilmsCommand();
 

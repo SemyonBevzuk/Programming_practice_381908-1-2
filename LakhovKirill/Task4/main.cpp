@@ -1,7 +1,7 @@
-#include "include/FIlmLibrary.h"
+#include "include/FilmLibrary.h"
 
 int main() {
-    FilmLibrary library = FilmLibrary("film_library.db3");
+    FilmLibrary library = FilmLibrary("film_library.db3","film-lib");
     library.start();
     return 0;
 }

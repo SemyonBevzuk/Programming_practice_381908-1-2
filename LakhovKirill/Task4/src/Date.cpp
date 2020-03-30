@@ -36,6 +36,6 @@ bool Date::setYear(int year) {
     return false;
 }
 
-string Date::getDate() {
+string Date::getDate() const {
     return this->sDay+"."+this->sMonth+"."+this->sYear;
 }
