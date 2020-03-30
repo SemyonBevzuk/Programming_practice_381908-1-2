@@ -1,0 +1,6 @@
+cat кот
+dog пес
+elephant слон
+girl девушка
+test тест
+wolf волк
