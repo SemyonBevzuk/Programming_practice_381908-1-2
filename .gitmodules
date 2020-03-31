@@ -1,0 +1,3 @@
+[submodule "LakhovKirill/Task4/SQLiteCpp"]
+	path = LakhovKirill/Task4/SQLiteCpp
+	url = https://github.com/SRombauts/SQLiteCpp.git
