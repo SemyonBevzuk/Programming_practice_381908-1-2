@@ -22,13 +22,11 @@ public:
     void start();
 
 private:
-    Database connect();
 
     void createNewFilmCommand();
 
     void findFilmCommand();
 
-    bool printFilmsByQuery(Statement &query, const string &error, int amount = 0);
 
     void changeFilmCommand(const Film &to_change);
 
@@ -40,19 +38,6 @@ private:
 
     void allFilmsCountCommand();
 
-    int allFilmsCount(int year = 0);
-
-    pair<bool, Film> getFilm(const string &name, int year);
-
-
-private:
-    static bool parser(const string &str);
-
-    static string inputName(const string &who, const string &error, bool strict = true);
-
-    static int inputNumber(const string &whatNumber);
-
-    static Film inputFilm();
 };
 
 
