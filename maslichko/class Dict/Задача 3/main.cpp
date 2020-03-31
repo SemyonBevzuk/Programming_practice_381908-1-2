@@ -9,8 +9,8 @@ int main()
 	SetConsoleOutputCP(1251); //В поток вывода
 
 	int menu;
-	string test1, test2, test3;
-	Dictionary d1, d2;
+	string test1, test2, test3, test4;
+	Dictionary d1, d2, d3;
 
 	while (1)
 	{
@@ -35,31 +35,31 @@ int main()
 			d1.insert(test1, test2);
 			break;
 		case 2:
-			cout << "Слово, у которого нужно изменить перевод: ";
-			cin >> test3;
-			d1.change(test3);
+			cout << "Слово, у которого нужно изменить перевод и новый перевод: ";
+			cin >> test3 >> test4;
+			d1.change(test3, test4);
 			break;
 		case 3:
 			cout << "Введите слово, у которого нужно узнать перевод: ";
 			cin >> test3;
-			d1.print_translation(test3);
+			cout << d1.print_translation(test3);
 			break;
 		case 4:
 			cout << "Введите слово, которое нужно найти: ";
 			cin >> test3;
-			d1.existence(test3);
+			cout << d1.IsExist(test3);
 			break;
 		case 5:
-			cout << "Количество слов в словаре: " << d1.count() << endl;
+			cout << "Количество слов в словаре: " << d1.GetSize() << endl;
 			break;
 		case 6:
 			d1.file_write();
 			break;
 		case 7:
-			d1.file_read();
+			d2.file_read();
 			break;
 		case 8:
-			d1.file_read("dict11.txt", "dict21.txt");
+			d3 = d1 + d2;
 			break;
 		case 9:
 			d2 = d1;
