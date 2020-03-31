@@ -138,7 +138,7 @@ vector <Film> Connector::maxBoxOffice(int amount, int year){
     Database db = this->connect();
     Statement query = Statement(db, lineQuery);
 
-    return this->getByQuery(query);
+    return this->getByQuery(query, amount);
 }
 
 vector<Film> Connector::getByQuery(Statement &query, int amount) {

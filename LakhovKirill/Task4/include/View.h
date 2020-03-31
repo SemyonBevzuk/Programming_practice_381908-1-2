@@ -41,7 +41,9 @@ public:
 
     void count(int number);
 
-    void noFilms();
+    void noFilms(bool fewer = false);
+
+    void exit();
 
     static string inputName(const string &who, const string &error, bool strict = true);
 

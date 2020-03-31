@@ -53,12 +53,12 @@ void FilmLibrary::start() {
                 break;
             }
             case 8:{
-                std::cout<<"Exiting"<<std::endl;
+                this->view.exit();
                 isWorking = false;
                 break;
             }
             default: {
-                std::cout << "No such command" << std::endl;
+                throw out_of_range("no such command");
             }
         }
     }
@@ -141,7 +141,7 @@ void FilmLibrary::maxBoxOfficeCommand(bool isYear) {
     bool tooMuch = filmAmount > allFilms;
     filmAmount = tooMuch ? allFilms : filmAmount;
     int year = 0;
-    if(isYear) year = FilmLibrary::inputNumber("Year:");
+    if(isYear) year = View::inputNumber("Year:");
     vector<Film> films = this->connector.maxBoxOffice(filmAmount, year);
     if(films.empty()){
         this->view.noFilms();
@@ -150,7 +150,7 @@ void FilmLibrary::maxBoxOfficeCommand(bool isYear) {
             this->view.shortPrint(film);
         }
     }
-    if (tooMuch && !films.empty()) std::cout << "There are fewer films in library than you requested" << std::endl;
+    if (tooMuch && !films.empty()) this->view.noFilms(true);
 }
 
 void FilmLibrary::allFilmsCountCommand() {

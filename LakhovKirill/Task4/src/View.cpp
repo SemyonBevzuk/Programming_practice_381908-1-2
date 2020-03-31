@@ -83,12 +83,20 @@ void View::empty(const string &reason) {
     std::cout << "There are no films of/in that " << reason << std::endl;
 }
 
-void View::noFilms() {
-    std::cout<<"There are no films in library"<<std::endl;
+void View::noFilms(bool fewer) {
+    if(fewer){
+        std::cout<<"There are fewer films in library than you requested"<<std::endl;
+    }else{
+        std::cout<<"There are no films in library "<<std::endl;
+    }
 }
 
 void View::count(int number){
     std::cout<<"There are "<<number<<" films"<<std::endl;
+}
+
+void View::exit(){
+    std::cout<<"Exiting from library"<<std::endl;
 }
 
 Film View::inputFilm() {
