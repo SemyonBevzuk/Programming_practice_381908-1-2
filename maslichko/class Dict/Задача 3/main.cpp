@@ -42,7 +42,7 @@ int main()
 		case 3:
 			cout << "¬ведите слово, у которого нужно узнать перевод: ";
 			cin >> test3;
-			cout << d1.print_translation(test3);
+			cout << d1.translate(test3);
 			break;
 		case 4:
 			cout << "¬ведите слово, которое нужно найти: ";

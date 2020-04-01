@@ -4,7 +4,7 @@ Dictionary::Dictionary()
 {
 }
 
-string Dictionary::print_translation(string name) //Вывод
+string Dictionary::translate(string name) //Вывод
 {
 	it = dict.find(name);
 

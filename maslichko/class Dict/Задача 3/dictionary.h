@@ -16,7 +16,7 @@ public:
 
 	void insert(string eng, string rus); //Добавление слов в словарь
 	void change(string end, string rus); //Изменение перевода
-	string print_translation(string name); //Вывод
+	string translate(string name); //Вывод
 	bool IsExist(string name); //Наличие слова в словаре
 	int GetSize(); //Размер словаря
 	void file_write(); //Запись в файл
