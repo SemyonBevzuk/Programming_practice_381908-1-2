@@ -24,6 +24,18 @@ void PrintMenu()
 	cout << "10 - выйти из программы" << endl;
 	cout << "В любом другом случае будет выведено меню" << endl;
 }
+void PrintMenuEditor()
+{
+	cout << "Выберите параметр для изменения:" << endl;
+	cout << "1 - название" << endl;
+	cout << "2 - имя режиссера" << endl;
+	cout << "3 - имя сценариста" << endl;
+	cout << "4 - имя композитора" << endl;
+	cout << "5 - дата выхода в прокат" << endl;
+	cout << "6 - сборы в рублях" << endl;
+	cout << "0 - прекратить изменение" << endl;
+	cout << "В любом другом случае будет выведено меню" << endl;
+}
 
 int main()
 {
@@ -36,6 +48,7 @@ int main()
 	fin >> fb1;
 	FilmLibrary fb2(fb1);
 	Film t;
+	vector<Film>v_f;
 	string n;
 	string f;
 	string p;
@@ -45,6 +58,7 @@ int main()
 	cout << "Если хотите ознакомиться с её содержимым, у вас есть файл input.txt" << endl;
 	int v = -1;
 	bool e = false;
+	bool vis;
 	while (true)
 	{
 		switch (v)
@@ -76,8 +90,89 @@ int main()
 			getline(cin, n);
 			cout << "Введите год выхода в прокат" << endl;
 			cin >> y;
-			if (fb1.FixFilm(n, y))
+			if (fb1.IfFixFilm(n, y))
+			{
+				int choice = -1;
+				string new_n, new_p, new_s, new_c;
+				int new_d, new_m, new_y, new_i;
+				while (true)
+				{
+					switch (choice)
+					{
+					case 0:
+						e = true;
+						break;
+					case 1:
+						cout << "Введите новое название фильма:" << endl;
+						cin.ignore();
+						getline(cin, new_n);
+						fb1.FixName(n, y, new_n);
+						cout << "Готово" << endl;
+						break;
+					case 2:
+						cout << "Введите новое имя режиссера:" << endl;
+						cin.ignore();
+						getline(cin, p);
+						fb1.FixProducer(n, y, new_p);
+						cout << "Готово" << endl;
+						break;
+					case 3:
+						cout << "Введите новое имя сценариста:" << endl;
+						cin.ignore();
+						getline(cin, new_s);
+						fb1.FixScenarist(n, y, new_s);
+						cout << "Готово" << endl;
+						break;
+					case 4:
+						cout << "Введите новое имя композитора:" << endl;
+						cin.ignore();
+						getline(cin, new_c);
+						fb1.FixComposer(n, y, new_c);
+						cout << "Готово" << endl;
+						break;
+					case 5:
+						cout << "Введите новую дату выхода в прокат:" << endl;
+						do
+						{
+							cout << "Введите год выхода в прокат:" << endl;
+							cin >> new_y;
+						} while (new_y < 1895);
+						fb1.FixYear(n, y, new_y);
+						vis = false;
+						if (new_y / 400 > 0 && new_y % 400 == 0 || new_y % 100 != 0 && new_y % 4 == 0)
+							vis = true;
+						do
+						{
+							cout << "Введите месяц выхода в прокат:" << endl;
+							cin >> new_m;
+						} while (new_m > 12 || new_m < 1);
+						fb1.FixMonth(n, y, new_m);
+						do
+						{
+							cout << "Введите день выхода в прокат:" << endl;
+							cin >> new_d;
+						} while (new_d < 1 || new_d>31 || new_d > 29 && new_m == 2 || new_d == 29 && new_m == 2 && !vis);
+						fb1.FixDay(n, y, new_d);
+						cout << "Готово" << endl;
+						break;
+					case 6:
+						cout << "Введите сборы в рублях:" << endl;
+						cin >> new_i;
+						fb1.FixIncome(n, y, new_i);
+						cout << "Готово" << endl;
+						break;
+					default:
+						PrintMenuEditor();
+					}
+					if (e)
+					{
+						e = false;
+						break;
+					}
+					cin >> choice;
+				}
 				cout << "Готово" << endl;
+			}
 			else
 				cout << "Данного фильма нет в библиотеке" << endl;
 			break;
@@ -87,8 +182,12 @@ int main()
 			getline(cin, n);
 			cout << "Введите год выхода в прокат" << endl;
 			cin >> y;
-			if (fb1.FindFilm(n, y))
+			t = fb1.FindFilm(n, y);
+			if (t.name != "")
+			{
+				t.PrintFilm();
 				cout << "Готово" << endl;
+			}
 			else
 				cout << "Данного фильма с данным годом выхода в прокат нет в библиотеке" << endl;
 			break;
@@ -96,8 +195,15 @@ int main()
 			cin.ignore();
 			cout << "Введите имя режиссера" << endl;
 			getline(cin, p);
-			if (fb1.PrintFilmsBy(p))
+			v_f = fb1.PrintFilmsBy(p);
+			if (v_f.size() != 0)
+			{
+				for (int i = 0; i < v_f.size(); i++)
+				{
+					v_f[i].PrintFilm();
+				}
 				cout << "Готово" << endl;
+			}
 			else
 				cout << "Фильмов данного режиссера нет в библиотеке" << endl;
 			break;

@@ -2,6 +2,7 @@
 
 #include "Date.h"
 #include <string>
+#include <locale>
 
 using namespace std;
 
@@ -37,6 +38,22 @@ public:
 		date.GetDate();
 		cout << "¬ведите сборы в рубл€х:" << endl;
 		cin >> income;
+	}
+	Film& operator=(const Film& f)
+	{
+		setlocale(LC_ALL, "Russian");
+		if (this != &f)
+		{
+			name = f.name;
+			producer = f.producer;
+			scenarist = f.scenarist;
+			composer = f.composer;
+			date.day = f.date.day;
+			date.month = f.date.month;
+			date.year = f.date.year;
+			income = f.income;
+		}
+		return *this;
 	}
 	~Film() {}
 };

@@ -6,18 +6,6 @@
 using namespace std;
 
 
-void FilmLibrary::PrintMenuEditor()
-{
-	cout << "Выберите параметр для изменения:" << endl;
-	cout << "1 - название" << endl;
-	cout << "2 - имя режиссера" << endl;
-	cout << "3 - имя сценариста" << endl;
-	cout << "4 - имя композитора" << endl;
-	cout << "5 - дата выхода в прокат" << endl;
-	cout << "6 - сборы в рублях" << endl;
-	cout << "0 - прекратить изменение" << endl;
-	cout << "В любом другом случае будет выведено меню" << endl;
-}
 bool sort_year_name(const Film& a, const Film& b)
 {
 	if (a.date.year < b.date.year)
@@ -61,95 +49,136 @@ void FilmLibrary::AddFilm(Film t)
 	lib.push_back(t);
 	sort(lib.begin(), lib.end(), sort_year_name);
 }
-bool FilmLibrary::FixFilm(string n, int y)
+bool FilmLibrary::IfFixFilm(string n, int y)
 {
 	for (int i = 0; i < lib.size(); i++)
 	{
 		if (lib[i].name == n && lib[i].date.year == y)
 		{
-			bool e = false;
-			int choice = -1;
-			while (true)
-			{
-				switch (choice)
-				{
-				case 0:
-					e = true;
-					break;
-				case 1:
-					cout << "Введите новое название фильма:" << endl;
-					cin.ignore();
-					getline(cin, lib[i].name);
-					cout << "Готово" << endl;
-					break;
-				case 2:
-					cout << "Введите новое имя режиссера:" << endl;
-					cin.ignore();
-					getline(cin, lib[i].producer);
-					cout << "Готово" << endl;
-					break;
-				case 3:
-					cout << "Введите новое имя сценариста:" << endl;
-					cin.ignore();
-					getline(cin, lib[i].scenarist);
-					cout << "Готово" << endl;
-					break;
-				case 4:
-					cout << "Введите новое имя композитора:" << endl;
-					cin.ignore();
-					getline(cin, lib[i].composer);
-					cout << "Готово" << endl;
-					break;
-				case 5:
-					cout << "Введите новую дату выхода в прокат:" << endl;
-					lib[i].date.GetDate();
-					cout << "Готово" << endl;
-					break;
-				case 6:
-					cout << "Введите сборы в рублях:" << endl;
-					cin >> lib[i].income;
-					cout << "Готово" << endl;
-					break;
-				default:
-					PrintMenuEditor();
-				}
-				if (e)
-					break;
-				cin >> choice;
-			}
 			return true;
 		}
 	}
 	return false;
 }
-bool FilmLibrary::FindFilm(string n, int y)
+bool FilmLibrary::FixName(string n, int y, string new_n)
 {
 	for (int i = 0; i < lib.size(); i++)
 	{
 		if (lib[i].name == n && lib[i].date.year == y)
 		{
-			lib[i].PrintFilm();
+			lib[i].name = new_n;
 			return true;
 		}
 	}
 	return false;
 }
-bool FilmLibrary::PrintFilmsBy(string p)
+bool FilmLibrary::FixProducer(string n, int y, string new_p)
 {
-	int f = 1;
+	for (int i = 0; i < lib.size(); i++)
+	{
+		if (lib[i].name == n && lib[i].date.year == y)
+		{
+			lib[i].producer = new_p;
+			return true;
+		}
+	}
+	return false;
+}
+bool FilmLibrary::FixScenarist(string n, int y, string new_s)
+{
+	for (int i = 0; i < lib.size(); i++)
+	{
+		if (lib[i].name == n && lib[i].date.year == y)
+		{
+			lib[i].scenarist = new_s;
+			return true;
+		}
+	}
+	return false;
+}
+bool FilmLibrary::FixComposer(string n, int y, string new_c)
+{
+	for (int i = 0; i < lib.size(); i++)
+	{
+		if (lib[i].name == n && lib[i].date.year == y)
+		{
+			lib[i].composer = new_c;
+			return true;
+		}
+	}
+	return false;
+}
+bool FilmLibrary::FixYear(string n, int y, int new_y)
+{
+	for (int i = 0; i < lib.size(); i++)
+	{
+		if (lib[i].name == n && lib[i].date.year == y)
+		{
+			lib[i].date.year = new_y;
+			return true;
+		}
+	}
+	return false;
+}
+bool FilmLibrary::FixMonth(string n, int y, int new_m)
+{
+	for (int i = 0; i < lib.size(); i++)
+	{
+		if (lib[i].name == n && lib[i].date.year == y)
+		{
+			lib[i].date.month = new_m;
+			return true;
+		}
+	}
+	return false;
+}
+bool FilmLibrary::FixDay(string n, int y, int new_d)
+{
+	for (int i = 0; i < lib.size(); i++)
+	{
+		if (lib[i].name == n && lib[i].date.year == y)
+		{
+			lib[i].date.day = new_d;
+			return true;
+		}
+	}
+	return false;
+}
+bool FilmLibrary::FixIncome(string n, int y, int new_i)
+{
+	for (int i = 0; i < lib.size(); i++)
+	{
+		if (lib[i].name == n && lib[i].date.year == y)
+		{
+			lib[i].income = new_i;
+			return true;
+		}
+	}
+	return false;
+}
+const Film FilmLibrary::FindFilm(string n, int y)
+{
+	Film t;
+	for (int i = 0; i < lib.size(); i++)
+	{
+		if (lib[i].name == n && lib[i].date.year == y)
+		{
+			t = lib[i];
+		}
+	}
+	return t;
+}
+const vector<Film> FilmLibrary::PrintFilmsBy(string p)
+{
+	vector<Film>vf;
 	for (int i = 0; i < lib.size(); i++)
 	{
 		if (lib[i].producer == p)
 		{
-			f = 0;
-			cout << lib[i].name << ' ';
-			lib[i].date.PrintDate();
+			vf.push_back(lib[i]);
 		}
 	}
-	if (f)
-		return false;
-	else
-		return true;
+	return vf;
 }
 bool FilmLibrary::PrintFilmsIn(int y)
 {
