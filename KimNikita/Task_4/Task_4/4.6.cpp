@@ -31,11 +31,16 @@ int main()
 	SetConsoleOutputCP(1251);
 	setlocale(LC_ALL, "Russian");
 	ofstream fout;
-	fout.open("output.txt", ios::out);
 	ifstream fin("input.txt");
 	FilmLibrary fb1;
 	fin >> fb1;
 	FilmLibrary fb2(fb1);
+	Film t;
+	string n;
+	string f;
+	string p;
+	int y;
+	int c;
 	cout << "Добро пожаловать в редактор библиотеки фильмов" << endl;
 	cout << "Если хотите ознакомиться с её содержимым, у вас есть файл input.txt" << endl;
 	int v = -1;
@@ -45,34 +50,93 @@ int main()
 		switch (v)
 		{
 		case 0:
-			fb1.SaveFilm();
+			cin.ignore();
+			cout << "Введите название файла для сохранения" << endl;
+			getline(cin, f);
+			fout.open(f + ".txt", ios::out);
+			cout << "Введите название фильма, который хотите сохранить" << endl;
+			getline(cin, n);
+			cout << "Введите год выхода в прокат" << endl;
+			cin >> y;
+			if (fb1.SaveFilm(fout, n, y))
+				cout << "Готово" << endl;
+			else
+				cout << "Данного фильма с данным годом выхода в прокат нет в библиотеке" << endl;
+			fout.close();
 			break;
 		case 1:
-			fb1.AddFilm();
+			cin.ignore();
+			t.GetFilm();
+			fb1.AddFilm(t);
+			cout << "Готово";
 			break;
 		case 2:
-			fb1.FixFilm();
+			cin.ignore();
+			cout << "Введите название фильма, данные которого хотите изменить" << endl;
+			getline(cin, n);
+			cout << "Введите год выхода в прокат" << endl;
+			cin >> y;
+			if (fb1.FixFilm(n, y))
+				cout << "Готово" << endl;
+			else
+				cout << "Данного фильма нет в библиотеке" << endl;
 			break;
 		case 3:
-			fb1.FindFilm();
+			cin.ignore();
+			cout << "Введите название фильма" << endl;
+			getline(cin, n);
+			cout << "Введите год выхода в прокат" << endl;
+			cin >> y;
+			if (fb1.FindFilm(n, y))
+				cout << "Готово" << endl;
+			else
+				cout << "Данного фильма с данным годом выхода в прокат нет в библиотеке" << endl;
 			break;
 		case 4:
-			fb1.PrintFilmsBy();
+			cin.ignore();
+			cout << "Введите имя режиссера" << endl;
+			getline(cin, p);
+			if (fb1.PrintFilmsBy(p))
+				cout << "Готово" << endl;
+			else
+				cout << "Фильмов данного режиссера нет в библиотеке" << endl;
 			break;
 		case 5:
-			fb1.PrintFilmsIn();
+			cout << "Введите год выхода в прокат" << endl;
+			cin >> y;
+			if (fb1.PrintFilmsIn(y))
+				cout << "Готово" << endl;
+			else
+				cout << "Фильмов, вышедших в прокат в данном году, нет в библиотеке" << endl;
 			break;
 		case 6:
-			fb1.PrintColFilmsMaxIncome();
+			cout << "Введите количество фильмов, которые нужно вывести" << endl;
+			cin >> c;
+			fb1.PrintColFilmsMaxIncome(c);
+			cout << "Готово" << endl;
 			break;
 		case 7:
-			fb1.PrintColFilmsMaxIncomeIn();
+			cout << "Введите количество фильмов, которые нужно вывести" << endl;
+			cin >> c;
+			cout << "Введите год выхода в прокат" << endl;
+			cin >> y;
+			if (fb1.PrintColFilmsMaxIncomeIn(c, y))
+				cout << "Готово" << endl;
+			else
+				cout << "Фильмов, вышедших в прокат в данном году, нет в библиотеке" << endl;
 			break;
 		case 8:
-			fb1.PrintColFilms();
+			cout << "Всего фильмов: " << fb1.ColFilms() << endl;
+			cout << "Готово" << endl;
 			break;
 		case 9:
-			fb1.DelFilm();
+			cin.ignore();
+			cout << "Введите название фильма, который нужно удалить" << endl;
+			getline(cin, n);
+			if (fb1.DelFilm(n))
+				cout << "Готово" << endl;
+			else
+				cout << "Данного фильма нет в библиотеке" << endl;
 			break;
 		case 10:
 			e = true;
@@ -83,12 +147,14 @@ int main()
 		if (e)
 			break;
 		cin >> v;
-		cin.ignore();
 	}
+	ofstream fout2;
+	fout2.open("output.txt", ios::out);
 	cout << "Результат вашей деятельности в файле output";
-	fout << "Было" << endl;
-	fout << fb2;
-	fout << "Стало" << endl;
-	fout << fb1;
+	fout2 << "Было" << endl;
+	fout2 << fb2;
+	fout2 << "Стало" << endl;
+	fout2 << fb1;
+	fout2.close();
 	return 0;
 }

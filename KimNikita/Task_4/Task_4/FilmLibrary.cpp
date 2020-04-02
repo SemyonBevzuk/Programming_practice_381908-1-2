@@ -18,7 +18,7 @@ void FilmLibrary::PrintMenuEditor()
 	cout << "0 - прекратить изменение" << endl;
 	cout << "В любом другом случае будет выведено меню" << endl;
 }
-bool comp1(const Film& a, const Film& b)
+bool sort_year_name(const Film& a, const Film& b)
 {
 	if (a.date.year < b.date.year)
 		return true;
@@ -28,7 +28,7 @@ bool comp1(const Film& a, const Film& b)
 		else
 			return false;
 }
-bool comp2(const Film& a, const Film& b)
+bool sort_income(const Film& a, const Film& b)
 {
 	return a.income > b.income;
 }
@@ -39,20 +39,8 @@ FilmLibrary::FilmLibrary(const FilmLibrary& fl)
 		lib.push_back(fl.lib[i]);
 	}
 }
-void FilmLibrary::SaveFilm()
+bool FilmLibrary::SaveFilm(ofstream& fout, string n, int y)
 {
-	setlocale(LC_ALL, "Russian");
-	string f;
-	cout << "Введите название файла для сохранения" << endl;
-	getline(cin, f);
-	ofstream fout;
-	fout.open(f + ".txt", ios::out);
-	string n;
-	int y;
-	cout << "Введите название фильма, который хотите сохранить" << endl;
-	getline(cin, n);
-	cout << "Введите год выхода в прокат" << endl;
-	cin >> y;
 	for (int i = 0; i < lib.size(); i++)
 	{
 		if (lib[i].name == n && lib[i].date.year == y)
@@ -63,31 +51,18 @@ void FilmLibrary::SaveFilm()
 			fout << lib[i].composer << endl;
 			fout << lib[i].date.day << ' ' << lib[i].date.month << ' ' << lib[i].date.year << endl;
 			fout << lib[i].income << endl;
-			cout << "Готово" << endl;
-			fout.close();
-			return;
+			return true;
 		}
 	}
-	fout.close();
-	cout << "Данного фильма с данным годом выхода в прокат нет в библиотеке" << endl;
+	return false;
 }
-void FilmLibrary::AddFilm()
+void FilmLibrary::AddFilm(Film t)
 {
-	Film t;
-	t.GetFilm();
 	lib.push_back(t);
-	sort(lib.begin(), lib.end(), comp1);
-	cout << "Готово" << endl;
+	sort(lib.begin(), lib.end(), sort_year_name);
 }
-void FilmLibrary::FixFilm()
+bool FilmLibrary::FixFilm(string n, int y)
 {
-	setlocale(LC_ALL, "Russian");
-	string n;
-	int y;
-	cout << "Введите название фильма, данные которого хотите изменить" << endl;
-	getline(cin, n);
-	cout << "Введите год выхода в прокат" << endl;
-	cin >> y;
 	for (int i = 0; i < lib.size(); i++)
 	{
 		if (lib[i].name == n && lib[i].date.year == y)
@@ -142,38 +117,25 @@ void FilmLibrary::FixFilm()
 					break;
 				cin >> choice;
 			}
-			cout << "Готово" << endl;
-			return;
+			return true;
 		}
 	}
-	cout << "Данного фильма нет в библиотеке" << endl;
+	return false;
 }
-void FilmLibrary::FindFilm()
+bool FilmLibrary::FindFilm(string n, int y)
 {
-	setlocale(LC_ALL, "Russian");
-	string n;
-	int y;
-	cout << "Введите название фильма" << endl;
-	getline(cin, n);
-	cout << "Введите год выхода в прокат" << endl;
-	cin >> y;
 	for (int i = 0; i < lib.size(); i++)
 	{
 		if (lib[i].name == n && lib[i].date.year == y)
 		{
 			lib[i].PrintFilm();
-			cout << "Готово" << endl;
-			return;
+			return true;
 		}
 	}
-	cout << "Данного фильма с данным годом выхода в прокат нет в библиотеке" << endl;
+	return false;
 }
-void FilmLibrary::PrintFilmsBy()
+bool FilmLibrary::PrintFilmsBy(string p)
 {
-	setlocale(LC_ALL, "Russian");
-	string p;
-	cout << "Введите имя режиссера" << endl;
-	getline(cin, p);
 	int f = 1;
 	for (int i = 0; i < lib.size(); i++)
 	{
@@ -185,17 +147,12 @@ void FilmLibrary::PrintFilmsBy()
 		}
 	}
 	if (f)
-	{
-		cout << "Фильмов данного режиссера нет в библиотеке" << endl;
-	}
+		return false;
 	else
-		cout << "Готово" << endl;
+		return true;
 }
-void FilmLibrary::PrintFilmsIn()
+bool FilmLibrary::PrintFilmsIn(int y)
 {
-	int y;
-	cout << "Введите год выхода в прокат" << endl;
-	cin >> y;
 	int f = 1;
 	for (int i = 0; i < lib.size(); i++)
 	{
@@ -206,74 +163,59 @@ void FilmLibrary::PrintFilmsIn()
 		}
 	}
 	if (f)
-	{
-		cout << "Фильмов, вышедших в прокат в данном году, нет в библиотеке" << endl;
-	}
+		return false;
 	else
-		cout << "Готово" << endl;
+		return true;
 }
-void FilmLibrary::PrintColFilmsMaxIncome()
+void FilmLibrary::PrintColFilmsMaxIncome(int c)
 {
-	int n;
-	cout << "Введите количество фильмов, которые нужно вывести" << endl;
-	cin >> n;
 	vector<Film>t;
 	for (int i = 0; i < lib.size(); i++)
 	{
 		t.push_back(lib[i]);
 	}
-	sort(t.begin(), t.end(), comp2);
+	sort(t.begin(), t.end(), sort_income);
 	int s = t.size();
-	s = min(n, s);
+	s = min(c, s);
 	for (int i = 0; i < s; i++)
 	{
 		cout << t[i].name << endl;
 	}
-	cout << "Готово" << endl;
 }
-void FilmLibrary::PrintColFilmsMaxIncomeIn()
+bool FilmLibrary::PrintColFilmsMaxIncomeIn(int c, int y)
 {
-	int n, y;
-	cout << "Введите количество фильмов, которые нужно вывести" << endl;
-	cin >> n;
-	cout << "Введите год выхода в прокат" << endl;
-	cin >> y;
 	vector<Film>t;
 	for (int i = 0; i < lib.size(); i++)
 	{
 		if (lib[i].date.year == y)
 			t.push_back(lib[i]);
 	}
-	sort(t.begin(), t.end(), comp2);
+	sort(t.begin(), t.end(), sort_income);
 	int s = t.size();
-	s = min(n, s);
+	if (s == 0)
+		return false;
+	s = min(c, s);
 	for (int i = 0; i < s; i++)
 	{
 		cout << t[i].name << endl;
 	}
-	cout << "Готово" << endl;
+	return true;
 }
-void FilmLibrary::PrintColFilms()
+int FilmLibrary::ColFilms()
 {
-	cout << "Всего фильмов: " << lib.size() << endl;
-	cout << "Готово" << endl;
+	return lib.size();
 }
-void FilmLibrary::DelFilm()
+bool FilmLibrary::DelFilm(string n)
 {
-	setlocale(LC_ALL, "Russian");
-	string n;
-	cout << "Введите название фильма, который нужно удалить" << endl;
-	getline(cin, n);
 	for (int i = 0; i < lib.size(); i++)
 	{
 		if (lib[i].name == n)
 		{
 			lib.erase(lib.begin() + i);
-			cout << "Готово" << endl;
-			return;
+			return true;
 		}
 	}
-	cout << "Данного фильма нет в библиотеке" << endl;
+	return false;
 }
 ifstream& operator>>(ifstream& in, FilmLibrary& fl)
 {
@@ -293,7 +235,7 @@ ifstream& operator>>(ifstream& in, FilmLibrary& fl)
 		in.ignore();
 		in.ignore();
 	}
-	sort(fl.lib.begin(), fl.lib.end(), comp1);
+	sort(fl.lib.begin(), fl.lib.end(), sort_year_name);
 	return in;
 }
 ofstream& operator<<(ofstream& out, const FilmLibrary& fl)
