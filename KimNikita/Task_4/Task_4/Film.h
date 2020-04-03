@@ -25,20 +25,6 @@ public:
 		date.PrintDate();
 		cout << "—боры в рубл€х: " << income << endl;
 	}
-	void GetFilm()
-	{
-		cout << "¬ведите название фильма:" << endl;
-		getline(cin, name);
-		cout << "¬ведите им€ режиссера:" << endl;
-		getline(cin, producer);
-		cout << "¬ведите им€ сценариста:" << endl;
-		getline(cin, scenarist);
-		cout << "¬ведите им€ композитора:" << endl;
-		getline(cin, composer);
-		date.GetDate();
-		cout << "¬ведите сборы в рубл€х:" << endl;
-		cin >> income;
-	}
 	Film& operator=(const Film& f)
 	{
 		setlocale(LC_ALL, "Russian");

@@ -14,7 +14,7 @@ public:
 	FilmLibrary(const FilmLibrary&);
 	bool SaveFilm(ofstream&, string, int);
 	void AddFilm(Film);
-	bool IfFixFilm(string, int);
+	bool IsExist(string, int);
 	bool FixName(string, int, string);
 	bool FixProducer(string, int, string);
 	bool FixScenarist(string, int, string);
@@ -23,12 +23,12 @@ public:
 	bool FixMonth(string, int, int);
 	bool FixDay(string, int, int);
 	bool FixIncome(string, int, int);
-	const Film FindFilm(string, int);
-	const vector<Film> PrintFilmsBy(string);
-	bool PrintFilmsIn(int);
-	void PrintColFilmsMaxIncome(int);
-	bool PrintColFilmsMaxIncomeIn(int, int);
-	int ColFilms();
+	Film FindFilm(string, int);
+	vector<Film> GetFilmsBy(string);
+	vector<Film> GetFilmsIn(int);
+	vector<Film> GetFilmsMaxIncome(int);
+	vector<Film> GetFilmsMaxIncomeIn(int, int);
+	int Size();
 	bool DelFilm(string);
 	friend ifstream& operator>> (ifstream&, FilmLibrary&);
 	friend ofstream& operator<<(ofstream&, const FilmLibrary&);

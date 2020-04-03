@@ -49,7 +49,7 @@ void FilmLibrary::AddFilm(Film t)
 	lib.push_back(t);
 	sort(lib.begin(), lib.end(), sort_year_name);
 }
-bool FilmLibrary::IfFixFilm(string n, int y)
+bool FilmLibrary::IsExist(string n, int y)
 {
 	for (int i = 0; i < lib.size(); i++)
 	{
@@ -156,7 +156,7 @@ bool FilmLibrary::FixIncome(string n, int y, int new_i)
 	}
 	return false;
 }
-const Film FilmLibrary::FindFilm(string n, int y)
+Film FilmLibrary::FindFilm(string n, int y)
 {
 	Film t;
 	for (int i = 0; i < lib.size(); i++)
@@ -168,7 +168,7 @@ const Film FilmLibrary::FindFilm(string n, int y)
 	}
 	return t;
 }
-const vector<Film> FilmLibrary::PrintFilmsBy(string p)
+vector<Film> FilmLibrary::GetFilmsBy(string p)
 {
 	vector<Film>vf;
 	for (int i = 0; i < lib.size(); i++)
@@ -180,57 +180,46 @@ const vector<Film> FilmLibrary::PrintFilmsBy(string p)
 	}
 	return vf;
 }
-bool FilmLibrary::PrintFilmsIn(int y)
+vector<Film> FilmLibrary::GetFilmsIn(int y)
 {
-	int f = 1;
+	vector<Film>vf;
 	for (int i = 0; i < lib.size(); i++)
 	{
 		if (lib[i].date.year == y)
 		{
-			f = 0;
-			cout << lib[i].name << endl;
+			vf.push_back(lib[i]);
 		}
 	}
-	if (f)
-		return false;
-	else
-		return true;
+	return vf;
 }
-void FilmLibrary::PrintColFilmsMaxIncome(int c)
+vector<Film> FilmLibrary::GetFilmsMaxIncome(int c)
 {
-	vector<Film>t;
+	vector<Film>vf;
 	for (int i = 0; i < lib.size(); i++)
 	{
-		t.push_back(lib[i]);
+		vf.push_back(lib[i]);
 	}
-	sort(t.begin(), t.end(), sort_income);
-	int s = t.size();
+	sort(vf.begin(), vf.end(), sort_income);
+	int s = vf.size();
 	s = min(c, s);
-	for (int i = 0; i < s; i++)
-	{
-		cout << t[i].name << endl;
-	}
+	vf.resize(s);
+	return vf;
 }
-bool FilmLibrary::PrintColFilmsMaxIncomeIn(int c, int y)
+vector<Film> FilmLibrary::GetFilmsMaxIncomeIn(int c, int y)
 {
-	vector<Film>t;
+	vector<Film>vf;
 	for (int i = 0; i < lib.size(); i++)
 	{
 		if (lib[i].date.year == y)
-			t.push_back(lib[i]);
+			vf.push_back(lib[i]);
 	}
-	sort(t.begin(), t.end(), sort_income);
-	int s = t.size();
-	if (s == 0)
-		return false;
+	sort(vf.begin(), vf.end(), sort_income);
+	int s = vf.size();
 	s = min(c, s);
-	for (int i = 0; i < s; i++)
-	{
-		cout << t[i].name << endl;
-	}
-	return true;
+	vf.resize(s);
+	return vf;
 }
-int FilmLibrary::ColFilms()
+int FilmLibrary::Size()
 {
 	return lib.size();
 }

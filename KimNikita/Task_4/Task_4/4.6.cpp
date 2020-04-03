@@ -65,12 +65,12 @@ int main()
 		{
 		case 0:
 			cin.ignore();
-			cout << "Введите название файла для сохранения" << endl;
+			cout << "Введите название файла для сохранения:" << endl;
 			getline(cin, f);
 			fout.open(f + ".txt", ios::out);
-			cout << "Введите название фильма, который хотите сохранить" << endl;
+			cout << "Введите название фильма, который хотите сохранить:" << endl;
 			getline(cin, n);
-			cout << "Введите год выхода в прокат" << endl;
+			cout << "Введите год выхода в прокат:" << endl;
 			cin >> y;
 			if (fb1.SaveFilm(fout, n, y))
 				cout << "Готово" << endl;
@@ -80,17 +80,46 @@ int main()
 			break;
 		case 1:
 			cin.ignore();
-			t.GetFilm();
+			cout << "Введите название фильма:" << endl;
+			getline(cin, t.name);
+			cout << "Введите имя режиссера:" << endl;
+			getline(cin, t.producer);
+			cout << "Введите имя сценариста:" << endl;
+			getline(cin, t.scenarist);
+			cout << "Введите имя композитора:" << endl;
+			getline(cin, t.composer);
+			cout << "Введите дату выхода в прокат:" << endl;
+			do
+			{
+				cout << "Введите год выхода в прокат:" << endl;
+				cin >> t.date.year;
+			} while (t.date.year < 1895);
+			vis = false;
+			if (t.date.year / 400 > 0 && t.date.year % 400 == 0 || t.date.year % 100 != 0 && t.date.year % 4 == 0)
+				vis = true;
+			do
+			{
+				cout << "Введите месяц выхода в прокат:" << endl;
+				cin >> t.date.month;
+			} while (t.date.month > 12 || t.date.month < 1);
+			fb1.FixMonth(n, y, t.date.month);
+			do
+			{
+				cout << "Введите день выхода в прокат:" << endl;
+				cin >> t.date.day;
+			} while (t.date.day < 1 || t.date.day>31 || t.date.day > 29 && t.date.month == 2 || t.date.day == 29 && t.date.month == 2 && !vis);
+			cout << "Введите сборы в рублях:" << endl;
+			cin >> t.income;
 			fb1.AddFilm(t);
 			cout << "Готово";
 			break;
 		case 2:
 			cin.ignore();
-			cout << "Введите название фильма, данные которого хотите изменить" << endl;
+			cout << "Введите название фильма, данные которого хотите изменить:" << endl;
 			getline(cin, n);
-			cout << "Введите год выхода в прокат" << endl;
+			cout << "Введите год выхода в прокат:" << endl;
 			cin >> y;
-			if (fb1.IfFixFilm(n, y))
+			if (fb1.IsExist(n, y))
 			{
 				int choice = -1;
 				string new_n, new_p, new_s, new_c;
@@ -178,9 +207,9 @@ int main()
 			break;
 		case 3:
 			cin.ignore();
-			cout << "Введите название фильма" << endl;
+			cout << "Введите название фильма:" << endl;
 			getline(cin, n);
-			cout << "Введите год выхода в прокат" << endl;
+			cout << "Введите год выхода в прокат:" << endl;
 			cin >> y;
 			t = fb1.FindFilm(n, y);
 			if (t.name != "")
@@ -193,9 +222,9 @@ int main()
 			break;
 		case 4:
 			cin.ignore();
-			cout << "Введите имя режиссера" << endl;
+			cout << "Введите имя режиссера:" << endl;
 			getline(cin, p);
-			v_f = fb1.PrintFilmsBy(p);
+			v_f = fb1.GetFilmsBy(p);
 			if (v_f.size() != 0)
 			{
 				for (int i = 0; i < v_f.size(); i++)
@@ -208,36 +237,54 @@ int main()
 				cout << "Фильмов данного режиссера нет в библиотеке" << endl;
 			break;
 		case 5:
-			cout << "Введите год выхода в прокат" << endl;
+			cout << "Введите год выхода в прокат:" << endl;
 			cin >> y;
-			if (fb1.PrintFilmsIn(y))
+			v_f = fb1.GetFilmsIn(y);
+			if (v_f.size() != 0)
+			{
+				for (int i = 0; i < v_f.size(); i++)
+				{
+					v_f[i].PrintFilm();
+				}
 				cout << "Готово" << endl;
+			}
 			else
 				cout << "Фильмов, вышедших в прокат в данном году, нет в библиотеке" << endl;
 			break;
 		case 6:
-			cout << "Введите количество фильмов, которые нужно вывести" << endl;
+			cout << "Введите количество фильмов, которые нужно вывести:" << endl;
 			cin >> c;
-			fb1.PrintColFilmsMaxIncome(c);
+			v_f = fb1.GetFilmsMaxIncome(c);
+			for (int i = 0; i < v_f.size(); i++)
+			{
+				v_f[i].PrintFilm();
+			}
 			cout << "Готово" << endl;
 			break;
 		case 7:
-			cout << "Введите количество фильмов, которые нужно вывести" << endl;
+			cout << "Введите количество фильмов, которые нужно вывести:" << endl;
 			cin >> c;
-			cout << "Введите год выхода в прокат" << endl;
+			cout << "Введите год выхода в прокат:" << endl;
 			cin >> y;
-			if (fb1.PrintColFilmsMaxIncomeIn(c, y))
+			v_f = fb1.GetFilmsMaxIncomeIn(c, y);
+			if (v_f.size() != 0)
+			{
+				for (int i = 0; i < v_f.size(); i++)
+				{
+					v_f[i].PrintFilm();
+				}
 				cout << "Готово" << endl;
+			}
 			else
 				cout << "Фильмов, вышедших в прокат в данном году, нет в библиотеке" << endl;
 			break;
 		case 8:
-			cout << "Всего фильмов: " << fb1.ColFilms() << endl;
+			cout << "Всего фильмов: " << fb1.Size() << endl;
 			cout << "Готово" << endl;
 			break;
 		case 9:
 			cin.ignore();
-			cout << "Введите название фильма, который нужно удалить" << endl;
+			cout << "Введите название фильма, который нужно удалить:" << endl;
 			getline(cin, n);
 			if (fb1.DelFilm(n))
 				cout << "Готово" << endl;
@@ -257,9 +304,9 @@ int main()
 	ofstream fout2;
 	fout2.open("output.txt", ios::out);
 	cout << "Результат вашей деятельности в файле output";
-	fout2 << "Было" << endl;
+	fout2 << "Было:" << endl;
 	fout2 << fb2;
-	fout2 << "Стало" << endl;
+	fout2 << "Стало:" << endl;
 	fout2 << fb1;
 	fout2.close();
 	return 0;
