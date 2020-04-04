@@ -105,6 +105,7 @@ Dictionary& Dictionary::operator=(const Dictionary& d) //Присваивание
 	dict = d.dict;
 	return *this;
 }
+
 ostream& operator<<(ostream& out, const Dictionary& d)
 {
 	for (auto word : d.dict) 
@@ -113,13 +114,21 @@ ostream& operator<<(ostream& out, const Dictionary& d)
 	}
 	return out;
 }
+
 istream& operator>>(istream& in, Dictionary& d)
 {
 	string eng;
 	string rus;
-	while (in >> eng >> rus) {
+	int kol;
+	cout << "Введите количество слов в словаре: " << endl;
+	cin >> kol;
+	cout << "Введите словарь: " << endl;
+
+	for (int i = 0; i < kol; i++)
+	{
 		in >> eng >> rus;
 		d.dict[eng] = rus;
 	}
+
 	return in;
 }

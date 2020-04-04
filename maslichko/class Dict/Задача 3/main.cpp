@@ -8,9 +8,9 @@ int main()
 	SetConsoleCP(1251); //Установка кодовой страницы win-cp 1251 в поток ввода
 	SetConsoleOutputCP(1251); //В поток вывода
 
-	int menu;
+	int menu, kol = 0;
 	string test1, test2, test3, test4;
-	Dictionary d1, d2, d3;
+	Dictionary d1, d2, d3, d4;
 
 	while (1)
 	{
@@ -24,6 +24,9 @@ int main()
 		cout << "7. Считать словарь из файла" << endl;
 		cout << "8. Объединить словари" << endl;
 		cout << "9. Присваивание" << endl;
+		cout << "10. Считать с консоли" << endl;
+		cout << "11. Вывести на консоль" << endl;
+
 		cout << endl << "Выберите нужное действие: ";
 		cin >> menu;
 
@@ -63,6 +66,12 @@ int main()
 			break;
 		case 9:
 			d2 = d1;
+			break;
+		case 10:
+			cin >> d4;
+			break;
+		case 11:
+			cout << d4;
 			break;
 		}
 	}
