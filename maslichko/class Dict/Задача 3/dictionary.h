@@ -23,4 +23,6 @@ public:
 	void file_read(); //Чтение из файла
 	const Dictionary operator+(const Dictionary& d); //Объединение словарей
 	Dictionary& operator=(const Dictionary& d); //Присваивание
+	friend ostream& operator<<(ostream& out, const Dictionary& d);
+	friend istream& operator>>(istream& in, Dictionary& d);
 };
