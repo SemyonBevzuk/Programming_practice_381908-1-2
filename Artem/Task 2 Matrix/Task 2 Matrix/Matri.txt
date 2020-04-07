@@ -1,0 +1,23 @@
+The result of adding two matrixes together:
+3 3 
+3 3 
+0 2 3 
+4 5 6 
+7 8 9 
+The transposed matrix
+0 4 7 
+2 5 8 
+3 6 9 
+The result of multiplication of two matrixes:
+22 22 22 
+30 30 30 
+36 36 36 
+The fifth matrix:
+3 3 3 
+3 3 3 
+3 3 3 
+The matrix does not have diagonal domination
+The result of multiplication by a number:
+44 44 44 
+60 60 60 
+72 72 72 

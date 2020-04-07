@@ -107,25 +107,25 @@ Data& Data::operator-=(int d)
 
 bool Data::operator>(const Data& date)
 {
-	return ((year > date.year) || (year == date.year) && (month > date.month) || (year == date.year) && (month == date.month) && (day > date.day)) ? true : false;
+	return ((year > date.year) || (year == date.year) && (month > date.month) || (year == date.year) && (month == date.month) && (day > date.day));
 }
 
 bool Data::operator<(const Data& date)
 {
-	return ((year < date.year) || (year == date.year) && (month < date.month) || (year == date.year) && (month == date.month) && (day < date.day)) ? true : false;
+	return ((year < date.year) || (year == date.year) && (month < date.month) || (year == date.year) && (month == date.month) && (day < date.day));
 }
 
 bool Data::operator>=(const Data& date)
 {
-	return ((year >= date.year) || (year == date.year) && (month >= date.month) || (year == date.year) && (month == date.month) && (day >= date.day)) ? true : false;
+	return ((year >= date.year) || (year == date.year) && (month >= date.month) || (year == date.year) && (month == date.month) && (day >= date.day));
 }
 bool Data::operator<=(const Data& date)
 {
-	return ((year <= date.year) || (year == date.year) && (month <= date.month) || (year == date.year) && (month == date.month) && (day <= date.day)) ? true : false;
+	return ((year <= date.year) || (year == date.year) && (month <= date.month) || (year == date.year) && (month == date.month) && (day <= date.day));
 }
 
 bool Data::operator==(const Data& date) {
-	return ((year == date.year) && (month == date.month) && (day == date.day)) ? true : false;
+	return ((year == date.year) && (month == date.month) && (day == date.day));
 }
 
 bool Data::operator!=(const Data& date) {
