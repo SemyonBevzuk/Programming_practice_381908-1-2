@@ -6,78 +6,120 @@ int main()
 	int row, col; //Строки, столбцы
 	int a; //Элемент поиска по индксам
 	int size;//Размер матрицы
+	cout << "Matrix1" << endl;
+	cout << "Size of matrix is 4*4" << endl;
 	Matrix m1;
-	cout << "Matrix1 " << endl;
-	m1.Print();
+	cout << m1 << endl;
 	cout << "Enter the size of matrix from the keyboard: ";
 	cin >> size;
 	Matrix m2(size);
 	cout << "Matrix2 " << endl;
-	m2.Print(); 
-	cout << endl;
+	cout << m2 << endl;
+	Matrix m9(m1);
+	cout << "Creating a Matrix9 using copy" << endl;
+	cout << m9 << endl;
 
 	cout << "Assigment operation of the 2nd matrix to the 1st matrix" << endl;
 	m1 = m2;
 	cout << "Matrix1 after assignment operation " << endl;
-	m1.Print();
-	cout << endl;
+	cout << m1 << endl;
 
-	cout << "Matrix addition" << endl;
 	Matrix m3(3); //Для прибавления
+	Matrix m4(4); //Для результата сложения
 	cout << "Matrix3 " << endl;
-	m3.Print();
-	Matrix m4; //Для результата сложения
-	m4 = m2 + m3;
-	cout << "Matrix4 = M2 + M3:" << endl;
-	m4.Print(); cout << endl;
+	cout << m3;
+	cout << "Matrix addition" << endl;
+	try
+	{
+		m4 = m2 + m3;
+		cout << "Matrix4 = M2 + M3:" << endl;
+		cout << m4;
+		cout << endl;
+	}
+	catch(int)
+	{
+		cout << "Error" << endl;
+		cout << "Matrices are not equal" << endl;
+		cout << "Matrix4" << endl;
+		cout << m4 << endl;
+	}
 
-	cout << "Transpose operation: M4 = TransM1 " << endl;
+	cout << "Transpose operation: M1 = TransM4 " << endl;
 	m4.Trans(m1);
-	cout << endl;
+	cout << "Matrix M1: " << endl;
+	cout << m1 << endl;
+	cout << "Matrix M4: " << endl;
+	cout << m4 << endl;
 
 	cout << "Check for diagonal transform in Matrix1" << endl;
+	cout << "Size of matrix is: 4*4 ";
+	cout << "Enter a matrix of this size" << endl;
 	Matrix m5;
-	cout << "Introduce Matrix5 from the keyboard" << endl;
-	m5.CheckM();
-	m5.Diagonal();
-	cout << endl;
+	if (m5.IsDiagonallyDominant())
+	cout << "Diagonal domiant matrix" << endl;
+	else 
+	cout << "Matrix without diagonal prevalence" << endl;
 
 	cout << "Scalar matrix multiplication M1 = M3*scalar" << endl;
 	cout << "Enter scalar: ";
 	cin >> chislo;
-	m1 = m3* chislo;
+	m1 = m3 * chislo;
 	cout << "Scalar multiplication result " << endl;
-	m1.Print();
-	cout << endl;
+	cout << m1 << endl;
 
 	cout << "Three new matrices M6,M7,M8:" << endl;
-	Matrix m6, m7, m8;
+	cout << "Enter the size of Matrix6: ";
+	cin >> size;
+	Matrix m6(size);
+	cout << "Enter the size of Matrix7: ";
+	cin >> size;
+	Matrix m7(size);
 	cout << "Matrix7 " << endl;
-	m7.Print();
+	cout << m7;
+	cout << "Enter the size of Matrix8: ";
+	cin >> size;
+	Matrix m8(size);
 	cout << "Matrix8 " << endl;
-	m8.Print();
+	cout << m8;
 	cout << "Matrix multiplication M6 = M7*M8" << endl;
-	m6.MultiplyM(m7, m8);
-	cout << "Matrix6 is a multiplication result " << endl;
-	m6.Print();
-	cout << endl;
+	try
+	{
+		m6 = m7 * m8;
+		cout << "Matrix6 is a multiplication result " << endl;
+		cout << m6;
+	}
+	catch (int)
+	{
+		cout << "Error" << endl;
+		cout << "Matrices are not equal" << endl;
+		cout << "Matrix6" << endl;
+		cout << m6 << endl;
+	}
+	
 
 	cout << "Indexing operation" << endl;
 	cout << "Enter the row number ";
 	cin >> row;
 	cout << "Enter the column number ";
 	cin >> col;
-	m6(row, col);
-	cout << endl;
+	try
+	{
+		cout << "Saerch element: " << m6(row, col) << endl;
+	}
+	catch (int)
+	{
+		cout << "Error" << endl;
+		cout << "Indexes outside the array" << endl << endl;
+	}
 
 	//*Чтение и сохранение данных из файла/в файл для перегрузки операторов << >>
 	fstream fs;
-    met:
+met:
+	fs.exceptions(fstream::badbit | fstream::failbit);
 	fs.open("FileMat.txt", fstream::in | fstream::out); //Ввод, вывод, без дозаписи!!
-	if (!fs.is_open())
-		cout << "File open error" << endl;
-	else
+	try
 	{
+		fs.is_open();
 		int a; //Для вызова чтения или записи в файл
 		string str;
 		cout << "File is open" << endl;
@@ -117,6 +159,11 @@ int main()
 			cout << "Incorrect file action selection" << endl;
 		}
 		}
+	}
+	catch (const exception& ex)
+	{
+		cout << ex.what() << endl;
+		cout << "File open error" << endl;
 	}
 	fs.close();
 }
