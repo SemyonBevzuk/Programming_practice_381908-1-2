@@ -2,9 +2,14 @@
 
 Date::Date(int day, int month, int year)
 {
-	_day = day;
-	_month = month;
-	_year = year;
+	if (day >= 1 && day <= 32 && month >= 1 && month <= 12 && year >= 1)
+	{
+		_day = day;
+		_month = month;
+		_year = year;
+	}
+	else
+		throw "Date Initialization error";
 }
 
 Date::Date(const Date& date)
@@ -12,10 +17,18 @@ Date::Date(const Date& date)
 	*this = date;
 }
 
- string Date::getDateToString () const
+string Date::getDateToString() const
 {
-	string sd = to_string(_day), sm = to_string(_month), sy = to_string(_year);
-	return sd + "." + sm + "." + sy;
+	string sday = to_string(_day);
+	if (sday.size() == 1)
+		sday = "0" + sday;
+	string smonth = to_string(_month);
+	if (smonth.size() == 1)
+		smonth = "0" + smonth;
+	string syear = to_string(_year);
+	for (auto i = syear.size(); i < 4; i++)
+		syear = "0" + syear;
+	return sday + "." + smonth + "." + syear;
 }
 
 

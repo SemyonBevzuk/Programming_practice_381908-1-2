@@ -3,6 +3,7 @@
 
 #include "Date.h"
 #include <string>
+#include<iostream>
 
 using namespace std;
 
@@ -32,5 +33,7 @@ public:
 	bool setDate(int day, int month, int year) {return _date.setDate(day, month, year); }
 	bool setValue(long long value);
 	Film& operator=(const Film& f);
+	friend ostream& operator<<(ostream& stream, const Film& film);
+	friend istream& operator>>(istream& stream, Film& film);
 };
 #endif

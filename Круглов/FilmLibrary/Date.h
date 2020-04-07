@@ -17,7 +17,6 @@ public:
 	int getMonth() const { return _month; }
 	int getYear() const { return _year; }
 	Date getDate() const { return *this; }
-	void strToDate(const string& sdate);
 	string getDateToString() const;
 	bool setDay(int d);
 	bool setMonth(int m);

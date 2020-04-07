@@ -99,7 +99,7 @@ vector<Film> FilmLibrary::allYearFilm(const int& year)
 	return list;
 }
 
-bool f(Film f1, Film f2)// компоратор для maxValue
+bool comporator(Film f1, Film f2)// компоратор для maxValue
 {
 	if(f1.getValue()!=f2.getValue())
 		return f1.getValue() > f2.getValue();
@@ -115,7 +115,7 @@ vector<Film> FilmLibrary::maxValue(const int& count)
 	{
 		list.push_back(it->second);
 	}
-	sort(list.begin(), list.end(), f);//отсортировал по убыванию
+	sort(list.begin(), list.end(), comporator);//отсортировал по убыванию
 	if (list.size() > count)
 		list.resize(count);// убрать лишние элементы, если они есть
 	return list;
@@ -131,7 +131,7 @@ vector<Film> FilmLibrary::maxValueSelectedYear(const int& count, const int& year
 		if (it->first.second == year)
 			list.push_back(it->second);
 	}
-	sort(list.begin(), list.end(), f);//отсортировал по убыванию
+	sort(list.begin(), list.end(), comporator);//отсортировал по убыванию
 	if (list.size() > count)
 		list.resize(count);// убрать лишние элементы, если они есть
 	return list;
@@ -150,45 +150,28 @@ FilmLibrary& FilmLibrary:: operator=(const FilmLibrary& FL)
 	return *this;
 }
 
-bool FilmLibrary::saveInFile(ofstream& fout)
+ostream& operator<<(ostream& stream, const FilmLibrary& FL)
 {
-	map<pair<string, int>, Film> ::iterator it = FilmLib.begin();
 	int k = 0;//все ли элементы вывелись
-	fout << FilmLib.size() << "\n";
-	for (it; it != FilmLib.end(); it++)
+	stream << FL.getCount() << "\n";
+	map<pair<string, int>, Film> ::const_iterator it = FL.FilmLib.cbegin();
+	map<pair<string, int>, Film> ::const_iterator it1 = FL.FilmLib.cend();
+	for (it; it != it1; it++)
 	{
-		fout << "Название фильма: " << it->second.getName() << "\n"
-			<< "Продюсер: " << it->second.getProducer() << "\n"
-			<< "Сценарист: " << it->second.getScreenwriter() << "\n"
-			<< "Композитор: " << it->second.getComposer() << "\n"
-			<< "Дата выхода: " << it->second.getDateToString() << "\n"
-			<< "Кассовые сборы: " << it->second.getValue() << " млн$\n";
-		k++;
+		stream << it->second;
 	}
-	if (k == FilmLib.size())
-		return true;
-	return false;
+	return stream;
 }
 
-bool FilmLibrary::readFromFile(ifstream& fin)
+istream& operator>>(istream& stream, FilmLibrary& FL)
 {
-	int k, i=0;//
-	long long value;
-	fin >> k;
-	for (i; i < k; i++)
+	int k;
+	stream >> k;
+	Film film;
+	for (int i = 0; i < k; i++)
 	{
-		string name;
-		string producer;
-		string screenwriter;
-		string composer;
-		Date date;
-		int day, month, year;
-		fin >> name >> producer >> screenwriter >> composer >> day >> month >> year >> value;
-		Date date(day, month, year);
-		Film film(name, producer, screenwriter, composer, date, value);
-		this->addFilm(film);
+		stream >> film;
+		FL.addFilm(film);
 	}
-	if (i == k)
-		return true;
-	return false;
+	return stream;
 }

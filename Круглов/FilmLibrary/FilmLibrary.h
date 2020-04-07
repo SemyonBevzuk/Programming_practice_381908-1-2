@@ -6,7 +6,7 @@
 #include<map>
 #include<string>
 #include<vector>
-#include<fstream>
+#include<iostream>
 
 using namespace std;
 
@@ -25,6 +25,7 @@ struct MyExc {
 class FilmLibrary{
 private:
 	map<pair<string,int>,Film> FilmLib;
+	map<pair<string, int>, Film> :: const_iterator cbegin() { return FilmLib.cbegin(); }
 public:
 	FilmLibrary();
 	FilmLibrary(const FilmLibrary& FL);
@@ -43,8 +44,8 @@ public:
 	vector<Film> maxValueSelectedYear(const int& count, const int& year);
 	size_t getCount() const;
 	FilmLibrary& operator= (const FilmLibrary& FL);
-	bool saveInFile(ofstream& fout);
-	bool readFromFile(ifstream& fin);
+	friend ostream& operator<<(ostream& stream, const FilmLibrary& FL);
+	friend istream& operator>>(istream& stream, FilmLibrary& FL);
 };
 
 #endif

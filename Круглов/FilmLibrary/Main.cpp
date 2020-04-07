@@ -16,8 +16,12 @@ int main()
 		FilmLibrary FL;
 		FL.addFilm(f);
 		ofstream fout("Libr.txt");
-		FL.saveInFile(fout);
+		fout << f;
 		fout.close();
+		ifstream fin("Libr.txt");
+		fin >> f;
+		cout << f;
+		fin.close();
 	}
 	catch (MyExc& exception)
 	{
@@ -26,5 +30,9 @@ int main()
 		case exType0:
 			cout << exception.type_;
 		}
+	}
+	catch (string s)
+	{
+		cout << s;
 	}
 }
