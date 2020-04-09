@@ -10,23 +10,31 @@ int main()
 	cout << "Size of matrix is 4*4" << endl;
 	Matrix m1;
 	cout << m1 << endl;
+	cout << "Fill the Matrix1 randomly" << endl;
+	m1.RandomM(4);
+	cout << m1 << endl;
 	cout << "Enter the size of matrix from the keyboard: ";
 	cin >> size;
 	Matrix m2(size);
 	cout << "Matrix2 " << endl;
 	cout << m2 << endl;
-	Matrix m9(m1);
+	cout << "Fill the Matrix2 randomly" << endl;
+	m2.RandomM(size);
+	cout << m2 << endl;
+	Matrix m10(m1);
 	cout << "Creating a Matrix9 using copy" << endl;
-	cout << m9 << endl;
+	cout << m10 << endl;
 
 	cout << "Assigment operation of the 2nd matrix to the 1st matrix" << endl;
 	m1 = m2;
 	cout << "Matrix1 after assignment operation " << endl;
 	cout << m1 << endl;
 
-	Matrix m3(3); //Для прибавления
-	Matrix m4(4); //Для результата сложения
-	cout << "Matrix3 " << endl;
+	Matrix m3; //Для прибавления
+	Matrix m4; //Для результата сложения
+	m3.RandomM(size);
+	m4.RandomM(5);
+	cout << "Random Matrix3" << endl;
 	cout << m3;
 	cout << "Matrix addition" << endl;
 	try
@@ -44,17 +52,17 @@ int main()
 		cout << m4 << endl;
 	}
 
-	cout << "Transpose operation: M1 = TransM4 " << endl;
-	m4.Trans(m1);
+	cout << "Transpose operation: M5 = TransM4 " << endl;
+	Matrix m5 = m4.Trans();
 	cout << "Matrix M1: " << endl;
 	cout << m1 << endl;
 	cout << "Matrix M4: " << endl;
-	cout << m4 << endl;
+	cout << m5 << endl;
 
 	cout << "Check for diagonal transform in Matrix1" << endl;
 	cout << "Size of matrix is: 4*4 ";
 	cout << "Enter a matrix of this size" << endl;
-	Matrix m5;
+	cin >> m5;
 	if (m5.IsDiagonallyDominant())
 	cout << "Diagonal domiant matrix" << endl;
 	else 
@@ -153,6 +161,7 @@ met:
 			int n = count_space;//Число строк равно числу столбцов, поэтому достаточно только одной переменной
 			Matrix m9(n);
 			fs >> m9;
+			cout << m9;
 		}break;
 		default:
 		{

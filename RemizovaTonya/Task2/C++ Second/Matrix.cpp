@@ -1,7 +1,7 @@
 #include "Matrix.h"
 void Matrix::Create(int size)
 {
-	if (mat == nullptr)
+	if (mat != nullptr)
 	{
 		this->~Matrix();
 	}
@@ -9,35 +9,6 @@ void Matrix::Create(int size)
 	mat = new int* [n];
 	for (int i = 0; i < n; i++)
 		mat[i] = new int[n];
-}
-
-void Matrix::EnterFromKeyboard()
-{
-	if (mat != nullptr)
-	{
-		for (int i = 0; i < n; i++)
-		{
-			for (int j = 0; j < n; j++)
-			{
-				cin >> mat[i][j];
-			}
-		}
-	}
-}
-
-void Matrix::RandomM()
-{
-	if (mat != nullptr)
-	{
-		srand(time(NULL));
-		for (int i = 0; i < n; i++)
-		{
-			for (int j = 0; j < n; j++)
-			{
-				mat[i][j] = rand() % 9;
-			}
-		}
-	}
 }
 
 Matrix::Matrix()
@@ -57,7 +28,13 @@ Matrix::Matrix(int size)
 {
 	//Заданная
 	Create(size);
-	RandomM();
+	for (int i = 0; i < n; i++)
+	{
+		for (int j = 0; j < n; j++)
+		{
+			mat[i][j] = 0;
+		}
+	}
 }
 
 Matrix::Matrix(const Matrix& other)
@@ -82,7 +59,7 @@ void Matrix::Resize(int newsize)
 Matrix::~Matrix()
 {
 	//Очистка
-	if (this->mat == nullptr)
+	if (this->mat != nullptr)
 	{
 		for (int i = 0; i < n; i++)
 		{
@@ -91,6 +68,20 @@ Matrix::~Matrix()
 		delete[] this->mat;
 	}
 }
+
+void Matrix::RandomM(int size)
+{
+	Resize(size);
+	srand(time(NULL));
+	for (int i = 0; i < n; i++)
+	{
+		for (int j = 0; j < n; j++)
+		{
+			mat[i][j] = rand() % 9;
+		}
+	}
+}
+
 
 Matrix& Matrix::operator=(const Matrix& other)
 {
@@ -168,9 +159,7 @@ istream& operator>> (istream& stream, Matrix c)
 		for (int j = 0; j < c.n; j++)
 		{
 			stream >> c.mat[i][j];
-			cout << c.mat[i][j] << " ";
 		}
-		cout << endl;
 	}
 	return stream;
 }
@@ -188,14 +177,15 @@ ostream& operator<< (ostream& stream, const Matrix& c)
 	return stream;
 }
 
-void Matrix::Trans(Matrix& newmat)
+Matrix Matrix::Trans()
 {
-	newmat.Resize(this->n);
+	Resize(this->n);
 	for (int i = 0; i < n; i++)
 	{
 		for (int j = 0; j < n; j++)
-			newmat.mat[i][j] = this->mat[j][i];
+			this->mat[i][j] = this->mat[j][i];
 	}
+	return *this;
 }
 
 bool Matrix::IsDiagonallyDominant()

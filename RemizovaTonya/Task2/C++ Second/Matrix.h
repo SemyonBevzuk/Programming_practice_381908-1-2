@@ -24,8 +24,6 @@ public:
 	//Secondary functions
 	void Create(int size);//Matrix allocation
 	void Resize(int newsize);//Matrix resizing
-	void RandomM();//Random initialization
-	void EnterFromKeyboard();
 	
 	//Operator overload
 	Matrix& operator=(const Matrix& other);//Assignment operator overload
@@ -37,6 +35,7 @@ public:
 	friend ostream& operator<< (ostream& stream, const Matrix& c);//Overload operator input into the stream
 
 	//Methods
-	void Trans(Matrix& newmat);//Transpose operation
+	Matrix Trans();//Transpose operation
 	bool IsDiagonallyDominant();//Operation determining the presence of diagonal prevelance
+	void RandomM(int size);//Random initialization
 };
