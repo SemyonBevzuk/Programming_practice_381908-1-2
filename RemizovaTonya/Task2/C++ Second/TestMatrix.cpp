@@ -6,10 +6,9 @@ int main()
 	int row, col; //Строки, столбцы
 	int a; //Элемент поиска по индксам
 	int size;//Размер матрицы
-	cout << "Matrix1" << endl;
+	cout << "Matrix1 default" << endl;
 	cout << "Size of matrix is 4*4" << endl;
 	Matrix m1;
-	cout << m1 << endl;
 	cout << "Fill the Matrix1 randomly" << endl;
 	m1.RandomM(4);
 	cout << m1 << endl;
@@ -17,13 +16,12 @@ int main()
 	cin >> size;
 	Matrix m2(size);
 	cout << "Matrix2 " << endl;
-	cout << m2 << endl;
 	cout << "Fill the Matrix2 randomly" << endl;
 	m2.RandomM(size);
 	cout << m2 << endl;
-	Matrix m10(m1);
-	cout << "Creating a Matrix9 using copy" << endl;
-	cout << m10 << endl;
+	Matrix m12(m1);
+	cout << "Creating a Matrix12 using copy" << endl;
+	cout << m12 << endl;
 
 	cout << "Assigment operation of the 2nd matrix to the 1st matrix" << endl;
 	m1 = m2;
@@ -31,15 +29,15 @@ int main()
 	cout << m1 << endl;
 
 	Matrix m3; //Для прибавления
-	Matrix m4; //Для результата сложения
-	m3.RandomM(size);
-	m4.RandomM(5);
+	m3.RandomM(3);
 	cout << "Random Matrix3" << endl;
 	cout << m3;
+	cout << "Random Matrix2" << endl;
+	cout << m2;
 	cout << "Matrix addition" << endl;
 	try
 	{
-		m4 = m2 + m3;
+		Matrix m4 = m2 + m3;
 		cout << "Matrix4 = M2 + M3:" << endl;
 		cout << m4;
 		cout << endl;
@@ -48,63 +46,63 @@ int main()
 	{
 		cout << "Error" << endl;
 		cout << "Matrices are not equal" << endl;
-		cout << "Matrix4" << endl;
-		cout << m4 << endl;
 	}
 
 	cout << "Transpose operation: M5 = TransM4 " << endl;
+	Matrix m4;
+	m4.RandomM(5);
 	Matrix m5 = m4.Trans();
-	cout << "Matrix M1: " << endl;
-	cout << m1 << endl;
 	cout << "Matrix M4: " << endl;
+	cout << m4 << endl;
+	cout << "Matrix M5: " << endl;
 	cout << m5 << endl;
 
-	cout << "Check for diagonal transform in Matrix1" << endl;
-	cout << "Size of matrix is: 4*4 ";
+	Matrix m6;
+	cout << "Check for diagonal transform in Matrix6" << endl;
+	cout << "Size of matrix is: 4*4 " << endl;
 	cout << "Enter a matrix of this size" << endl;
-	cin >> m5;
-	if (m5.IsDiagonallyDominant())
+	cin >> m6;
+	if (m6.IsDiagonallyDominant())
 	cout << "Diagonal domiant matrix" << endl;
 	else 
 	cout << "Matrix without diagonal prevalence" << endl;
 
-	cout << "Scalar matrix multiplication M1 = M3*scalar" << endl;
+	cout << "Scalar matrix multiplication M7 = M5*scalar" << endl;
 	cout << "Enter scalar: ";
 	cin >> chislo;
-	m1 = m3 * chislo;
+	Matrix m7 = m5 * chislo;
 	cout << "Scalar multiplication result " << endl;
-	cout << m1 << endl;
+	cout << m7 << endl;
 
-	cout << "Three new matrices M6,M7,M8:" << endl;
-	cout << "Enter the size of Matrix6: ";
-	cin >> size;
-	Matrix m6(size);
-	cout << "Enter the size of Matrix7: ";
-	cin >> size;
-	Matrix m7(size);
-	cout << "Matrix7 " << endl;
-	cout << m7;
+	cout << "Three new matrices M8,M9,M10:" << endl;
+	Matrix m8, m9;
 	cout << "Enter the size of Matrix8: ";
 	cin >> size;
-	Matrix m8(size);
+	m8.RandomM(size);
 	cout << "Matrix8 " << endl;
 	cout << m8;
-	cout << "Matrix multiplication M6 = M7*M8" << endl;
+	cout << "Enter the size of Matrix9: ";
+	cin >> size;
+	m9.RandomM(size);
+	cout << "Matrix9 " << endl;
+	cout << m9;
+	cout << "Matrix multiplication M10 = M8*M9" << endl;
 	try
 	{
-		m6 = m7 * m8;
+		Matrix m10 = m8 * m9;
 		cout << "Matrix6 is a multiplication result " << endl;
-		cout << m6;
+		cout << m10;
 	}
 	catch (int)
 	{
 		cout << "Error" << endl;
 		cout << "Matrices are not equal" << endl;
-		cout << "Matrix6" << endl;
-		cout << m6 << endl;
 	}
 	
-
+	Matrix m10;
+	m10.RandomM(5);
+	cout << "Matrix10 " << endl;
+	cout << m10 << endl;
 	cout << "Indexing operation" << endl;
 	cout << "Enter the row number ";
 	cin >> row;
@@ -112,7 +110,7 @@ int main()
 	cin >> col;
 	try
 	{
-		cout << "Saerch element: " << m6(row, col) << endl;
+		cout << "Saerch element: " << m10(row, col) << endl;
 	}
 	catch (int)
 	{
@@ -138,30 +136,30 @@ met:
 		{
 		case 1:
 		{
-			fs << m6;
+			fs << m10;
 			cout << "The matrix is written to the file" << endl;
 			fs.close();
 			goto met;
 		}
 		case 2:
 		{
-			int count_space = 0; //Число пробелов в начале строки
+			int sizem;
 			char ch;//Для посимвольного считывания
-			while (!fs.eof())
+			string s;
+			int b = 0;//bytes
+			do 
 			{
-				fs.get(ch);//Считываем текущий символ
-				if (ch == ' ')//Если пробел
-					count_space++;//Увеличиваем число пробелов
-				if (ch == '\n')//Если переход на новую строчку
-					break;//Выходим из цикла
-			}
-			fs.seekg(0, ios::beg);//Идем в начало файла в потоке
+				fs.get(ch);
+				s += ch;
+				b++;
+			} while (ch != '\n');
+			sizem = atoi(s.c_str());
+			fs.seekg(b, ios::beg);//Идем в начало файла в потоке
 			fs.clear();
-			//Теперь мы знаем сколько пробелов в строке
-			int n = count_space;//Число строк равно числу столбцов, поэтому достаточно только одной переменной
-			Matrix m9(n);
-			fs >> m9;
-			cout << m9;
+			Matrix m11(sizem);
+			cout << "Matrix11 from file, size is: ";
+			fs >> m11;
+			cout << m11;
 		}break;
 		default:
 		{

@@ -31,7 +31,7 @@ public:
 	int& operator()(const int index1, const int index2);//Index operator overload
 	Matrix operator*(int scalar);//Overloading the operator of matrix multiplication by a scalar
 	Matrix operator*(const Matrix& c);//Overloading matrix multiplication operation of two matrices
-	friend istream& operator>> (istream& stream, Matrix c);//Overload operator output from the stream
+	friend istream& operator>> (istream& stream, Matrix& c);//Overload operator output from the stream
 	friend ostream& operator<< (ostream& stream, const Matrix& c);//Overload operator input into the stream
 
 	//Methods

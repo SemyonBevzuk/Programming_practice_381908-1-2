@@ -5,36 +5,24 @@ void Matrix::Create(int size)
 	{
 		this->~Matrix();
 	}
-	this->n = size;
+	n = size;
 	mat = new int* [n];
 	for (int i = 0; i < n; i++)
-		mat[i] = new int[n];
+	{
+	    mat[i] = new int[n];
+	}
 }
 
 Matrix::Matrix()
 {
 	//Установленная
 	Create(4);
-	for (int i = 0; i < n; i++)
-	{
-		for (int j = 0; j < n; j++)
-		{
-			mat[i][j] = 0;
-		}
-	}
 }
 
 Matrix::Matrix(int size)
 {
 	//Заданная
 	Create(size);
-	for (int i = 0; i < n; i++)
-	{
-		for (int j = 0; j < n; j++)
-		{
-			mat[i][j] = 0;
-		}
-	}
 }
 
 Matrix::Matrix(const Matrix& other)
@@ -50,29 +38,29 @@ Matrix::Matrix(const Matrix& other)
 	}
 }
 
-void Matrix::Resize(int newsize)
-{
-	this->~Matrix();
-	this->Create(newsize);
-}
-
 Matrix::~Matrix()
 {
 	//Очистка
-	if (this->mat != nullptr)
+	if (mat != nullptr)
 	{
 		for (int i = 0; i < n; i++)
 		{
-			delete[] this->mat[i];
+			delete[] mat[i];
 		}
-		delete[] this->mat;
+		delete[] mat;
 	}
+	mat = nullptr;
+}
+
+void Matrix::Resize(int newsize)
+{
+	this->~Matrix();
+	Create(newsize);
 }
 
 void Matrix::RandomM(int size)
 {
 	Resize(size);
-	srand(time(NULL));
 	for (int i = 0; i < n; i++)
 	{
 		for (int j = 0; j < n; j++)
@@ -90,21 +78,23 @@ Matrix& Matrix::operator=(const Matrix& other)
 		Resize(other.n);
 		for (int i = 0; i < n; i++)
 		{
-			this->mat[i] = other.mat[i];
+			for (int j = 0; j < n; j++)
+			{
+				mat[i][j] = other.mat[i][j];
+			}
 		}
 	}
-	return*this;
+	return* this;
 }
 
 Matrix Matrix::operator+(const Matrix& other)
 {
-	Matrix res;
-	res.Resize(other.n);
+	Matrix res(other.n);
 	if (this->n != other.n)
 		throw -1;		
-	for (int i = 0; i < n; i++)
+	for (int i = 0; i < res.n; i++)
 	{
-		for (int j = 0; j < n; j++)
+		for (int j = 0; j < res.n; j++)
 		{
 			res.mat[i][j] = mat[i][j] + other.mat[i][j];
 		}
@@ -121,8 +111,7 @@ int& Matrix::operator()(const int index1, const int index2)
 
 Matrix Matrix::operator*(int scalar)
 {
-	Matrix res;
-	res.Resize(this->n);
+	Matrix res(n);
 	for (int i = 0; i < n; i++)
 	{
 		for (int j = 0; j < n; j++)
@@ -133,8 +122,7 @@ Matrix Matrix::operator*(int scalar)
 
 Matrix Matrix::operator*(const Matrix& c)
 {
-	Matrix res;
-	res.Resize(c.n);
+	Matrix res(c.n);
     if (this->n != c.n)
 		throw -1;
 	for (int i = 0; i < n; i++)
@@ -151,9 +139,8 @@ Matrix Matrix::operator*(const Matrix& c)
 	return res;
 }
 
-istream& operator>> (istream& stream, Matrix c)
+istream& operator>> (istream& stream, Matrix& c)
 {
-	c.Resize(c.n);
 	for (int i = 0; i < c.n; i++)
 	{
 		for (int j = 0; j < c.n; j++)
@@ -166,6 +153,7 @@ istream& operator>> (istream& stream, Matrix c)
 
 ostream& operator<< (ostream& stream, const Matrix& c)
 {
+	stream << c.n << "\n";
 	for (int i = 0; i < c.n; i++)
 	{
 		for (int j = 0; j < c.n; j++)
@@ -179,22 +167,32 @@ ostream& operator<< (ostream& stream, const Matrix& c)
 
 Matrix Matrix::Trans()
 {
-	Resize(this->n);
-	for (int i = 0; i < n; i++)
+	Matrix res(n);
+	for (int i = 0; i < res.n; i++)
 	{
-		for (int j = 0; j < n; j++)
-			this->mat[i][j] = this->mat[j][i];
+		for (int j = 0; j < res.n; j++)
+			res.mat[i][j] = this->mat[j][i];
 	}
-	return *this;
+	return res;
 }
 
 bool Matrix::IsDiagonallyDominant()
 {
 	int a = 0;
+	int l;
 	for (int i = 0; i < n; i++)
 	{
-		if (abs(mat[i][i] > accumulate(mat[i], mat[i] + abs(n), 0) - mat[i][i]))
-			a++;
+		l = 0;
+		for (int j = 0; j < n; j++)
+		{
+			if (i != j)
+			    l += abs(mat[i][j]);
+		}
+		for (int j = 0; j < n; j++)
+		{
+			if (i == j && abs(mat[i][j]) >= l)
+				a++;
+		}
 	}
 	if (a > 0)
 		return true;
