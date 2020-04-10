@@ -52,15 +52,9 @@ Matrix::~Matrix()
 	mat = nullptr;
 }
 
-void Matrix::Resize(int newsize)
-{
-	this->~Matrix();
-	Create(newsize);
-}
-
 void Matrix::RandomM(int size)
 {
-	Resize(size);
+	Create(size);
 	for (int i = 0; i < n; i++)
 	{
 		for (int j = 0; j < n; j++)
@@ -75,7 +69,7 @@ Matrix& Matrix::operator=(const Matrix& other)
 {
 	if (this != &other)
 	{
-		Resize(other.n);
+		Create(other.n);
 		for (int i = 0; i < n; i++)
 		{
 			for (int j = 0; j < n; j++)
@@ -141,6 +135,7 @@ Matrix Matrix::operator*(const Matrix& c)
 
 istream& operator>> (istream& stream, Matrix& c)
 {
+	stream >> c.n;
 	for (int i = 0; i < c.n; i++)
 	{
 		for (int j = 0; j < c.n; j++)
@@ -153,7 +148,7 @@ istream& operator>> (istream& stream, Matrix& c)
 
 ostream& operator<< (ostream& stream, const Matrix& c)
 {
-	stream << c.n << "\n";
+	stream << c.n << " " << "\n";
 	for (int i = 0; i < c.n; i++)
 	{
 		for (int j = 0; j < c.n; j++)
@@ -180,6 +175,7 @@ bool Matrix::IsDiagonallyDominant()
 {
 	int a = 0;
 	int l;
+	bool IsDiagonallyDominant = true;
 	for (int i = 0; i < n; i++)
 	{
 		l = 0;
@@ -188,13 +184,15 @@ bool Matrix::IsDiagonallyDominant()
 			if (i != j)
 			    l += abs(mat[i][j]);
 		}
-		for (int j = 0; j < n; j++)
+		if (abs(mat[i][i]) < l)
 		{
-			if (i == j && abs(mat[i][j]) >= l)
-				a++;
+			IsDiagonallyDominant = false;
+			break;
 		}
+		if (abs(mat[i][i] > l))
+			a++;
 	}
-	if (a > 0)
-		return true;
-	else return false; 
+	if (a == 0)
+		IsDiagonallyDominant = false;
+	return IsDiagonallyDominant;
 }

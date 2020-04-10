@@ -23,7 +23,6 @@ public:
 	
 	//Secondary functions
 	void Create(int size);//Matrix allocation
-	void Resize(int newsize);//Matrix resizing
 	
 	//Operator overload
 	Matrix& operator=(const Matrix& other);//Assignment operator overload

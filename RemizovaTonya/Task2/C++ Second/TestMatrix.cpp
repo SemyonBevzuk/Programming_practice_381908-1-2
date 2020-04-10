@@ -143,21 +143,12 @@ met:
 		}
 		case 2:
 		{
-			int sizem;
-			char ch;//Для посимвольного считывания
-			string s;
-			int b = 0;//bytes
-			do 
-			{
-				fs.get(ch);
-				s += ch;
-				b++;
-			} while (ch != '\n');
-			sizem = atoi(s.c_str());
-			fs.seekg(b, ios::beg);//Идем в начало файла в потоке
-			fs.clear();
-			Matrix m11(sizem);
+			int m;
 			cout << "Matrix11 from file, size is: ";
+			fs >> m;
+			Matrix m11(m);
+			fs.seekg(0, ios::beg);//Идем в начало файла в потоке
+			fs.clear();
 			fs >> m11;
 			cout << m11;
 		}break;
