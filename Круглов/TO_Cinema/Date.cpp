@@ -84,3 +84,19 @@ Date& Date:: operator=(const Date& date)
 bool Date::operator==(const Date& date) const {
 	return(_day == date._day && _month == date._month && _year == date._year);
 }
+
+bool Date::operator<=(const Date& date) const {
+	if (_year < date._year)
+		return true;
+	if (_year == date._year) {
+		if (_month < date._month)
+			return true;
+		if (_month == date._month)
+			if (_day <= date._day)
+				return true;
+		else
+			return false;
+	}
+	else 
+		return false;
+}

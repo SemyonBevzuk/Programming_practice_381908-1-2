@@ -1,4 +1,6 @@
 #include "TicketOffice.h"
+#include<iostream>
+#include<ctime>
 
 using namespace std;
 
@@ -140,15 +142,26 @@ int TicketOffice::calculateCost(const Cinema& cinema,  int CountTicket, const Se
 		return CountTicket * session.CustomPrice;
 }
 
-vector<Ticket> TicketOffice::acceptOrder(Cinema& cinema, Date date, Time time, string NameFilm, int HallNumber, string ZoneType, int CountPlaces)
+vector<Ticket> TicketOffice::acceptOrder(Cinema& cinema, Date date, Time time1, string NameFilm, int HallNumber, string ZoneType, int CountPlaces)
 {
+	//проверка времени заказа
+	bool f=false;
+	time_t t = time(NULL);
+	struct tm *t_m;//какая-то классная структура из ctime
+	t_m = localtime(&t);
+	Date date_(t_m->tm_mday, t_m->tm_mon, t_m->tm_year);
+	Time time_(t_m->tm_sec, t_m->tm_min-10, t_m->tm_hour);
+	if (date_ <= date && time_ <= time1)
+		f = true;
+	if (!f)
+		throw "Time has expired for the order";
 	vector <Ticket> tickets;
 	int SessionNumber = -1;
 	int AvailableCountPlaces = 0;
 	vector <pair<int, int>> places;
 	for (int i = 0; i < cinema.Sessions.size(); i++)
 	{
-		if (date == cinema.Sessions[i].date && time == cinema.Sessions[i].time && HallNumber == cinema.Sessions[i].Hall.HallNumber) {
+		if (date == cinema.Sessions[i].date && time1 == cinema.Sessions[i].time && HallNumber == cinema.Sessions[i].Hall.HallNumber) {
 			SessionNumber = i;
 			break;
 		}
@@ -172,7 +185,7 @@ vector<Ticket> TicketOffice::acceptOrder(Cinema& cinema, Date date, Time time, s
 			ip = places[i].first;
 			jp = places[i].second;
 			cinema.Sessions[SessionNumber].Hall.VipPlaces[ip][jp] = true;
-			tickets.push_back(makeTicket(date, time, NameFilm, ZoneType, HallNumber, ip, jp));
+			tickets.push_back(makeTicket(date, time1, NameFilm, ZoneType, HallNumber, ip, jp));
 		}
 	}
 	else {
@@ -192,7 +205,7 @@ vector<Ticket> TicketOffice::acceptOrder(Cinema& cinema, Date date, Time time, s
 			ip = places[i].first;
 			jp = places[i].second;
 			cinema.Sessions[SessionNumber].Hall.CustomPlaces[ip][jp] = true;
-			tickets.push_back(makeTicket(date, time, NameFilm, ZoneType, HallNumber, ip, jp));
+			tickets.push_back(makeTicket(date, time1, NameFilm, ZoneType, HallNumber, ip, jp));
 		}
 	}
 	return tickets;

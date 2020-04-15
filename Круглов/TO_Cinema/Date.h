@@ -24,6 +24,7 @@ public:
 	bool setDate(int day, int month, int year);
 	Date& operator=(const Date& date);
 	bool operator == (const Date& date) const;
+	bool operator<=(const Date& date) const;
 };
 
 #endif 

@@ -33,6 +33,11 @@ public:
 	bool operator==(const Time& time) const{
 		return (sec == time.sec && min == time.min && hour == time.hour);
 	}
+	bool operator<=(const Time& time) const {
+		long long sec = hour * 3600 + min * 60 + sec;
+		long long sec_ = time.hour * 3600 + min * 60 + sec;
+		return sec <= sec_;
+	}
 	friend class Session;
 };
 
