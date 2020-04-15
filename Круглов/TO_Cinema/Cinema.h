@@ -34,9 +34,9 @@ public:
 		return (sec == time.sec && min == time.min && hour == time.hour);
 	}
 	bool operator<=(const Time& time) const {
-		long long sec = hour * 3600 + min * 60 + sec;
-		long long sec_ = time.hour * 3600 + min * 60 + sec;
-		return sec <= sec_;
+		long long sec1 = (long long)(hour * 3600) + min * 60 + sec;
+		long long sec2 = (long long)(time.hour * 3600) + time.min * 60 + time.sec;
+		return sec1 <= sec2;
 	}
 	friend class Session;
 };
@@ -49,27 +49,23 @@ struct CinemaHall
 	bool** CustomPlaces;
 	bool** VipPlaces;
 	int BasicValue;
-	CinemaHall(int Number = 0, int RowCustom_ = 0, int CountCustom_ = 0, int RowVip_ = 0, int CountVip_ = 0, int BasV = 0)
-	{
-		HallNumber = Number;
-		BasicValue = BasV;
-		RowCustom = RowCustom_; CountCustom = CountCustom_;
-		RowVip = RowVip_; CountVip = CountVip_;
-		CustomPlaces = new bool* [RowCustom];
-		for (int i = 0; i < RowCustom; i++)
-			CustomPlaces[i] = new bool[CountCustom];
-		VipPlaces = new bool* [RowVip];
-		for (int i = 0; i < RowVip; i++)
-			VipPlaces = new bool* [CountVip];
-	}
+	CinemaHall(int Number=0, int RowCustom_=0, int CountCustom_=0, int RowVip_=0, int CountVip_=0, int BasV=0);
+	CinemaHall(const CinemaHall& hall);
 	~CinemaHall() {
 		for (int i = 0; i < RowCustom; i++)
-			delete[] CustomPlaces[i];
-		delete[] CustomPlaces;
+			if (CustomPlaces[i] != NULL)
+				delete[] CustomPlaces[i];
+		if (CustomPlaces != NULL)
+			delete[] CustomPlaces;
 		for (int i = 0; i < RowVip; i++)
-			delete[] VipPlaces[i];
-		delete[] VipPlaces;
+			if (VipPlaces[i] != NULL)
+				delete[] VipPlaces[i];
+		if (VipPlaces != NULL)
+			delete[] VipPlaces;
+		RowCustom = 0; CountCustom = 0;
+		RowVip = 0; CountVip = 0;
 	}
+
 };
 
 class Session {
@@ -80,7 +76,7 @@ private:
 	int CustomPrice,VipPrice;
 	string NameFilm;
 public:
-	Session(CinemaHall hall_, Date date_, Time time_, string name)
+	Session(const CinemaHall& hall_, Date date_, Time time_, string name)
 	{
 		Hall = hall_;
 		date = date_;
@@ -94,6 +90,7 @@ public:
 		NameFilm = name;
 		VipPrice = CustomPrice * 1.5;
 	}
+	~Session() {};
 	bool operator==(const Session& session) const{
 		return(date == session.date && Hall.HallNumber == session.Hall.HallNumber &&
 			time == session.time);
