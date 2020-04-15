@@ -90,7 +90,7 @@ public:
 		NameFilm = name;
 		VipPrice = CustomPrice * 1.5;
 	}
-	~Session() {};
+	//~Session() {};
 	bool operator==(const Session& session) const{
 		return(date == session.date && Hall.HallNumber == session.Hall.HallNumber &&
 			time == session.time);
