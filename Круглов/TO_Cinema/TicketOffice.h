@@ -7,13 +7,16 @@
 using namespace std;
 
 
-struct Ticket {
+class Ticket {
 	Date date;
 	Time time;
 	string NameFilm;
 	string ZoneType;
 	int HallNumber;
 	int NumRow, NumPlace;
+public:
+	friend ostream& operator<<(ostream& stream, const Ticket& ticket);
+	friend class TicketOffice;
 };
 
 class TicketOffice {

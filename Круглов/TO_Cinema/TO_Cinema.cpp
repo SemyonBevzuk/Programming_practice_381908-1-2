@@ -1,6 +1,7 @@
 ﻿#include <iostream>
 #include <vector>
 #include"TicketOffice.h"
+#include"Cinema.h"
 
 using namespace std;
 
@@ -19,7 +20,12 @@ int main()
 		Time time2(0, 0, 19);
 		Session session2(hall2, date2, time2, "Metro");
 		cinema.addSession(session2);
-		TicketOffice::acceptOrder(cinema, date1, time1, "Stalker", 1, "VIP", 200);
+		//TicketOffice::acceptOrder(cinema, date1, time1, "Stalker", 1, "VIP", 200); -- Too late for order
+		//TicketOffice::acceptOrder(cinema, date2, time2, "Metro", 2, "VIP", 1000); -- Lack of places
+		vector<Ticket> tickets= TicketOffice::acceptOrder(cinema, date2, time2, "Metro", 2, "VIP", 5);
+		for (auto ticket : tickets) {
+			cout << ticket<<"\n";
+		}
 	}
 	catch (string s) {
 		cout << s;

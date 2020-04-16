@@ -38,10 +38,12 @@ public:
 		long long sec2 = (long long)(time.hour * 3600) + time.min * 60 + time.sec;
 		return sec1 <= sec2;
 	}
+	friend ostream& operator<<(ostream& stream, const Time& time);
 	friend class Session;
+	friend class Ticket;
 };
 
-struct CinemaHall
+class CinemaHall
 {
 	int HallNumber;
 	int RowCustom, CountCustom;
@@ -49,23 +51,13 @@ struct CinemaHall
 	bool** CustomPlaces;
 	bool** VipPlaces;
 	int BasicValue;
+public:
 	CinemaHall(int Number=0, int RowCustom_=0, int CountCustom_=0, int RowVip_=0, int CountVip_=0, int BasV=0);
 	CinemaHall(const CinemaHall& hall);
-	~CinemaHall() {
-		for (int i = 0; i < RowCustom; i++)
-			if (CustomPlaces[i] != NULL)
-				delete[] CustomPlaces[i];
-		if (CustomPlaces != NULL)
-			delete[] CustomPlaces;
-		for (int i = 0; i < RowVip; i++)
-			if (VipPlaces[i] != NULL)
-				delete[] VipPlaces[i];
-		if (VipPlaces != NULL)
-			delete[] VipPlaces;
-		RowCustom = 0; CountCustom = 0;
-		RowVip = 0; CountVip = 0;
-	}
-
+	~CinemaHall();
+	CinemaHall& operator=(const CinemaHall& hall);
+	friend class Session;
+	friend class TicketOffice;
 };
 
 class Session {
@@ -90,7 +82,7 @@ public:
 		NameFilm = name;
 		VipPrice = CustomPrice * 1.5;
 	}
-	//~Session() {};
+	~Session() {};
 	bool operator==(const Session& session) const{
 		return(date == session.date && Hall.HallNumber == session.Hall.HallNumber &&
 			time == session.time);

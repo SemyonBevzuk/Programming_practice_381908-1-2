@@ -1,6 +1,7 @@
 #include "TicketOffice.h"
 #include<iostream>
 #include<ctime>
+#include<string>
 
 using namespace std;
 
@@ -92,10 +93,12 @@ vector<Ticket> TicketOffice::acceptOrder(Cinema& cinema, Date date, Time time, s
 	vector <Ticket> tickets;
 	vector <pair<int, int>> places;
 	int SessionNumber = findSession(cinema, date, time, HallNumber);
+	s = "Incorrect Data Session";
 	if (SessionNumber == -1)//нет такой сессии
-		throw "Ќеверные данные сессии";
+		throw s;
+	s = "Lack of Places";
 	if (!isAvailabilityPlacess(cinema, SessionNumber, CountPlaces, ZoneType))
-		throw "Lack of places";
+		throw s;
 	places = findFreePlaces(cinema, ZoneType, SessionNumber);
 	if (ZoneType == "VIP")
 		for (int i = 0; i < CountPlaces; i++) {
@@ -116,7 +119,15 @@ vector<Ticket> TicketOffice::acceptOrder(Cinema& cinema, Date date, Time time, s
 	return tickets;
 }
 
-
+ostream& operator<<(ostream& stream, const Ticket& ticket) {
+	stream << ticket.date.getDateToString() << " ";
+	stream << ticket.time<<"\n";
+	stream << "Name: " << ticket.NameFilm << "\n"
+		<< "Zone's type:" << ticket.ZoneType << "\n";
+	stream << "Hall's number: " << ticket.HallNumber <<"\n";
+	stream << "Row:" << ticket.NumRow << " Place:" << ticket.NumPlace;
+	return stream;
+}
 
 // ¬—ѕќћќ√ј“≈Ћ№Ќџ≈ ‘”Ќ ÷»»-------------------------------------------------------------------------------------------------------
 //
@@ -188,7 +199,7 @@ bool TicketOffice::isCorrectlyTime(const Date& date, const Time& time1) {
 	t_m = localtime(&t);
 	Date date_(t_m->tm_mday, t_m->tm_mon+1, t_m->tm_year+1900);
 	Time time_(t_m->tm_sec, t_m->tm_min - 10, t_m->tm_hour);
-	if (date_ <= date && time_ <= time1)
+	if (date_ <= date)
 		f = true;
 	return f;
 }
