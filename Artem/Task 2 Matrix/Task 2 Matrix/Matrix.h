@@ -1,6 +1,9 @@
 #pragma once
 #include<iostream>
 #include<fstream>
+#include<cstdlib>
+#include<numeric>
+#include<stdio.h>
 
 using namespace std;
 
@@ -9,10 +12,9 @@ class Matrix
 private:
 	int** Matr;
 	int n;
-	void Create();
-	void Generate();
+	void Create(int size);
 public:
-	Matrix(int _n =2, int elem = 2);   
+	Matrix(int _n =2, int _elem=2);   
 	Matrix(const Matrix& matr);  
 	~Matrix();   
 
@@ -23,10 +25,8 @@ public:
 	int& operator()(int i, int j);
 
 	Matrix Transpose();
-	bool IsDagonalDomination();
+	bool IsDagonalDominance();
 
 	friend ofstream& operator<<(ofstream& ofstream,  Matrix& matr);
 	friend ifstream& operator>>(ifstream& ofstream, Matrix& matr);
-
-
 };

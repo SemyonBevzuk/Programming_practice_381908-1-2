@@ -1,32 +1,24 @@
 #include "Matrix.h"
 
-void Matrix::Create()
+void Matrix::Create(int size)
 {
+	n = size;
 	Matr = new int* [n];
 	for (int i = 0; i < n; i++)
 		Matr[i] = new int[n];
 }
 
-void Matrix::Generate()
-{
-	for (int i = 0; i < n; i++)
-		for (int j = 0; j < n; j++)
-			cin >> Matr[i][j];
-}
-
 Matrix::Matrix(int _n, int elem)
 {
-	n = _n;
-	Create();
-	for (int i = 0; i < n; i++)
-		for (int j = 0; j < n; j++)
+	Create(_n);
+	for (int i = 0; i < _n; i++)
+		for (int j = 0; j < _n; j++)
 			Matr[i][j] = elem;
 }
 
 Matrix::Matrix(const Matrix& matr)
 {
-	n = matr.n;
-	Create();
+	Create(matr.n);
 	for (int i = 0; i < n; i++)
 		for (int j = 0; j < n; j++)
 			Matr[i][j] = matr.Matr[i][j];
@@ -34,10 +26,13 @@ Matrix::Matrix(const Matrix& matr)
 
 Matrix::~Matrix()
 {
-	for (int i = 0; i < n; i++)
-		delete[] Matr[i];
-	delete[] Matr;
-	n = 0;
+	if (Matr != nullptr)
+	{
+		for (int i = 0; i < n; i++)
+			delete[] Matr[i];
+		delete[] Matr;
+	}
+	Matr = nullptr;
 }
 
 int& Matrix::operator()(int i, int j)
@@ -45,32 +40,26 @@ int& Matrix::operator()(int i, int j)
 	if (i < n && j < n && i >= 0 && j >= 0)
 		return Matr[i][j];
 	else
-		throw "The matrix is incorrect";
+		throw "The indexes are incorrect";
 }
 
 Matrix& Matrix::operator=(const Matrix& _matr)
 {
-	if (n == _matr.n)
+	if (this != &_matr)
 	{
+		Create(_matr.n);
 		for (int i = 0; i < n; i++)
-			delete[] Matr[i];
-		if (Matr != NULL)
-			delete[] Matr;
-		n = _matr.n;
-		Create();
+		{
+			for (int j = 0; j < n; j++)
+				Matr[i][j] = _matr.Matr[i][j];
+		}
 	}
-	if (this == &_matr)
-		return *this;
-	for (int i = 0; i < n; i++)
-	{
-		for (int j = 0; j < n; j++)
-			Matr[i][j] = _matr.Matr[i][j];
-	}
-	return *this;
+	return* this; 
 }
 
 Matrix Matrix::operator+(const Matrix& matr1)
 {
+
 	if (n == matr1.n)
 	{
 		Matrix matrRes(n);
@@ -81,7 +70,7 @@ Matrix Matrix::operator+(const Matrix& matr1)
 	}
 	else
 	{
-		cout << "Cannot be added." << endl;
+		cout << "The matrixes have differet sizes" << endl;
 		throw 1;
 	}
 }
@@ -105,7 +94,7 @@ Matrix Matrix::operator*(const Matrix& matr)
 	}
 	else
 	{
-		cout << "Cannot be multiplicated" << endl;
+		cout << "The matrixes have different sizes" << endl;
 		throw 1;
 	}
 }
@@ -118,17 +107,20 @@ Matrix Matrix::operator*(int x)
 	return *this;
 }
 
-bool Matrix::IsDagonalDomination()
+bool Matrix::IsDagonalDominance()
 {
-	int sum = 0;
 	for (int i = 0; i < n; i++)
-		for (int j = 0; j < n; j++)
+	{
+		int sum = 0;
+		for (int j = 0; j < n; j++) 
+		{
 			if (i != j)
 				sum += abs(Matr[i][j]);
-	for (int i = 0; i < n; i++)
-		if (abs(Matr[i][i]) < sum)
-			return 0;
-	return 1;
+		}
+		if (abs(Matr[i][i] < sum))
+			return false;
+	}
+	return true;
 }
 
 Matrix Matrix::Transpose()
@@ -153,7 +145,7 @@ ofstream& operator<<(ofstream& ofstream, Matrix& _matr)
 
 ifstream& operator>>(ifstream& ifstream, Matrix& _matr)
 {
-	_matr.Generate();
+	ifstream >> _matr.n;
 	for (int i = 0; i < _matr.n; i++)
 	{
 		for (int j = 0; j < _matr.n; j++)
