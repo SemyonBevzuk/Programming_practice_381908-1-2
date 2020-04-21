@@ -18,6 +18,7 @@ public:
 	Matrix(const Matrix& matr);  
 	~Matrix();   
 
+
 	Matrix operator+(const Matrix& matr1);
 	Matrix& operator=(const Matrix& matr);
 	Matrix operator*(const Matrix& matr);
