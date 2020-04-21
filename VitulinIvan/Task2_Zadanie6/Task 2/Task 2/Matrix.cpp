@@ -24,7 +24,7 @@ int main()
 	is.close();
 	if (H.DiagonalDominant())
 	{
-		H = H.trs();
+		H = H.Transpose();
 	}
 	R = B + E;
 	F = (E * 5)*C+B;
