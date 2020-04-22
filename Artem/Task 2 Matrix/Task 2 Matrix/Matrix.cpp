@@ -134,6 +134,7 @@ Matrix Matrix::Transpose()
 
 ofstream& operator<<(ofstream& ofstream, Matrix& _matr)
 {
+	ofstream << _matr.n << endl;
 	for (int i = 0; i < _matr.n; i++)
 	{
 		for (int j = 0; j < _matr.n; j++)

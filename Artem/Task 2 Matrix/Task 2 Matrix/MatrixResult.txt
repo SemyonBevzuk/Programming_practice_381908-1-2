@@ -1,24 +1,30 @@
 The result of adding two matrixes together:
+2
 3 3 
 3 3 
 The fourth matrix:
+3
 2 1 3 
 2 5 2 
 9 8 6 
 The transposed matrix
+3
 2 2 9 
 1 5 8 
 3 2 6 
 The result of multiplication of two matrixes:
+3
 13 13 13 
 14 14 14 
 11 11 11 
 The fifth matrix:
+3
 3 3 3 
 3 3 3 
 3 3 3 
 The matrix has diagonal dominance
 The result of multiplication by a number:
+3
 26 26 26 
 28 28 28 
 22 22 22 
