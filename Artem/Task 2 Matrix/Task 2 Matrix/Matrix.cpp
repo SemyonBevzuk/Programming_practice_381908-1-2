@@ -145,6 +145,7 @@ ofstream& operator<<(ofstream& ofstream, Matrix& _matr)
 
 ifstream& operator>>(ifstream& ifstream, Matrix& _matr)
 {
+	ifstream >> _matr.n;
 	_matr.Create(_matr.n);
 	for (int i = 0; i < _matr.n; i++)
 	{
