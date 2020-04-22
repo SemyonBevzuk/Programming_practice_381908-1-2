@@ -7,7 +7,7 @@
 
 using namespace std;
 
-MyMatrix::MyMatrix(int a, int b) //proverka lishney ne bivae, pust' ostanetsa :)
+MyMatrix::MyMatrix(int a, int b) //proverka lishney ne bivae, pust' ostanetsa 
 {
 	m = a;
 	n = b;
