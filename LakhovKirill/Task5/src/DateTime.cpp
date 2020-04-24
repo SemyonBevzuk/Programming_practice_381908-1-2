@@ -62,7 +62,3 @@ bool DateTime::setMinute(int minute) {
     }
     return false;
 }
-
-void DateTime::castTime() {
-
-}

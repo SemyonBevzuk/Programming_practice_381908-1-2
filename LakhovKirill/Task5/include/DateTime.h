@@ -34,8 +34,6 @@ public:
     inline int getYear() const { return this->year;}
     inline int getHour() const { return  this->hour;}
     inline int getMinute() const { return  this->minute;}
-private:
-    void castTime();
 };
 
 

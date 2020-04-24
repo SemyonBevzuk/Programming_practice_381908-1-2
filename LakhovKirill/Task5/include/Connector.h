@@ -32,7 +32,7 @@ private:
     string table;
 
     static int rand(int a,int b);
-    static struct tm* currentDate();
+    static struct tm* currentDate(int add=0);
 };
 
 

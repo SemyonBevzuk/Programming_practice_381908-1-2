@@ -74,7 +74,7 @@ void Connector::initSessionTable() {
             " day INTEGER NOT NULL, month INTEGER NOT NULL, year INTEGER NOT NULL, minute INTEGER NOT NULL, hour INTEGER NOT NULL,"
             "occupied_places INTEGER NOT NULL, occupied_vip_places INTEGER NOT NULL, price INTEGER NOT NULL, vip_price INTEGER NOT NULL)");
 
-    for (int i = 1; i < 31; ++i) {
+    for (int i = 0; i < 30; ++i) {
         int filmsInTheDay = Connector::rand(1, 5);
         vector<int> ids = vector<int>();
         int j = 0;
@@ -89,8 +89,8 @@ void Connector::initSessionTable() {
 
             int hour = sessionTemplate.getHour();
 
-            DateTime dateTime = DateTime(i, Connector::currentDate()->tm_mon + 1,
-                                         Connector::currentDate()->tm_year + 1900,
+            DateTime dateTime = DateTime(Connector::currentDate(i)->tm_mday , Connector::currentDate(i)->tm_mon + 1,
+                                         Connector::currentDate(i)->tm_year + 1900,
                                          sessionTemplate.getHour(),
                                          sessionTemplate.getMinute());
 
@@ -127,9 +127,9 @@ SessionTemplate Connector::getSessionTemplate(int id) {
                            query.getColumn("hour"));
 }
 
-struct tm *Connector::currentDate() {
+struct tm *Connector::currentDate(int add) {
     auto now = std::chrono::system_clock::now();
-    std::time_t now_c = std::chrono::system_clock::to_time_t(now);
+    std::time_t now_c = std::chrono::system_clock::to_time_t(now + std::chrono::hours(24*add));
     return std::localtime(&now_c);
 }
 
