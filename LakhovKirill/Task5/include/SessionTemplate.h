@@ -6,14 +6,19 @@
 #define TASK5_SESSIONTEMPLATE_H
 
 #include "string"
+
 using namespace std;
 
 class SessionTemplate {
 public:
-    explicit SessionTemplate(int id=1, const string& name="Film", int minute=0, int hour=12);
-    inline int getHour() { return  this->hour;}
-    inline int getMinute() { return  this->minute;}
-    inline string getName(){ return this->name;}
+    explicit SessionTemplate(int id = 1, const string &name = "Film", int minute = 0, int hour = 12);
+
+    inline int getHour() { return this->hour; }
+
+    inline int getMinute() { return this->minute; }
+
+    inline string getName() { return this->name; }
+
 private:
     int id;
     string name;

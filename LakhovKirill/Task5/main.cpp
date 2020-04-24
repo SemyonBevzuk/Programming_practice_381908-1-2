@@ -1,8 +1,10 @@
 #include <iostream>
 #include "include/Cinema.h"
+#include "include/TicketOffice.h"
 
 int main() {
-    auto* c = new Cinema();
-    c->initDays();
+    Cinema cinema = Cinema("cinema.db3");
+    TicketOffice office = TicketOffice(cinema, true);
+    office.start();
     return 0;
 }

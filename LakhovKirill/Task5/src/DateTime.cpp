@@ -42,7 +42,7 @@ string DateTime::getDate() const {
 }
 
 string DateTime::getTime() const {
-    return this->sHour + "." + this->sMinute + ".";
+    return this->sHour + ":" + this->sMinute;
 }
 
 bool DateTime::setHour(int hour) {
@@ -61,4 +61,8 @@ bool DateTime::setMinute(int minute) {
         return true;
     }
     return false;
+}
+
+string DateTime::getFullDate() const {
+    return this->getTime() + " " + this->getDate();
 }

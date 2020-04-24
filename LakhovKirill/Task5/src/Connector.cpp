@@ -15,13 +15,8 @@ Database Connector::connect() {
     return db;
 }
 
-Connector::Connector(const string &database, const string &table) {
+Connector::Connector(const string &database) {
     this->database = database;
-    this->table = table;
-}
-
-void Connector::changeTable(const string &table) {
-    this->table = table;
 }
 
 void Connector::initTemplateTable() {
@@ -89,7 +84,7 @@ void Connector::initSessionTable() {
 
             int hour = sessionTemplate.getHour();
 
-            DateTime dateTime = DateTime(Connector::currentDate(i)->tm_mday , Connector::currentDate(i)->tm_mon + 1,
+            DateTime dateTime = DateTime(Connector::currentDate(i)->tm_mday, Connector::currentDate(i)->tm_mon + 1,
                                          Connector::currentDate(i)->tm_year + 1900,
                                          sessionTemplate.getHour(),
                                          sessionTemplate.getMinute());
@@ -129,25 +124,60 @@ SessionTemplate Connector::getSessionTemplate(int id) {
 
 struct tm *Connector::currentDate(int add) {
     auto now = std::chrono::system_clock::now();
-    std::time_t now_c = std::chrono::system_clock::to_time_t(now + std::chrono::hours(24*add));
+    std::time_t now_c = std::chrono::system_clock::to_time_t(now + std::chrono::hours(24 * add));
     return std::localtime(&now_c);
 }
 
-void Connector::save(Session &session) {
+void Connector::save(const Session &session) {
     Database db = this->connect();
-    Statement query = Statement(db, "INSERT INTO sessions VALUES (NULL, :name, :hall, "
-                                    ":day, :month, :year, :minute, :hour, :occupied_places, :occupied_vip_places,"
-                                    ":price, :vip_price)");
-    query.bind(":name", session.getName());
-    query.bind(":hall", session.getHall().getId());
-    query.bind(":day", session.getDateTime().getDay());
-    query.bind(":month", session.getDateTime().getMonth());
-    query.bind(":year", session.getDateTime().getYear());
-    query.bind(":minute", session.getDateTime().getMinute());
-    query.bind(":hour", session.getDateTime().getHour());
-    query.bind(":occupied_places", session.getOccupiedPlaces());
-    query.bind(":occupied_vip_places", session.getOccupiedVipPlaces());
-    query.bind(":price", session.getPrice());
-    query.bind(":vip_price", session.getVipPrice());
-    query.exec();
+    if (session.getId() == 0) {
+        Statement query = Statement(db, "INSERT INTO sessions VALUES (NULL, :name, :hall, "
+                                        ":day, :month, :year, :minute, :hour, :occupied_places, :occupied_vip_places,"
+                                        ":price, :vip_price)");
+        query.bind(":name", session.getName());
+        query.bind(":hall", session.getHall().getId());
+        query.bind(":day", session.getDateTime().getDay());
+        query.bind(":month", session.getDateTime().getMonth());
+        query.bind(":year", session.getDateTime().getYear());
+        query.bind(":minute", session.getDateTime().getMinute());
+        query.bind(":hour", session.getDateTime().getHour());
+        query.bind(":occupied_places", session.getOccupiedPlaces());
+        query.bind(":occupied_vip_places", session.getOccupiedVipPlaces());
+        query.bind(":price", session.getPrice());
+        query.bind(":vip_price", session.getVipPrice());
+        query.exec();
+    } else {
+        Statement query = Statement(db, "UPDATE sessions SET occupied_places=:occupied_places, "
+                                        "occupied_vip_places=:occupied_vip_places "
+                                        "WHERE day=:day AND month=:month AND year=:year AND minute=:minute AND hour=:hour");
+
+        query.bind(":day", session.getDateTime().getDay());
+        query.bind(":month", session.getDateTime().getMonth());
+        query.bind(":year", session.getDateTime().getYear());
+        query.bind(":minute", session.getDateTime().getMinute());
+        query.bind(":hour", session.getDateTime().getHour());
+        query.bind(":occupied_places", session.getOccupiedPlaces());
+        query.bind(":occupied_vip_places", session.getOccupiedVipPlaces());
+        query.exec();
+    }
+
+}
+
+vector<Session> Connector::getSessionsByDate(const DateTime &date) {
+    Database db = this->connect();
+    Statement query(db, "SELECT * FROM sessions WHERE day=:day AND month=:month AND year=:year");
+    query.bind(":day", date.getDay());
+    query.bind(":month", date.getMonth());
+    query.bind(":year", date.getYear());
+
+    vector<Session> sessions = vector<Session>();
+    while (query.executeStep()) {
+        Hall hall = this->getHall(query.getColumn("hall"));
+        DateTime dateTime = DateTime(query.getColumn("day"), query.getColumn("month"), query.getColumn("year"),
+                                     query.getColumn("hour"), query.getColumn("minute"));
+        sessions.emplace_back(query.getColumn("name"), hall, dateTime, query.getColumn("price"),
+                              query.getColumn("vip_price"), query.getColumn("occupied_places"),
+                              query.getColumn("occupied_vip_places"), query.getColumn("id"));
+    }
+    return sessions;
 }
