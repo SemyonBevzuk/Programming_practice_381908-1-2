@@ -116,28 +116,59 @@ MyMatrix MyMatrix::Transpose()
 	return T;
 }
 
+//bool MyMatrix::DiagonalDominant()
+//{
+//	try 
+//	{
+//		if (m != n)
+//			throw exception ("Определить невозможно: матрица должна быть квадратной");
+//		int sum = 0;
+//		for (int i = 2; i <= m; i++)
+//		{
+//			for (int j = 1; j < i; j++)
+//			{
+//				sum += abs((*this)(i, j)) + abs((*this)(j, i));
+//			}
+//		}
+//		for (int i = 1; i <= m; i++)
+//		{
+//			if (abs((*this)(i, i)) < sum)
+//				return false;
+//		}
+//		return true;
+//	}
+//	catch (const char* str) 
+//	{
+//		cout << str << endl;
+//		return false;
+//	}
+//}
+
 bool MyMatrix::DiagonalDominant()
 {
-	try 
+	try
 	{
 		if (m != n)
 			throw exception ("Определить невозможно: матрица должна быть квадратной");
 		int sum = 0;
-		for (int i = 2; i <= m; i++)
-		{
-			for (int j = 1; j < i; j++)
-			{
-				sum += abs((*this)(i, j)) + abs((*this)(j, i));
-			}
-		}
+		int flag = 0;
 		for (int i = 1; i <= m; i++)
 		{
-			if (abs((*this)(i, i)) < sum)
-				return false;
+			for (int j = 1; j <= n; j++)
+			{
+				if (i != j)
+					sum = sum + abs((*this)(i, j));
+			}
+			if (abs((*this)(i, i)) >= sum)
+				flag = flag + 1;
+			sum = 0;
 		}
-		return true;
+		if (flag == m)
+			return true;
+		else
+			return false;
 	}
-	catch (const char* str) 
+	catch (const char* str)
 	{
 		cout << str << endl;
 		return false;
