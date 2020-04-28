@@ -1,15 +1,15 @@
+#include <clocale>
 #include <iostream>
 #include <cstdlib>
-#include "ClassMatrix.h"
 #include <fstream>
-#include <clocale>
+#include "ClassMatrix.h"
 
 using namespace std;
 
 int main() 
 {
 	setlocale(LC_CTYPE, " Russian");
-	string str = "Поймана ошибка";
+	string str = "Найдена ошибка";
 	MyMatrix A, B(3, 3),D, E, R, F,H;
 	for (int i = 1; i <= 3; i++)
 	{	for (int j = 1; j <= 3; j++)
@@ -24,7 +24,7 @@ int main()
 	is.close();
 	if (H.DiagonalDominant())
 	{
-		H = H.trs();
+		H = H.Transpose();
 	}
 	R = B + E;
 	F = (E * 5)*C+B;

@@ -1,13 +1,13 @@
 #include <iostream>
-#include <cstdio>
 #include <cstdlib>
-#include "ClassMatrix.h"
+#include <cstdio>
 #include <vector>
 #include <fstream>
+#include "ClassMatrix.h"
 
 using namespace std;
 
-MyMatrix::MyMatrix(int a, int b)
+MyMatrix::MyMatrix(int a, int b) //proverka lishney ne bivae, pust' ostanetsa 
 {
 	m = a;
 	n = b;
@@ -15,10 +15,10 @@ MyMatrix::MyMatrix(int a, int b)
 	{
 		if ((m < 0) || (n < 0))
 			throw exception ("Неверное число столбцов или строк");
-		Elt.resize(m);
+		marix.resize(m);
 		for (int i = 0; i < m; i++)
 		{
-			Elt[i].resize(n);
+			marix[i].resize(n);
 		}
 	}
 	catch (const char* str) 
@@ -34,17 +34,22 @@ MyMatrix::MyMatrix(const MyMatrix& Mat)
 
 MyMatrix::~MyMatrix()
 {
+	for (int i = 0; i < m; i++)
+	{
+		marix[i].clear();
+	}
+	marix.clear();
 }
 
 MyMatrix& MyMatrix::operator=(const MyMatrix& Mat)
 {
 	m = Mat.m;
 	n = Mat.n;
-	Elt = Mat.Elt;
+	marix = Mat.marix;
 	return *this;
 }
 
-MyMatrix MyMatrix::operator+(const MyMatrix& Mat) const
+MyMatrix const MyMatrix::operator+(const MyMatrix& Mat) const
 {
 	MyMatrix tmp(m, n);
 	try 
@@ -55,7 +60,7 @@ MyMatrix MyMatrix::operator+(const MyMatrix& Mat) const
 		{
 			for (int j = 0; j < n; j++)
 			{
-				tmp.Elt[i][j] = Elt[i][j] + Mat.Elt[i][j];
+				tmp.marix[i][j] = marix[i][j] + Mat.marix[i][j];
 			}
 		}
 	}
@@ -66,13 +71,13 @@ MyMatrix MyMatrix::operator+(const MyMatrix& Mat) const
 	return tmp;
 }
 
-int& MyMatrix::operator()(int i, int j)
+int MyMatrix::operator()(int i, int j) const
 {
 	try 
 	{
 		if ((i < 1) || (i > m) || (j < 1) || (j > n))
 			throw exception ("Неверный индекс элемента");
-		return Elt[i - 1][j - 1];
+		return marix[i - 1][j - 1];
 	}
 	catch (const char* str) 
 	{
@@ -82,7 +87,23 @@ int& MyMatrix::operator()(int i, int j)
 	}
 }
 
-MyMatrix MyMatrix::trs()
+int& MyMatrix::operator()(int i, int j)
+{
+	try
+	{
+		if ((i < 1) || (i > m) || (j < 1) || (j > n))
+			throw exception("Неверный индекс элемента");
+		return marix[i - 1][j - 1];
+	}
+	catch (const char* str)
+	{
+		cout << str << endl;
+		int x = 0;
+		return x;
+	}
+}
+
+MyMatrix MyMatrix::Transpose()
 {
 	MyMatrix T(n, m);
 	for (int i = 1; i <= n; i++)
@@ -95,35 +116,66 @@ MyMatrix MyMatrix::trs()
 	return T;
 }
 
+//bool MyMatrix::DiagonalDominant()
+//{
+//	try 
+//	{
+//		if (m != n)
+//			throw exception ("Определить невозможно: матрица должна быть квадратной");
+//		int sum = 0;
+//		for (int i = 2; i <= m; i++)
+//		{
+//			for (int j = 1; j < i; j++)
+//			{
+//				sum += abs((*this)(i, j)) + abs((*this)(j, i));
+//			}
+//		}
+//		for (int i = 1; i <= m; i++)
+//		{
+//			if (abs((*this)(i, i)) < sum)
+//				return false;
+//		}
+//		return true;
+//	}
+//	catch (const char* str) 
+//	{
+//		cout << str << endl;
+//		return false;
+//	}
+//}
+
 bool MyMatrix::DiagonalDominant()
 {
-	try 
+	try
 	{
 		if (m != n)
 			throw exception ("Определить невозможно: матрица должна быть квадратной");
 		int sum = 0;
-		for (int i = 2; i <= m; i++)
-		{
-			for (int j = 1; j < i; j++)
-			{
-				sum += abs((*this)(i, j)) + abs((*this)(j, i));
-			}
-		}
+		int flag = 0;
 		for (int i = 1; i <= m; i++)
 		{
-			if (abs((*this)(i, i)) < sum)
-				return false;
+			for (int j = 1; j <= n; j++)
+			{
+				if (i != j)
+					sum = sum + abs((*this)(i, j));
+			}
+			if (abs((*this)(i, i)) >= sum)
+				flag = flag + 1;
+			sum = 0;
 		}
-		return true;
+		if (flag == m)
+			return true;
+		else
+			return false;
 	}
-	catch (const char* str) 
+	catch (const char* str)
 	{
 		cout << str << endl;
 		return false;
 	}
 }
 
-MyMatrix MyMatrix::operator*(MyMatrix& Mat)
+MyMatrix const MyMatrix::operator*(const MyMatrix& Mat) const
 {
 	try 
 	{
@@ -137,7 +189,7 @@ MyMatrix MyMatrix::operator*(MyMatrix& Mat)
 				M(i, j) = 0;
 				for (int k = 1; k <= n; k++)
 				{
-					M(i, j) += (*this)(i, k) * Mat(k, j);
+					M(i, j) += marix[i-1][k-1] * Mat(k, j);
 				}
 			}
 		}
@@ -150,7 +202,7 @@ MyMatrix MyMatrix::operator*(MyMatrix& Mat)
 	}
 }
 
-MyMatrix MyMatrix::operator*(int x)
+MyMatrix const MyMatrix::operator*(int x) const
 {
 	MyMatrix M(m, n);
 	for (int i = 1; i <= m; i++)
