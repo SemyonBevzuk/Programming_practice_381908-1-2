@@ -138,20 +138,19 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\Task_4\Task_4\FilmLibrary.cpp" />
     <ClCompile Include="5.5.cpp" />
     <ClCompile Include="Cinema.cpp" />
-    <ClCompile Include="Date.cpp" />
+    <ClCompile Include="DateS.cpp" />
     <ClCompile Include="Seanсe.cpp" />
     <ClCompile Include="TicketOffice.cpp" />
-    <ClCompile Include="Time.cpp" />
+    <ClCompile Include="TimeS.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Cinema.h" />
-    <ClInclude Include="Date.h" />
+    <ClInclude Include="DateS.h" />
     <ClInclude Include="Seanсe.h" />
     <ClInclude Include="TicketOffice.h" />
-    <ClInclude Include="Time.h" />
+    <ClInclude Include="TimeS.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -33,8 +33,6 @@ ifstream& operator>>(ifstream& in, Cinema& c)
 	for (int i = 0; i < n; i++)
 	{
 		in >> c.seanses[i];
-		in.ignore();
-		in.ignore();
 	}
 	sort(c.seanses.begin(), c.seanses.end(), sort_date_time_hall);
 	return in;

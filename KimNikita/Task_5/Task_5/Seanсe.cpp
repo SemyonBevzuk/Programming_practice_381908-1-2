@@ -2,7 +2,7 @@
 
 using namespace std;
 
-Seanñe::Seanñe(Date d, Time t, string f, int num, double cost)
+Seanñe::Seanñe(DateS d, TimeS t, string f, int num, double cost)
 {
 	int n, m;
 	date = d;
@@ -35,9 +35,9 @@ Seanñe::Seanñe(Date d, Time t, string f, int num, double cost)
 		for (int j = 0; j < m; j++)
 		{
 			if (i == 0 || i == n / 2 || n > 2 && i == n / 2 + 1)
-				hall[i].push_back({ false,true });
+				hall[i].push_back({ true,true });
 			else
-				hall[i].push_back({ false,false });
+				hall[i].push_back({ true,false });
 		}
 	}
 }
@@ -56,16 +56,12 @@ Seanñe& Seanñe::operator=(const Seanñe& s)
 }
 ifstream& operator>>(ifstream& in, Seanñe& s)
 {
-
-	Time t;
+	DateS d;
+	TimeS t;
 	string f;
 	int num;
 	double cost;
-	Date d;
 	in >> d;
-	/*int day, month;
-	in >> day >> month;
-	Date d(day, month);*/
 	in >> t;
 	in.ignore();
 	getline(in, f);

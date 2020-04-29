@@ -3,34 +3,36 @@
 
 using namespace std;
 
-void TicketOffice::SetCurrentDateTime(Date d, Time t)
+void TicketOffice::SetCurrentDateSTimeS(DateS d, TimeS t)
 {
 	current_date = d;
 	current_time = t;
 }
-bool TicketOffice::IsSeanceEnabled(Date d, Time t)
+bool TicketOffice::IsSeanceEnabled(DateS d, TimeS t)
 {
-	Date dt = current_date;
-	Time tt = current_time;
-	tt += Time(0, 10);
-	dt += Date(3, 0);
-	if (dt < d || tt < t)
+	DateS dt = current_date;
+	TimeS tt = t;
+	tt += TimeS(0, 10);
+	DateS dd;
+	dd.day = 3;
+	dt += dd;
+	if (dt < d || current_date == d && tt < current_time)
 		return false;
 	return true;
 }
-bool TicketOffice::TicketsOrder(int id, Date d, Time t, int num, int count, int zone)
+bool TicketOffice::TicketsOrder(int id, DateS d, TimeS t, int num, int count, int zone, vector<Ticket>& tickets)
 {
 	if (!IsSeanceEnabled(d, t))
 		throw exception("Вы не можете заказывать билеты на это время и день");
 	if (IsFree(d, t, num, count, zone))
 	{
 		Reserve(id, d, t, num, count, zone);
-		CreateTickets(id, d, t, num);
+		tickets = CreateTickets(id, d, t, num);
 		return true;
 	}
 	return false;
 }
-int TicketOffice::SeanceId(Date d, Time t, int num)
+int TicketOffice::SeanceId(DateS d, TimeS t, int num)
 {
 	for (int i = 0; i < cinema.seanses.size(); i++)
 	{
@@ -41,7 +43,7 @@ int TicketOffice::SeanceId(Date d, Time t, int num)
 	}
 	return -1;
 }
-bool TicketOffice::IsFree(Date d, Time t, int num, int count, int zone)
+bool TicketOffice::IsFree(DateS d, TimeS t, int num, int count, int zone)
 {
 	int col = -1;
 	int sid = SeanceId(d, t, num);
@@ -51,20 +53,21 @@ bool TicketOffice::IsFree(Date d, Time t, int num, int count, int zone)
 		for (int k = 0; k < cinema.seanses[sid].hall.size(); k++)
 			for (int j = 0; j < cinema.seanses[sid].hall[k].size(); j++)
 			{
-				if (!cinema.seanses[sid].hall[k][j].free)
+				if (cinema.seanses[sid].hall[k][j].free)
 					if (cinema.seanses[sid].hall[k][j].vip == zone)
+					{
 						col++;
+						if (col >= count)
+							return true;
+					}
 			}
 	}
-	if (col >= count)
-		return true;
+	if (col != -1)
+		return false;
 	else
-		if (col != -1)
-			return false;
-		else
-			throw exception("Такого сеанса не существует");
+		throw exception("Такого сеанса не существует");
 }
-bool TicketOffice::Reserve(int id, Date d, Time t, int num, int count, int zone)
+bool TicketOffice::Reserve(int id, DateS d, TimeS t, int num, int count, int zone)
 {
 	if (!IsSeanceEnabled(d, t))
 		throw exception("Вы не можете заказывать билеты на это время и день");
@@ -81,7 +84,7 @@ bool TicketOffice::Reserve(int id, Date d, Time t, int num, int count, int zone)
 			{
 				if (c >= count)
 					break;
-				if (cinema.seanses[sid].hall[i][j].free)
+				if (cinema.seanses[sid].hall[i][j].free && cinema.seanses[sid].hall[i][j].vip == zone)
 				{
 					cinema.seanses[sid].hall[i][j].free = false;
 					index_reserve.push_back(make_pair(i, j));
@@ -102,7 +105,7 @@ bool TicketOffice::Reserve(int id, Date d, Time t, int num, int count, int zone)
 	}
 	return false;
 }
-double TicketOffice::CalculateCost(int id, Date d, Time t, int num)
+double TicketOffice::CalculateCost(int id, DateS d, TimeS t, int num)
 {
 	double sum = 0;
 	for (int i = 0; i < orders.size(); i++)
@@ -125,7 +128,7 @@ double TicketOffice::CalculateCost(int id, Date d, Time t, int num)
 	}
 	return sum;
 }
-bool TicketOffice::CancelOrder(int id, Date d, Time t, int num)
+bool TicketOffice::CancelOrder(int id, DateS d, TimeS t, int num)
 {
 	int sid = SeanceId(d, t, num);
 	for (int i = 0; i < orders.size(); i++)
@@ -143,7 +146,7 @@ bool TicketOffice::CancelOrder(int id, Date d, Time t, int num)
 	}
 	return false;
 }
-vector<Ticket> TicketOffice::CreateTickets(int id, Date d, Time t, int num)
+vector<Ticket> TicketOffice::CreateTickets(int id, DateS d, TimeS t, int num)
 {
 	Ticket ticket;
 	vector<Ticket>tickets;
@@ -170,4 +173,20 @@ vector<Ticket> TicketOffice::CreateTickets(int id, Date d, Time t, int num)
 		}
 	}
 	return tickets;
+}
+void TicketOffice::PrintSeanceHall(DateS d, TimeS t, int num)
+{
+	int sid = SeanceId(d, t, num);
+	for (int i = 0; i < cinema.seanses[sid].hall.size(); i++)
+	{
+		for (int j = 0; j < cinema.seanses[sid].hall[i].size(); j++)
+		{
+			if (cinema.seanses[sid].hall[i][j].free)
+				cout << 1;
+			else
+				cout << 0;
+		}
+		cout << endl;
+	}
+	cout << endl;
 }

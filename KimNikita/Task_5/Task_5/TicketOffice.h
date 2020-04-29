@@ -10,8 +10,8 @@ struct Order
 };
 struct Ticket
 {
-	Date date;
-	Time time;
+	DateS date;
+	TimeS time;
 	string film;
 	int num_zal;
 	int num_row;
@@ -32,32 +32,34 @@ struct Ticket
 		cout << time.minute << endl;
 		cout << "Фильм: " << film << endl;
 		cout << "Номер зала: " << num_zal << endl;
-		cout << "Ряд: " << num_row << " место:" << num_place << endl;
+		cout << "Ряд: " << num_row << " место: " << num_place << endl;
+		cout << endl;
 	}
 };
 
 class TicketOffice
 {
 private:
-	Date current_date;
-	Time current_time;
+	DateS current_date;
+	TimeS current_time;
 	Cinema cinema;
 	vector<Order> orders;
-	int SeanceId(Date d, Time t, int num);
-	bool IsSeanceEnabled(Date d, Time t);
-	vector<Ticket> CreateTickets(int id, Date d, Time t, int num);
+	int SeanceId(DateS d, TimeS t, int num);
+	bool IsSeanceEnabled(DateS d, TimeS t);
 public:
 	TicketOffice() {}
 	TicketOffice(Cinema c)
 	{
 		cinema = c;
 	}
-	void SetCurrentDateTime(Date d, Time t);
-	bool TicketsOrder(int id, Date d, Time t, int num, int count, int zone);
-	bool IsFree(Date d, Time t, int num, int count, int zone);
-	bool Reserve(int id, Date d, Time t, int num, int count, int zone);
-	double CalculateCost(int id, Date d, Time t, int num);
-	bool CancelOrder(int id, Date d, Time t, int num);
+	void SetCurrentDateSTimeS(DateS d, TimeS t);
+	bool TicketsOrder(int id, DateS d, TimeS t, int num, int count, int zone, vector<Ticket>& tickets);
+	bool IsFree(DateS d, TimeS t, int num, int count, int zone);
+	bool Reserve(int id, DateS d, TimeS t, int num, int count, int zone);
+	double CalculateCost(int id, DateS d, TimeS t, int num);
+	bool CancelOrder(int id, DateS d, TimeS t, int num);
+	vector<Ticket> CreateTickets(int id, DateS d, TimeS t, int num);
+	void PrintSeanceHall(DateS d, TimeS t, int num);
 	~TicketOffice() {}
 };
 

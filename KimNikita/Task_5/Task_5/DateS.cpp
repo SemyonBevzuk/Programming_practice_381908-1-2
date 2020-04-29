@@ -1,6 +1,6 @@
-#include "Date.h"
+#include "DateS.h"
 
-Date::Date(int d, int m)
+DateS::DateS(int d, int m)
 {
 	if (m > 12 || m < 1)
 		throw exception("Некорректный месяц");
@@ -11,7 +11,7 @@ Date::Date(int d, int m)
 	else
 		day = d;
 }
-Date& Date::operator=(const Date& d)
+DateS& DateS::operator=(const DateS& d)
 {
 	if (this != &d)
 	{
@@ -20,23 +20,23 @@ Date& Date::operator=(const Date& d)
 	}
 	return *this;
 }
-bool Date::operator==(const Date& d)const
+bool DateS::operator==(const DateS& d)const
 {
 	if (d.month == month && d.day == day)
 		return true;
 	return false;
 }
-bool Date::operator<(const Date& d)const
+bool DateS::operator<(const DateS& d)const
 {
-	if (d.month < month)
+	if (month < d.month)
 		return true;
 	else
-		if (d.month == month)
-			if (d.day < day)
+		if (month == d.month)
+			if (day < d.day)
 				return true;
 	return false;
 }
-Date& Date::operator+=(const Date& d)
+DateS& DateS::operator+=(const DateS& d)
 {
 	day += d.day;
 	if (month == 2 && day > 29)
@@ -56,14 +56,14 @@ Date& Date::operator+=(const Date& d)
 	}
 	return *this;
 }
-ifstream& operator>>(ifstream& in, Date& date)
+ifstream& operator>>(ifstream& in, DateS& date)
 {
 	int d, m;
 	in >> d >> m;
-	date = Date(d, m);
+	date = DateS(d, m);
 	return in;
 }
-ofstream& operator<<(ofstream& out, const Date& d)
+ofstream& operator<<(ofstream& out, const DateS& d)
 {
 	out << d.day << ' ' << d.month << endl;
 	return out;
