@@ -6,20 +6,20 @@ int main()
 	Money x, y, z;
 
 	cout << "Enter 2 numbers: ";
-	x.inPut();
-	y.inPut();
+	cin >> x;
+	cin >> y;
 
 	z = x + y;
-	z.outPut();
+	cout << z;
 
 	z = x - y;
-	z.outPut();
+	cout << z;
 
 	z = x / 3.5;
-	z.outPut();
+	cout << z;
 
 	z = x * 3.5;
-	z.outPut();
+	cout << z;
 
 	if (x == y)
 		cout << "x == y" << endl;

@@ -1,47 +1,52 @@
-﻿﻿#include "Money.h"
+﻿#include "Money.h"
 
 Money::Money()
 {
-	s = 1;
+	sign = '+';
 	rub = 0;
 	kop = 0;
 }
 
-Money::~Money()
+Money::Money(const Money& num)
 {
-	s = 1;
-	rub = 0;
-	kop = 0;
+	*this = num;
 }
 
-Money::Money(double num)
+Money::Money(double& num)
 {
 	if (num >= 0)
 	{
 		rub = (int)num;
 		kop = (int)((num - rub + 0.0005) * 100);
-		s = 1;
+		sign = '+';
 	}
 	else
 	{
 		rub = -(int)num;
 		kop = -(int)((num + rub - 0.0005) * 100);
-		s = -1;
+		sign = '-';
 	}
 }
 
-Money Money::Add(const Money num)
+Money::~Money()
+{
+	sign = NULL;
+	rub = 0;
+	kop = 0;
+}
+
+Money Money::Add(const Money& num)
 {
 	Money Result;
 	int flag = (kop + num.kop) / 100;
 	Result.kop = (kop + num.kop) % 100;
 	Result.rub = rub + num.rub + flag;
-	Result.s = s;
+	Result.sign = sign;
 
 	return Result;
 }
 
-Money Money::Sub(const Money num)
+Money Money::Sub(const Money& num)
 {
 	Money Result;
 	int flag = 0;
@@ -56,7 +61,7 @@ Money Money::Sub(const Money num)
 		Result.rub = rub - num.rub - flag;
 	else
 	{
-		Result.s = -1;
+		Result.sign = '-';
 		Result.rub = num.rub - rub;
 		Result.kop = 100 - Result.kop;
 	}
@@ -64,32 +69,29 @@ Money Money::Sub(const Money num)
 	return Result;
 }
 
-Money Money::Mul(const double num)
+Money Money::Mul(const double& num)
 {
 	Money Result;
 	double _num = num;
 	if (_num < 0)
 	{
-		Result.s = -s;
+		if (sign == '+')
+			Result.sign = '-';
 		_num = -_num;
 	}
-	else
-		Result.s = s;
 	int flag = (int)((kop * _num) / 100);
 	Result.kop = (int)(kop * _num) % 100;
 	Result.rub = (int)(rub * _num);
-	Result.rub += Result.s * flag;
+	Result.rub += Result.sign * flag;
 
 	return Result;
 }
 
-Money Money::Div(const double num)
+Money Money::Div(const double& num)
 {
-	double tmp = (double)((long long)rub * s);
-	if (tmp < 0)
-		tmp -= kop / 100.0;
-	else
-		tmp += kop / 100.0;
+	double tmp = (double)rub + kop / 100.0;
+	if (sign == '-')
+		tmp = -tmp;
 	tmp /= num;
 
 	Money Result(tmp);
@@ -97,26 +99,26 @@ Money Money::Div(const double num)
 	return Result;
 }
 
-Money& Money::operator= (const Money num)
+Money& Money::operator= (const Money& num)
 {
-	s = num.s;
+	sign = num.sign;
 	rub = num.rub;
 	kop = num.kop;
 
 	return *this;
 }
 
-Money Money::operator+ (const Money num)
+Money Money::operator+ (const Money& num)
 {
-	if (s == num.s)
+	if (sign == num.sign)
 	{
 		Money* tmp = new Money(this->Add(num));
 		return *tmp;
 	}
-	else if (s == 1)
+	else if (sign == '+')
 	{
 		Money* _num = new Money(num);
-		_num->s = 1;
+		_num->sign = '+';
 		Money* tmp = new Money(this->Sub(*_num));
 		return *tmp;
 	}
@@ -124,17 +126,17 @@ Money Money::operator+ (const Money num)
 	{
 		Money* _num = new Money(num);
 		Money* th = new Money(*this);
-		th->s = 1;
+		th->sign = '+';
 		Money* tmp = new Money(_num->Sub(*th));
 		return *tmp;
 	}
 }
 
-Money Money::operator- (const Money num)
+Money Money::operator- (const Money& num)
 {
-	if (s == 1)
+	if (sign == '+')
 	{
-		if (s == num.s)
+		if (sign == num.sign)
 		{
 			Money* tmp = new Money(this->Sub(num));
 			return *tmp;
@@ -147,46 +149,46 @@ Money Money::operator- (const Money num)
 	}
 	else
 	{
-		if (num.s == 1)
+		if (num.sign == '+')
 		{
 			Money* tmp = new Money(this->Add(num));
 			return *tmp;
 		}
 		else
 		{
-			Money* tmp = new Money(this->Sub(num));
-			tmp->s *= -1;
+			Money _num = num;
+			Money* tmp = new Money(_num.Sub(*this));
 			return *tmp;
 		}
 	}
 }
 
-Money Money::operator* (const double num)
+Money Money::operator* (const double& num)
 {
 	Money* tmp = new Money(this->Mul(num));
 	return *tmp;
 }
 
-Money Money::operator/ (const double num)
+Money Money::operator/ (const double& num)
 {
 	Money* tmp = new Money(this->Div(num));
 	return *tmp;
 }
 
-bool Money::operator== (const Money num)
+bool Money::operator== (const Money& num)
 {
-	return s == num.s && rub == num.rub && kop == num.kop;
+	return sign == num.sign && rub == num.rub && kop == num.kop;
 }
 
-bool Money::operator!= (const Money num)
+bool Money::operator!= (const Money& num)
 {
-	return s != num.s || rub != num.rub || kop != num.kop;
+	return !(*this == num);
 }
 
-bool Money::operator> (const Money num)
+bool Money::operator> (const Money& num)
 {
-	if (s == num.s)
-		if (s == 1)
+	if (sign == num.sign)
+		if (sign == '+')
 			if (rub == num.rub)
 				return kop > num.kop;
 			else
@@ -197,21 +199,21 @@ bool Money::operator> (const Money num)
 			else
 				return rub < num.rub;
 	else
-		if (s == 1)
+		if (sign == '+')
 			return true;
 		else
 			return false;
 }
 
-bool Money::operator>= (const Money num)
+bool Money::operator>= (const Money& num)
 {
 	return *this > num || *this == num;
 }
 
-bool Money::operator< (const Money num)
+bool Money::operator< (const Money& num)
 {
-	if (s == num.s)
-		if (s == 1)
+	if (sign == num.sign)
+		if (sign == '+')
 			if (rub == num.rub)
 				return kop < num.kop;
 			else
@@ -222,45 +224,43 @@ bool Money::operator< (const Money num)
 			else
 				return rub > num.rub;
 	else
-		if (s == -1)
+		if (sign == '-')
 			return true;
 		else
 			return false;
 }
 
-bool Money::operator<= (const Money num)
+bool Money::operator<= (const Money& num)
 {
 	return *this < num || *this == num;
 }
 
-void Money::outPut()
+ostream& operator<<(ostream& out, const Money& a)
 {
-	if (s == 1)
-		cout << '+';
-	else
-		cout << '-';
-	cout << rub << '.';
-	if (kop < 10)
-		cout << '0' << kop;
-	else
-		cout << kop;
-	cout << " p." << endl;
+	out << a.sign;
+	cout << a.rub << '.';
+	if (a.kop < 10)
+		out << '0';
+	out << a.kop << " p." << endl;
+	return out;
 }
 
-void Money::inPut()
+istream& operator>>(istream& in, Money& a)
 {
 	double num;
-	cin >> num;
+	in >> num;
+	Money res;
 	if (num >= 0)
 	{
-		rub = (int)num;
-		kop = (int)((num - rub + 0.0005) * 100);
-		s = 1;
+		res.rub = (int)num;
+		res.kop = (int)((num - res.rub + 0.0005) * 100);
 	}
 	else
 	{
-		rub = -(int)num;
-		kop = -(int)((num + rub - 0.0005) * 100);
-		s = -1;
+		res.rub = -(int)num;
+		res.kop = -(int)((num + res.rub - 0.0005) * 100);
+		res.sign = '-';
 	}
+	a = res;
+	return in;
 }

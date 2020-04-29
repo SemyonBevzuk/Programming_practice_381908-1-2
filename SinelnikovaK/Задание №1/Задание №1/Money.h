@@ -6,48 +6,35 @@ using namespace std;
 class Money
 {
 private:
-	int s;
+	char sign;
 	int rub;
 	int kop;
 
+	Money Add(const Money& num);
+	Money Sub(const Money& num);
+	Money Mul(const double& num);
+	Money Div(const double& num);
+
 public:
 	Money();
-
+	Money(const Money& num);
+	Money(double& num);
 	~Money();
 
-	Money(double num);
+	Money& operator= (const Money& num);
+	Money operator+ (const Money& num);
+	Money operator- (const Money& num);
+	Money operator* (const double& num);
+	Money operator/ (const double& num);
 
-	Money Add(const Money num);
+	bool operator== (const Money& num);
+	bool operator!= (const Money& num);
+	bool operator> (const Money& num);
+	bool operator>= (const Money& num);
+	bool operator< (const Money& num);
+	bool operator<= (const Money& num);
 
-	Money Sub(const Money num);
-
-	Money Mul(const double num);
-
-	Money Div(const double num);
-
-	Money& operator= (const Money num);
-
-	Money operator+ (const Money num);
-
-	Money operator- (const Money num);
-
-	Money operator* (const double num);
-
-	Money operator/ (const double num);
-
-	bool operator== (const Money num);
-
-	bool operator!= (const Money num);
-
-	bool operator> (const Money num);
-
-	bool operator>= (const Money num);
-
-	bool operator< (const Money num);
-
-	bool operator<= (const Money num);
-
-	void outPut();
-
-	void inPut();
+	friend ostream& operator<<(ostream& out, const Money& a);
+	friend istream& operator>>(istream& in, Money& a);
 };
+;
