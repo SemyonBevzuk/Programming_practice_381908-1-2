@@ -119,8 +119,6 @@ istream& operator>>(istream& in, string& s) {
 	return in;
 }
 ifstream& operator>>(ifstream& in, string& s) {
-	char c[200];
-	in.getline(c, 200);
-	s = (string)c;
+	getline(in, s);
 	return in;
 }

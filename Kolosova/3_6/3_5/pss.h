@@ -3,8 +3,8 @@
 #include <string>
 using namespace std;
 class pss {
-public:
 	string s[2];
+public:
 	pss();
 	pss(string str1, string str2);
 	pss& operator=(const pss& p);

@@ -9,8 +9,8 @@
 using namespace std;
 
 /////////////////////////////////////////////////
-bool f(pss a, pss b) {
-	return (a.s[0] < b.s[0]);
+bool sortCriteria(pss a, pss b) {
+	return (a[0] < b[0]);
 }
 ////////////////////////////////////////////////
 Dict::Dict(){
@@ -131,6 +131,6 @@ Dict& Dict::operator+=(const Dict& d){
 	return *this;
 }
 Dict& Dict::sort_() {
-	sort(dict.begin(), dict.end(), f);
+	sort(dict.begin(), dict.end(), sortCriteria);
 	return *this;
 }

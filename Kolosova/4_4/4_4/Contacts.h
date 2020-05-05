@@ -50,7 +50,7 @@ struct cont {
 
 class Contacts {
 private:
-	map<FullName, Info> c;
+	map<FullName, Info> contacts;
 public: 
 	Contacts();
 	Contacts(wstring filename);

@@ -67,7 +67,7 @@ Contacts::Contacts(const wstring filename){
 	load(filename);
 }
 Contacts::Contacts(Contacts& a){
-	c = a.c;
+	contacts = a.contacts;
 }
 Contacts::~Contacts(){
 
@@ -83,7 +83,7 @@ int Contacts::load(const wstring filename){
 			c1.info.isFav = true;
 			file.get();
 		}
-		c.insert(map<FullName, Info>::value_type(c1.name, c1.info));
+		contacts.insert(map<FullName, Info>::value_type(c1.name, c1.info));
 	}
 	file.close();
 	return 1;
@@ -91,32 +91,32 @@ int Contacts::load(const wstring filename){
 void Contacts::save(const wstring filename){
 	wofstream file;
 	file.open(filename);
-	for (auto c1 : c) {
+	for (auto c1 : contacts) {
 		file << c1.first<<L' '<<c1.second << endl;
 	}
 	file.close();
 	return;
 }
 void Contacts::newContact(cont c1){
-	c.insert(map<FullName, Info>::value_type(c1.name, c1.info));
+	contacts.insert(map<FullName, Info>::value_type(c1.name, c1.info));
 	return;
 }
 map<FullName, Info>::iterator Contacts::findFN(FullName name){
-	map<FullName, Info>::iterator i = c.find(name);
+	map<FullName, Info>::iterator i = contacts.find(name);
 	return i;
 }
 map<FullName, Info>::iterator Contacts::changeFN(FullName name, cont c1){
-	c[name] = c1.info;
+	contacts[name] = c1.info;
 	if (name != c1.name) {
-		c.erase(name);
-		c.insert(map<FullName, Info>::value_type(c1.name, c1.info));
+		contacts.erase(name);
+		contacts.insert(map<FullName, Info>::value_type(c1.name, c1.info));
 	}
-	map<FullName, Info>::iterator i = c.find(c1.name);
+	map<FullName, Info>::iterator i = contacts.find(c1.name);
 	return i;
 }
 map<FullName, Info>::iterator Contacts::findNum(wstring num){
-	map<FullName, Info>::iterator i = c.begin();
-	for (; i !=c.end(); i++) {
+	map<FullName, Info>::iterator i = contacts.begin();
+	for (; i !=contacts.end(); i++) {
 		if (i->second.number == num) {
 			return i;
 		}
@@ -125,34 +125,34 @@ map<FullName, Info>::iterator Contacts::findNum(wstring num){
 }
 void Contacts::showbyFL(wchar_t ch){
 	Contacts res;
-	map<FullName, Info>::iterator i = c.begin();
-	while (i->first.last[0] != ch && i != c.end())
+	map<FullName, Info>::iterator i = contacts.begin();
+	while (i->first.last[0] != ch && i != contacts.end())
 		i++;
-	while (i->first.last[0] == ch && i != c.end()) {
+	while (i->first.last[0] == ch && i != contacts.end()) {
 		wcout << i->first << L' ' << i->second << endl;
 		i++;
 	}
 	return;
 }
 int Contacts::count(){
-	return c.size();
+	return contacts.size();
 }
 int Contacts::fav(FullName name){
 	map<FullName, Info>::iterator i = findFN(name);
-	if (i == c.end()) return 0;
-	c[name].isFav = true;
+	if (i == contacts.end()) return 0;
+	contacts[name].isFav = true;
 	return 1;
 }
 int Contacts::unfav(FullName name){
 	map<FullName, Info>::iterator i = findFN(name);
-	if (i == c.end()) return 0;
-	c[name].isFav = false;
+	if (i == contacts.end()) return 0;
+	contacts[name].isFav = false;
 	return 1;
 }
 void Contacts::showfavs(){
-	map<FullName, Info>::iterator i = c.begin();
+	map<FullName, Info>::iterator i = contacts.begin();
 	wcout << L"------------------------------------------------------------" << endl;
-	while (i != c.end()) {
+	while (i != contacts.end()) {
 		if (i->second.isFav) {
 			wcout << i->first << L' ' << i->second << endl;
 			i++;
@@ -163,23 +163,23 @@ void Contacts::showfavs(){
 }
 int Contacts::deleteNum(wstring number){
 	map<FullName, Info>::iterator i = findNum(number);
-	if (i != c.end()) {
-		c.erase(i);
+	if (i != contacts.end()) {
+		contacts.erase(i);
 		return 1;
 	}
 	return 0;
 }
 int Contacts::del(int ind) {
-	map<FullName, Info>::iterator i = c.begin();
-	if (ind > c.size()) return 0;
+	map<FullName, Info>::iterator i = contacts.begin();
+	if (ind > contacts.size()) return 0;
 	for (int j = 0; j < ind; j++) i++;
-	c.erase(i);
+	contacts.erase(i);
 	return 1;
 }
 void Contacts::print(){
-	map<FullName, Info>::iterator i = c.begin();
+	map<FullName, Info>::iterator i = contacts.begin();
 	wcout << L"------------------------------------------------------------" << endl;
-	while (i != c.end()) {
+	while (i != contacts.end()) {
 		wcout << i->first << L' ' << i->second << endl;
 		i++;
 	}
@@ -187,5 +187,5 @@ void Contacts::print(){
 	return;
 }
 map<FullName, Info>::iterator Contacts::end() {
-	return c.end();
+	return contacts.end();
 }
