@@ -242,47 +242,13 @@ met:
 			if (fsin.is_open())
 			{
 				wcout << L"Dictionary.txt is OPEN" << endl;
-				bool ChangeReadableWord = false;
-				bool ClearAndWriteLines = true;
-				while (fsin.get(ch))
-				{
-					if (ClearAndWriteLines)
-					{
-						w = L"";
-						t = L"";
-						ClearAndWriteLines = false;
-					}
-
-					if (ch != '1' && ch != L'2' && ch != L'3' && ch != L'4' && ch != L'5' && ch != L'6'
-						&& ch != L'7' && ch != L'8' && ch != L'9' && ch != L'0' && ch != L'.')
-					{
-						if (!ChangeReadableWord)
-						{
-							if (ch != L' ')
-							{
-								w += ch;
-							}
-							else
-							{
-								ChangeReadableWord = true;
-								fsin.get(ch);
-							}
-						}
-
-						if (ChangeReadableWord)
-						{
-							if (ch != L'\n')
-								t += ch;
-							else
-							{
-								ChangeReadableWord = false;
-								ClearAndWriteLines = true;
-							}
-						}
-					}
-					if (ClearAndWriteLines)
-						C.AddWord(w, t);
-				}
+				int d = 0;
+				fsin >> d;
+				wcout << d << endl;
+				fsin.seekg(0, ios::beg);//Идем в начало файла в потоке
+				fsin.clear();
+				C.Resize(d);
+				fsin >> C;
 			}
 			else wcout << "File open error" << endl;
 

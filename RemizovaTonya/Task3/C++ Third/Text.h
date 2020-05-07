@@ -1,6 +1,8 @@
 #pragma once
 #include <stdio.h>
 #include <string>
+#include <string>
+#include <cstring>
 #include <iostream>
 #include <io.h>
 #include <fcntl.h>

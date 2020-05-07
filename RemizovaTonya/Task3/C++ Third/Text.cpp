@@ -73,24 +73,32 @@ bool Dictionary::ChangeTranslation(wstring word, wstring translation)
 
 int Dictionary::FindTranslation(wstring word)
 {
-	int stroka = -1;
-	for (int i = 0; i < dictionary.size(); i++)
+	int l = 0;
+	int r = dictionary.size();
+	int m = l;
+	do
 	{
-		if (word == dictionary[i].first || word == dictionary[i].second)
-			stroka = i;
-	}
-	return stroka;
+		if (wcscmp(dictionary[m].first.c_str(), word.c_str()) == 0) return m;
+		if (wcscmp(dictionary[m].first.c_str(), word.c_str()) > 0) r = m;
+		if (wcscmp(dictionary[m].first.c_str(), word.c_str()) < 0) l = m;
+		m = (l + r) / 2;
+	} while ((r - l) != 1);
+	return -1;
 }
 
 bool Dictionary::FindWord(wstring word)
-{
-	bool flag = false;
-	for (int i = 0; i < dictionary.size(); i++)
+{	
+	int l = 0;
+	int r = dictionary.size();
+	int m = l;
+	do
 	{
-		if (word == dictionary[i].first || word == dictionary[i].second)
-			flag = true;
-	}
-	return flag;
+		if (wcscmp(dictionary[m].first.c_str(), word.c_str()) == 0) return true;
+		if (wcscmp(dictionary[m].first.c_str(), word.c_str()) > 0) r = m;
+		if (wcscmp(dictionary[m].first.c_str(), word.c_str()) < 0) l = m;
+		m = (l + r) / 2;
+	} while ((r - l) != 1);
+	return false;
 }
 
 int Dictionary::Size()
@@ -161,6 +169,8 @@ Dictionary Dictionary::operator+=(const Dictionary& other)
 
 wistream& operator>> (wistream& wistream, Dictionary& c)
 {
+	int a = c.dictionary.size();
+	wistream >> a;
 	for (int i = 0; i < c.dictionary.size(); i++)
 	{
 		wistream >> c.dictionary[i].first;
@@ -171,9 +181,10 @@ wistream& operator>> (wistream& wistream, Dictionary& c)
 
 wostream& operator<< (wostream& wostream, const Dictionary& c)
 {
+	wostream << c.dictionary.size();
+	wostream << "\n";
 	for (int i = 0; i < c.dictionary.size(); i++)
 	{
-		wostream << i+1 << ".";
 		wostream << c.dictionary[i].first;
 		wostream << " ";
 		wostream << c.dictionary[i].second;
