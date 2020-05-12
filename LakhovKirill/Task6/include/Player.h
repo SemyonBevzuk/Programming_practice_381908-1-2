@@ -8,6 +8,7 @@
 #include "string"
 #include "Field.h"
 #include "View.h"
+#include "thread"
 enum PlayerTypes  {
     PLAYER,
     BOT,
@@ -20,7 +21,8 @@ public:
     Player(const string &name="", PlayerTypes type=PLAYER);
     void randomShips();
     static int rand(int a, int b);
-
+    void viewField();
+    void setShip(const Ship& ship);
 private:
 
 private:

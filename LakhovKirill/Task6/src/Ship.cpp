@@ -12,17 +12,6 @@ Ship::Ship(int row, int col, ShipType type, ShipDirection direction) {
     this->direction = direction;
     this->setPoints();
     this->setPrimaryPoints();
-    // TODO clean logs
-//    std::cout << "points" << std::endl;
-//    std::cout << this->points.size() << std::endl;
-//    for (auto &point : this->points) {
-//        std::cout << point.first << " " << point.second << std::endl;
-//    }
-//    std::cout << "primary points" << std::endl;
-//    std::cout << this->primary_points.size() << std::endl;
-//    for (auto &point : this->primary_points) {
-//        std::cout << point.first << " " << point.second << std::endl;
-//    }
 }
 
 void Ship::setPoints() {

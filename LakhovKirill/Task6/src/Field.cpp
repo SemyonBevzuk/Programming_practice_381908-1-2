@@ -2,6 +2,7 @@
 // Created by Kirill on 10.05.2020.
 //
 
+#include <iostream>
 #include "../include/Field.h"
 
 Field::Field(int size) : Matrix(size) {
@@ -19,7 +20,7 @@ bool Field::setShip(Ship ship) {
             this->set(i, col, 1);
         }
     } else if (ship.getDirection() == HORISONTAL) {
-        for (int i = row; i < row + size; ++i) {
+        for (int i = col; i < col + size; ++i) {
             this->set(row, i, 1);
         }
     }
@@ -39,7 +40,7 @@ bool Field::canSetShip(const Ship &ship) {
                 return false;
         }
     } else if (ship.getDirection() == HORISONTAL) {
-        for (int i = row; i < row + size; ++i) {
+        for (int i = col; i < col + size; ++i) {
             if (!this->gettable(row, i))
                 return false;
         }
