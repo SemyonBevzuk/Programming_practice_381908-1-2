@@ -59,6 +59,8 @@ public:
 
     void set(int row, int col, int val) const;
 
+    bool contains(int number) const;
+
     friend ostream &operator<<(ostream &os, const Matrix &matrix);
 
     friend istream &operator>>(istream &is, Matrix &matrix);

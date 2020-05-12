@@ -7,6 +7,7 @@
 
 #include "vector"
 #include "algorithm"
+
 enum ShipDirection {
     VERTICAL,
     HORISONTAL
@@ -22,7 +23,7 @@ using namespace std;
 
 class Ship {
 public:
-    explicit Ship(int row = 0, int col = 0, ShipType type = ONE_DECK, ShipDirection direction = VERTICAL);
+    Ship(int row = 0, int col = 0, ShipType type = ONE_DECK, ShipDirection direction = VERTICAL);
 
     inline ShipType getType() const { return this->type; }
 
@@ -36,19 +37,32 @@ public:
 
     inline vector<pair<int, int>> getPrimaryPoints() const { return this->primary_points; };
 
-    bool overrides(const Ship& ship);
+    inline vector<pair<int, int>> getSidePoints() const { return this->side_points; };
+
+    inline int getHealth() const { return this->health; }
+
+    bool overrides(const Ship &ship);
+
+    bool containsPrimaryPoint(pair<int, int> point);
+
+    bool hit();
 
 private:
     void setPoints();
+
     void setPrimaryPoints();
+
+    void setSidePoints();
 
 private:
     int row;
     int col;
+    int health;
     ShipDirection direction;
     ShipType type;
     vector<pair<int, int>> points;
     vector<pair<int, int>> primary_points;
+    vector<pair<int, int>> side_points;
 
     static const int additional_override_length = 2;
 };

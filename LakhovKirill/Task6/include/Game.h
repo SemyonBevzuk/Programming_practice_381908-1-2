@@ -9,9 +9,12 @@
 class Game {
 public:
     Game(Player &player1, Player &player2);
+    void start();
 private:
     Player player1;
     Player player2;
+    int turn;
+    bool game_over;
 };
 
 

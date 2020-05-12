@@ -22,7 +22,18 @@ public:
     void randomShips();
     static int rand(int a, int b);
     void viewField();
+    void viewEnemyField();
+    void viewFields();
     void setShip(const Ship& ship);
+    void init();
+    pair<int,int> getTurn();
+    bool shipIsOnPosition(int row, int col);
+    pair<bool, vector<pair<int,int>>> markOnField(int row, int col, HitType hit);
+    void markOnEnemyField(int row, int col, HitType hit);
+    void markOnEnemyField(const vector<pair<int,int>>& points, HitType hit);
+    bool haveShips();
+    void hit(int row, int col);
+    void miss(int row, int col);
 private:
 
 private:

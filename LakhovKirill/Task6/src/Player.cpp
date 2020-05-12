@@ -15,9 +15,15 @@ Player::Player(const string &name, PlayerTypes type) {
     this->enemy_field = Field(Field::field_size);
 
     this->view = View(this->name);
+}
 
-//    this->randomShips();
-//    this->view.printField(this->field);
+void Player::init() {
+    if (this->type == BOT) {
+        this->randomShips();
+    } else if (this->type == PLAYER) {
+        //TODO create player's opportunity to choose field
+        this->randomShips();
+    }
 }
 
 void Player::randomShips() {
@@ -72,10 +78,79 @@ void Player::viewField() {
     this->view.printField(this->field);
 }
 
+void Player::viewEnemyField() {
+    this->view.printField(this->enemy_field, true);
+}
+
 void Player::setShip(const Ship &ship) {
     if (this->field.canSetShip(ship)) {
         this->field.setShip(ship);
     }
 }
+
+pair<int, int> Player::getTurn() {
+    this->view.turn();
+    if (this->type == PLAYER) {
+        int row = View::inputNumber("row", 0, 9);
+        int col = View::inputNumber("col", 0, 9);
+        return pair<int, int>(row, col);
+    } else if (this->type == BOT) {
+        while (true) {
+            int row = Player::rand(0, 9);
+            int col = Player::rand(0, 9);
+            if (this->enemy_field(row, col) == 0) {
+                return pair<int, int>(row, col);
+            }
+        }
+    }
+}
+
+bool Player::shipIsOnPosition(int row, int col) {
+    return this->field(row, col) == 1;
+}
+
+pair<bool, vector<pair<int, int>>> Player::markOnField(int row, int col, HitType hit) {
+    if (this->field(row, col) != 0) {
+        this->field(row, col) = static_cast<int>(hit);
+        Ship ship = this->field.findShipByPoint(pair<int, int>(row, col)).second;
+        bool shipIsAlive = ship.hit();
+
+        if (shipIsAlive) {
+            return pair<bool, vector<pair<int, int>>>(false, vector<pair<int, int>>());
+        } else {
+            vector<pair<int, int>> points = ship.getSidePoints();
+            return pair<bool, vector<pair<int, int>>>(true, points);
+        }
+    }
+}
+
+void Player::markOnEnemyField(int row, int col, HitType hit) {
+    this->enemy_field(row, col) = static_cast<int>(hit);
+}
+
+bool Player::haveShips() {
+    return this->field.contains(1);
+}
+
+void Player::hit(int row, int col) {
+    this->view.hit(row, col);
+}
+
+void Player::miss(int row, int col) {
+    this->view.miss(row, col);
+}
+
+void Player::viewFields() {
+    this->view.printFields(this->field, this->enemy_field);
+}
+
+void Player::markOnEnemyField(const vector<pair<int, int>>& points, HitType hit) {
+    for (auto &point  : points) {
+        this->markOnEnemyField(point.first, point.second, hit);
+    }
+}
+
+
+
 
 

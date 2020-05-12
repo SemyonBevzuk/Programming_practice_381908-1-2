@@ -10,8 +10,10 @@ Ship::Ship(int row, int col, ShipType type, ShipDirection direction) {
     this->col = col;
     this->type = type;
     this->direction = direction;
+    this->health = type;
     this->setPoints();
     this->setPrimaryPoints();
+    this->setSidePoints();
 }
 
 void Ship::setPoints() {
@@ -47,6 +49,20 @@ void Ship::setPrimaryPoints() {
     }
 }
 
+
+void Ship::setSidePoints() {
+    //TODO get rid of points that are out of field range
+    this->side_points = this->points;
+    for (auto &point: this->primary_points) {
+        auto iterator = find(this->side_points.begin(), this->side_points.end(), point);
+        if (iterator != this->side_points.end()) {
+            int index = distance(this->side_points.begin(), iterator);
+            this->side_points.erase(this->side_points.begin() + index);
+        }
+    }
+}
+
+
 bool Ship::overrides(const Ship &ship) {
     vector<pair<int, int>> other_points = ship.getPoints();
     for (auto &point : this->primary_points) {
@@ -55,4 +71,15 @@ bool Ship::overrides(const Ship &ship) {
         }
     }
     return false;
+}
+
+bool Ship::containsPrimaryPoint(pair<int, int> point) {
+    auto iterator = find_if(this->primary_points.begin(), this->primary_points.end(),
+                            [point](pair<int,int> p){ return point.first == p.first && point.second == p.second;});
+    return iterator != this->primary_points.end();
+}
+
+bool Ship::hit() {
+    this->health--;
+    return this->health > 0;
 }

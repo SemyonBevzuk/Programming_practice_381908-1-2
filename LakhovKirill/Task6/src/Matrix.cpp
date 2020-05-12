@@ -258,3 +258,14 @@ int Matrix::get(int row, int col) const {
 void Matrix::set(int row, int col, int val) const {
    this->contents[row][col] = val;
 }
+
+bool Matrix::contains(int number) const {
+    for (int i = 0; i < this->size; ++i) {
+        for (int j = 0; j < this->size; ++j) {
+            if(this->contents[i][j] == number){
+                return true;
+            }
+        }
+    }
+    return false;
+}
