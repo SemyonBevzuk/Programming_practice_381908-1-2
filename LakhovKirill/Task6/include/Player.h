@@ -21,6 +21,7 @@ class Player {
 public:
     Player(const string &name="", PlayerTypes type=PLAYER);
     void randomShips();
+    void manualShips();
     static int rand(int a, int b);
     void viewField();
     void viewEnemyField();
@@ -38,7 +39,7 @@ public:
     void miss(const Hit& hit);
 private:
 
-private:
+protected:
     string name;
     PlayerTypes type;
     Field field;

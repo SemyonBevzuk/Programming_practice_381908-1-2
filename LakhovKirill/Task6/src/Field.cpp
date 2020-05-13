@@ -61,7 +61,6 @@ pair<bool,Ship> Field::findShipByPoint(pair<int, int> point) {
             return pair<bool,Ship>(true, ship);
         }
     }
-    std::cout<<"ship is not found"<<std::endl;
     Ship s = Ship();
     return pair<bool,Ship>(false, s);
 }

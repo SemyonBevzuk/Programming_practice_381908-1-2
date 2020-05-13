@@ -22,7 +22,18 @@ void Player::init() {
         this->randomShips();
     } else if (this->type == PLAYER) {
         //TODO create player's opportunity to choose field
-        this->randomShips();
+        this->view.shipsSetUpCommands();
+        int command = this->view.inputNumber("command(1-2)", 1, 2);
+        switch(command){
+            case 1:{
+                this->manualShips();
+                break;
+            }
+            case 2:{
+                this->randomShips();
+                break;
+            }
+        }
     }
 }
 
@@ -62,6 +73,18 @@ void Player::randomShips() {
             this->field.setShip(ship);
             one_deck_ship++;
         }
+    }
+}
+
+void Player::manualShips() {
+    int i = 0;
+    while (i<Player::one_deck) {
+        this->view.coords();
+        int row = View::inputNumber("row",0,9);
+        int col = View::inputNumber("col",0,9);
+
+        Ship ship = Ship(Player::rand(0, Field::field_size - 1), Player::rand(0, Field::field_size - 1),
+                                             ONE_DECK, static_cast<ShipDirection>(Player::rand(0, 1)));
     }
 }
 

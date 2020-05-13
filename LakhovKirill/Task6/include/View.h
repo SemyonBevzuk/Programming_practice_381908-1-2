@@ -10,13 +10,14 @@
 using namespace std;
 class View {
 public:
-    View(const string& name = "");
+    explicit View(const string& name = "");
     void printField(const Field& field, bool isEnemy=false);
     void printFields(const Field& field, const Field& enemy_field);
     void destroy();
     void hit(int row, int col);
     void miss(int row, int col);
     void turn() const;
+    void shipsSetUpCommands();
     static int inputNumber(const string& what_number, int a, int b);
 private:
     string name;

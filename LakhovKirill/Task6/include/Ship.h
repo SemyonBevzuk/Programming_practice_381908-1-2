@@ -10,7 +10,8 @@
 
 enum ShipDirection {
     VERTICAL,
-    HORISONTAL
+    HORISONTAL,
+    UNDEFINED,
 };
 
 enum ShipType {

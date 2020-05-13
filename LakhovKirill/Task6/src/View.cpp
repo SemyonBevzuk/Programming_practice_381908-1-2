@@ -80,3 +80,9 @@ void View::destroy() {
     std::cout<<this->name<<" destroyed ship!"<<std::endl;
 }
 
+void View::shipsSetUpCommands() {
+    std::cout<<this->name<<", how do you want to set up ships?"<<std::endl;
+    std::cout<<"1. manually"<<std::endl;
+    std::cout<<"2. random"<<std::endl;
+}
+

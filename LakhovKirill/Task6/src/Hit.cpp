@@ -4,8 +4,9 @@
 
 #include "../include/Hit.h"
 
-Hit::Hit(int row, int col, HitType type) {
+Hit::Hit(int row, int col, HitType type, bool last_hit) {
     this->row = row;
     this->col = col;
     this->type = type;
+    this->last_hit = last_hit;
 }

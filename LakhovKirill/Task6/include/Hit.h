@@ -10,7 +10,7 @@
 
 class Hit {
 public:
-    Hit(int row = 0, int col = 0, HitType type = MISS);
+    Hit(int row = 0, int col = 0, HitType type = MISS, bool last_hit=false);
 
     inline int getRow() const { return this->row; }
 
@@ -20,10 +20,12 @@ public:
 
     inline pair<int, int> getPoint() const { return pair<int, int>(this->row, this->col); }
 
+    inline bool getLastHit() const { return this->last_hit;}
 private:
     int row;
     int col;
     HitType type;
+    bool last_hit;
 };
 
 
