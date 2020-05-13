@@ -88,7 +88,7 @@ void Player::setShip(const Ship &ship) {
     }
 }
 
-pair<int, int> Player::getTurn() {
+pair<int, int> Player::getTurn(){
     this->view.turn();
     if (this->type == PLAYER) {
         int row = View::inputNumber("row", 0, 9);
@@ -109,10 +109,10 @@ bool Player::shipIsOnPosition(int row, int col) {
     return this->field(row, col) == 1;
 }
 
-pair<bool, vector<pair<int, int>>> Player::markOnField(int row, int col, HitType hit) {
-    if (this->field(row, col) != 0) {
-        this->field(row, col) = static_cast<int>(hit);
-        Ship ship = this->field.findShipByPoint(pair<int, int>(row, col)).second;
+pair<bool, vector<pair<int, int>>> Player::markOnField(const Hit& hit) {
+    if (this->field(hit.getRow(), hit.getCol()) != 0) {
+        this->field(hit.getRow(), hit.getCol()) = static_cast<int>(hit.getType());
+        Ship ship = this->field.findShipByPoint(hit.getPoint()).second;
         bool shipIsAlive = ship.hit();
 
         if (shipIsAlive) {
@@ -124,20 +124,22 @@ pair<bool, vector<pair<int, int>>> Player::markOnField(int row, int col, HitType
     }
 }
 
-void Player::markOnEnemyField(int row, int col, HitType hit) {
-    this->enemy_field(row, col) = static_cast<int>(hit);
+void Player::markOnEnemyField(const Hit& hit) {
+    this->enemy_field(hit.getRow(), hit.getCol()) = static_cast<int>(hit.getType());
 }
 
 bool Player::haveShips() {
     return this->field.contains(1);
 }
 
-void Player::hit(int row, int col) {
-    this->view.hit(row, col);
+void Player::hit(const Hit& hit) {
+    this->view.hit(hit.getRow(), hit.getCol());
+    this->hit_history.push_back(hit);
 }
 
-void Player::miss(int row, int col) {
-    this->view.miss(row, col);
+void Player::miss(const Hit& hit) {
+    this->view.miss(hit.getRow(), hit.getCol());
+    this->hit_history.push_back(hit);
 }
 
 void Player::viewFields() {
@@ -146,8 +148,12 @@ void Player::viewFields() {
 
 void Player::markOnEnemyField(const vector<pair<int, int>>& points, HitType hit) {
     for (auto &point  : points) {
-        this->markOnEnemyField(point.first, point.second, hit);
+        this->markOnEnemyField(Hit(point.first, point.second, hit));
     }
+}
+
+void Player::viewDestroy() {
+    this->view.destroy();
 }
 
 

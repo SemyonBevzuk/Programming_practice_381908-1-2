@@ -23,7 +23,7 @@ using namespace std;
 
 class Ship {
 public:
-    Ship(int row = 0, int col = 0, ShipType type = ONE_DECK, ShipDirection direction = VERTICAL);
+    Ship(int row = 0, int col = 0, ShipType type = ONE_DECK, ShipDirection direction = VERTICAL, int field_size=10);
 
     inline ShipType getType() const { return this->type; }
 
@@ -58,6 +58,7 @@ private:
     int row;
     int col;
     int health;
+    int field_size;
     ShipDirection direction;
     ShipType type;
     vector<pair<int, int>> points;

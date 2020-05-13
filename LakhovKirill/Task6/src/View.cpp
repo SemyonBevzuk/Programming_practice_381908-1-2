@@ -72,7 +72,11 @@ void View::miss(int row, int col) {
     std::cout<<this->name<<" missed at "<<row<<" "<<col<<"\n"<<std::endl;
 }
 
-void View::turn() {
+void View::turn() const {
     std::cout<<this->name<<"'s turn"<<std::endl;
+}
+
+void View::destroy() {
+    std::cout<<this->name<<" destroyed ship!"<<std::endl;
 }
 

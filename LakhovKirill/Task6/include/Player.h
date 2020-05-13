@@ -6,6 +6,7 @@
 #define TASK6_PLAYER_H
 
 #include "string"
+#include "Hit.h"
 #include "Field.h"
 #include "View.h"
 #include "thread"
@@ -24,16 +25,17 @@ public:
     void viewField();
     void viewEnemyField();
     void viewFields();
+    void viewDestroy();
     void setShip(const Ship& ship);
     void init();
-    pair<int,int> getTurn();
+    virtual pair<int,int> getTurn();
     bool shipIsOnPosition(int row, int col);
-    pair<bool, vector<pair<int,int>>> markOnField(int row, int col, HitType hit);
-    void markOnEnemyField(int row, int col, HitType hit);
+    pair<bool, vector<pair<int,int>>> markOnField(const Hit& hit);
+    void markOnEnemyField(const Hit& hit);
     void markOnEnemyField(const vector<pair<int,int>>& points, HitType hit);
     bool haveShips();
-    void hit(int row, int col);
-    void miss(int row, int col);
+    void hit(const Hit& hit);
+    void miss(const Hit& hit);
 private:
 
 private:
@@ -42,6 +44,7 @@ private:
     Field field;
     Field enemy_field;
     View view;
+    vector<Hit> hit_history;
     static const int one_deck = 4;
     static const int two_deck = 3;
     static const int three_deck = 2;

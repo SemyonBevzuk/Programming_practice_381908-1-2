@@ -5,12 +5,13 @@
 #include <iostream>
 #include "../include/Ship.h"
 
-Ship::Ship(int row, int col, ShipType type, ShipDirection direction) {
+Ship::Ship(int row, int col, ShipType type, ShipDirection direction, int field_size) {
     this->row = row;
     this->col = col;
     this->type = type;
     this->direction = direction;
     this->health = type;
+    this->field_size = field_size;
     this->setPoints();
     this->setPrimaryPoints();
     this->setSidePoints();
@@ -53,6 +54,7 @@ void Ship::setPrimaryPoints() {
 void Ship::setSidePoints() {
     //TODO get rid of points that are out of field range
     this->side_points = this->points;
+    //filter primary points
     for (auto &point: this->primary_points) {
         auto iterator = find(this->side_points.begin(), this->side_points.end(), point);
         if (iterator != this->side_points.end()) {
@@ -60,6 +62,15 @@ void Ship::setSidePoints() {
             this->side_points.erase(this->side_points.begin() + index);
         }
     }
+
+    vector<int> del_index = vector<int>();
+    //filter out of bounds points
+    this->side_points.erase(remove_if(this->side_points.begin(), this->side_points.end(),
+              [this](const pair<int, int> p) {
+                  return p.first < 0 || p.first >= this->field_size
+                         || p.second < 0 || p.second >= this->field_size;
+              }), this->side_points.end());
+
 }
 
 
@@ -75,7 +86,7 @@ bool Ship::overrides(const Ship &ship) {
 
 bool Ship::containsPrimaryPoint(pair<int, int> point) {
     auto iterator = find_if(this->primary_points.begin(), this->primary_points.end(),
-                            [point](pair<int,int> p){ return point.first == p.first && point.second == p.second;});
+                            [point](pair<int, int> p) { return point.first == p.first && point.second == p.second; });
     return iterator != this->primary_points.end();
 }
 
