@@ -5,10 +5,12 @@
 #include "./include/Game.h"
 
 int main() {
-    Player player = Player("player", PLAYER);
-    Bot bot = Bot("bot");
-
+    Bot* player = new Bot("bot-one");
+//    Player* player = new Player("player");
+    Bot* bot = new Bot("bot-two");
     Game game = Game(player, bot);
 
     game.start();
+
+
 }

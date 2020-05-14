@@ -3,6 +3,8 @@
 //
 
 #include <iostream>
+#include <chrono>
+#include <thread>
 #include "../include/View.h"
 
 
@@ -121,5 +123,9 @@ void View::victory() {
 
 void View::loss() {
     std::cout << this->name << " lost!" << std::endl;
+}
+
+void View::pause() {
+    std::this_thread::sleep_for(std::chrono::seconds(2));
 }
 

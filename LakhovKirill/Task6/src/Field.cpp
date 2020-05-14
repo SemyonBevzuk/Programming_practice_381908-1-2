@@ -55,13 +55,13 @@ bool Field::canSetShip(const Ship &ship) {
     return true;
 }
 
-pair<bool, Ship> Field::findShipByPoint(pair<int, int> point) {
+pair<bool, Ship&> Field::findShipByPoint(pair<int, int> point) {
     for (auto &ship: this->ships) {
         if (ship.containsPrimaryPoint(point)) {
-            return pair<bool, Ship>(true, ship);
+            return pair<bool, Ship&>(true, ship);
         }
     }
     Ship s = Ship();
-    return pair<bool, Ship>(false, s);
+    return pair<bool, Ship&>(false, s);
 }
 

@@ -18,6 +18,8 @@ public:
 
     pair<int, int> getTurn() override;
 
+    Bot *clone() override;
+
 private:
     pair<int, int> randomEmptyPoint();
 

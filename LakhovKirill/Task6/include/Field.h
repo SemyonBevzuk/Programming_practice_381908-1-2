@@ -25,7 +25,8 @@ public:
 
     static const int field_size = 10;
 
-    pair<bool, Ship> findShipByPoint(pair<int, int> point);
+    pair<bool, Ship&> findShipByPoint(pair<int, int> point);
+
 
 private:
     vector<Ship> ships;

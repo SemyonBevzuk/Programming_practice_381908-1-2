@@ -20,9 +20,7 @@ using namespace std;
 
 class Player {
 public:
-    Player(const string &name = "", PlayerTypes type = PLAYER);
-
-    Player(const Player &player);
+    Player(const string &name = "");
 
     void randomShips();
 
@@ -65,6 +63,8 @@ public:
     void victory();
 
     void loss();
+
+    virtual Player* clone();
 
     bool operator==(const Player &player) const;
 

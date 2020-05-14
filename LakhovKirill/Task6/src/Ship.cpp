@@ -89,6 +89,6 @@ bool Ship::containsPrimaryPoint(pair<int, int> point) {
 }
 
 bool Ship::hit() {
-    this->health--;
+    this->health = this->health - 1;
     return this->health > 0;
 }

@@ -7,9 +7,9 @@
 #include <chrono>
 #include "../include/Player.h"
 
-Player::Player(const string &name, PlayerTypes type) {
+Player::Player(const string &name) {
     this->name = name;
-    this->type = type;
+    this->type = PLAYER;
 
     this->field = Field(Field::field_size);
     this->enemy_field = Field(Field::field_size);
@@ -17,13 +17,6 @@ Player::Player(const string &name, PlayerTypes type) {
     this->view = View(this->name);
 }
 
-Player::Player(const Player &player) {
-    this->name = player.getName();
-    this->field = player.getField();
-    this->enemy_field = player.getEnemyField();
-    this->view = player.getView();
-    this->hit_history = player.getHitHistory();
-}
 
 void Player::init() {
     if (this->type == BOT) {
@@ -127,9 +120,8 @@ bool Player::shipIsOnPosition(int row, int col) {
 pair<bool, vector<pair<int, int>>> Player::markOnField(const Hit &hit) {
     if (this->field(hit.getRow(), hit.getCol()) != 0) {
         this->field(hit.getRow(), hit.getCol()) = static_cast<int>(hit.getType());
-        Ship ship = this->field.findShipByPoint(hit.getPoint()).second;
+        Ship& ship = this->field.findShipByPoint(hit.getPoint()).second;
         bool shipIsAlive = ship.hit();
-
         if (shipIsAlive) {
             return pair<bool, vector<pair<int, int>>>(false, vector<pair<int, int>>());
         } else {
@@ -191,6 +183,10 @@ void Player::victory() {
 
 void Player::loss() {
     this->view.loss();
+}
+
+Player *Player::clone() {
+    return new Player(*this);
 }
 
 

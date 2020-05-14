@@ -38,6 +38,8 @@ public:
 
     void loss();
 
+    void pause();
+
     static int inputNumber(const string &what_number, int a, int b);
 
 private:

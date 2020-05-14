@@ -11,16 +11,16 @@ using namespace std;
 
 class Game {
 public:
-    Game(Player &player1, Player &player2);
+    Game(Player *player1, Player *player2);
 
     void start();
 
     void gameOver();
 
+    void switchPlayers();
 private:
-    Player &player1;
-    Player &player2;
-    int turn;
+    Player *active_player;
+    Player *inactive_player;
     bool game_over;
 };
 

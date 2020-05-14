@@ -4,15 +4,17 @@
 
 #include "../include/Bot.h"
 
-Bot::Bot(const string &name) : Player(name, BOT) {
+Bot::Bot(const string &name) : Player(name) {
     this->isKillingShip = false;
     this->suspicious_points = vector<SuspiciousPoint>();
     this->last_hits = vector<Hit>();
     this->killingDirection = UNDEFINED;
+    this->type = BOT;
 }
 
 pair<int, int> Bot::getTurn() {
-    std::cout << "vir" << std::endl;
+    this->view.turn();
+    this->view.pause();
     if (this->isKillingShip) {
         if (this->lastTurnWasHit() && this->lastTurnWasDestroy()) {
             //  shoot and killed
@@ -23,9 +25,11 @@ pair<int, int> Bot::getTurn() {
             // shoot but not killed
             if (this->killingDirection == UNDEFINED) {
                 this->setDirection();
+                this->createSuspiciousPointsByLastHit();
                 this->sortByDirection();
+            }else{
+                this->createSuspiciousPointsByLastHit();
             }
-            this->createSuspiciousPointsByLastHit();
             return this->hitInSuspiciousPoint();
         } else {
             //  missed but was killing
@@ -38,13 +42,13 @@ pair<int, int> Bot::getTurn() {
             this->last_hits.push_back(this->hit_history.back());
             this->isKillingShip = true;
             this->createSuspiciousPointsByLastHit();
+            return this->hitInSuspiciousPoint();
         } else {
             //bot was not killing and missed = random
             this->nullify();
             return this->randomEmptyPoint();
         }
     }
-    return pair<int, int>(0, 0);
 }
 
 pair<int, int> Bot::randomEmptyPoint() {
@@ -78,25 +82,25 @@ void Bot::createSuspiciousPointsByLastHit() {
 
     switch (this->killingDirection) {
         case UNDEFINED: {
-            if (row - 1 > 0 && row - 1 < Field::field_size && !this->hasAlreadyShoot(row - 1, col)) {
+            if (row - 1 >= 0 && row - 1 < Field::field_size && !this->hasAlreadyShoot(row - 1, col)) {
                 this->suspicious_points.emplace_back(SuspiciousPoint(row - 1, col, VERTICAL));
             }
-            if (row + 1 > 0 && row + 1 < Field::field_size && !this->hasAlreadyShoot(row + 1, col)) {
+            if (row + 1 >=0 && row + 1 < Field::field_size && !this->hasAlreadyShoot(row + 1, col)) {
                 this->suspicious_points.emplace_back(SuspiciousPoint(row + 1, col, VERTICAL));
             }
-            if (col - 1 > 0 && col - 1 < Field::field_size && !this->hasAlreadyShoot(row, col - 1)) {
+            if (col - 1 >= 0 && col - 1 < Field::field_size && !this->hasAlreadyShoot(row, col - 1)) {
                 this->suspicious_points.emplace_back(SuspiciousPoint(row, col - 1, HORISONTAL));
             }
-            if (col + 1 > 0 && col + 1 < Field::field_size && !this->hasAlreadyShoot(row, col + 1)) {
+            if (col + 1 >= 0 && col + 1 < Field::field_size && !this->hasAlreadyShoot(row, col + 1)) {
                 this->suspicious_points.emplace_back(SuspiciousPoint(row, col + 1, HORISONTAL));
             }
             break;
         }
         case HORISONTAL: {
-            if (col - 1 > 0 && col - 1 < Field::field_size && !this->hasAlreadyShoot(row, col - 1)) {
+            if (col - 1 >= 0 && col - 1 < Field::field_size && !this->hasAlreadyShoot(row, col - 1)) {
                 this->suspicious_points.emplace_back(SuspiciousPoint(row, col - 1, HORISONTAL));
             }
-            if (col + 1 > 0 && col + 1 < Field::field_size && !this->hasAlreadyShoot(row, col + 1)) {
+            if (col + 1 >= 0 && col + 1 < Field::field_size && !this->hasAlreadyShoot(row, col + 1)) {
                 this->suspicious_points.emplace_back(SuspiciousPoint(row, col + 1, HORISONTAL));
             }
             break;
@@ -110,6 +114,7 @@ void Bot::createSuspiciousPointsByLastHit() {
             }
         }
     }
+
 }
 
 pair<int, int> Bot::hitInSuspiciousPoint() {
@@ -118,7 +123,8 @@ pair<int, int> Bot::hitInSuspiciousPoint() {
         this->suspicious_points.erase(this->suspicious_points.begin());
         return point.getPoint();
     }
-    return pair<int, int>();
+    throw out_of_range("cant there are no sus points!");
+
 }
 
 void Bot::nullify() {
@@ -157,5 +163,9 @@ bool Bot::hasAlreadyShoot(int row, int col) {
     auto iterator = find_if(this->last_hits.begin(), this->last_hits.end(),
                             [row, col](const Hit &p) { return row == p.getRow() && col == p.getCol(); });
     return iterator != this->last_hits.end();
+}
+
+Bot *Bot::clone() {
+    return new Bot(*this);
 }
 
