@@ -24,7 +24,7 @@ using namespace std;
 
 class Ship {
 public:
-    Ship(int row = 0, int col = 0, ShipType type = ONE_DECK, ShipDirection direction = VERTICAL, int field_size=10);
+    Ship(int row = 0, int col = 0, ShipType type = ONE_DECK, ShipDirection direction = VERTICAL, int field_size = 10);
 
     inline ShipType getType() const { return this->type; }
 

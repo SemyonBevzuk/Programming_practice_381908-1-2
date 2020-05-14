@@ -10,18 +10,23 @@
 #include "vector"
 
 enum HitType {
-        DESTROYED,
-        HIT,
-        MISS,
+    DESTROYED,
+    HIT,
+    MISS,
 };
 
-class Field : public Matrix{
+class Field : public Matrix {
 public:
     Field(int size = 0);
+
     bool setShip(Ship ship);
-    bool canSetShip(const Ship& ship);
+
+    bool canSetShip(const Ship &ship);
+
     static const int field_size = 10;
-    pair<bool,Ship> findShipByPoint(pair<int,int>point);
+
+    pair<bool, Ship> findShipByPoint(pair<int, int> point);
+
 private:
     vector<Ship> ships;
 };

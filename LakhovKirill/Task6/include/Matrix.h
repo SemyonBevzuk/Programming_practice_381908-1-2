@@ -43,6 +43,8 @@ public:
 
     friend Matrix operator*(const Matrix &matrix, int number);
 
+    bool operator==(const Matrix &matrix) const;
+
     int &operator()(int row, int col) const;
 
     int &operator()(int row, int col);

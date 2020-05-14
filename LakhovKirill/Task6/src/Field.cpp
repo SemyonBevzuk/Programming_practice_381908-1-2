@@ -10,7 +10,6 @@ Field::Field(int size) : Matrix(size) {
 }
 
 bool Field::setShip(Ship ship) {
-
     int row = ship.getRow();
     int col = ship.getCol();
     int size = ship.getType();
@@ -33,7 +32,7 @@ bool Field::canSetShip(const Ship &ship) {
     int col = ship.getCol();
     int size = ship.getType();
 
-    //выход за границы поля
+    //out of field boundaries
     if (ship.getDirection() == VERTICAL) {
         for (int i = row; i < row + size; ++i) {
             if (!this->gettable(i, col))
@@ -46,6 +45,7 @@ bool Field::canSetShip(const Ship &ship) {
         }
     }
 
+    //ship overrides others
     for (auto &local_ship : this->ships) {
         if (local_ship.overrides(ship)) {
             return false;
@@ -55,13 +55,13 @@ bool Field::canSetShip(const Ship &ship) {
     return true;
 }
 
-pair<bool,Ship> Field::findShipByPoint(pair<int, int> point) {
+pair<bool, Ship> Field::findShipByPoint(pair<int, int> point) {
     for (auto &ship: this->ships) {
         if (ship.containsPrimaryPoint(point)) {
-            return pair<bool,Ship>(true, ship);
+            return pair<bool, Ship>(true, ship);
         }
     }
     Ship s = Ship();
-    return pair<bool,Ship>(false, s);
+    return pair<bool, Ship>(false, s);
 }
 

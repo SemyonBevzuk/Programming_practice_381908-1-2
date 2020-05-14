@@ -12,15 +12,15 @@ Bot::Bot(const string &name) : Player(name, BOT) {
 }
 
 pair<int, int> Bot::getTurn() {
+    std::cout << "vir" << std::endl;
     if (this->isKillingShip) {
-        //логика убивания по третьему и более выстрелам
         if (this->lastTurnWasHit() && this->lastTurnWasDestroy()) {
-            //попали и убили прошлым выстрелом
+            //  shoot and killed
             this->nullify();
             return randomEmptyPoint();
         } else if (this->lastTurnWasHit() && !this->lastTurnWasDestroy()) {
             this->last_hits.push_back(this->hit_history.back());
-            //попали но не убили
+            // shoot but not killed
             if (this->killingDirection == UNDEFINED) {
                 this->setDirection();
                 this->sortByDirection();
@@ -28,18 +28,18 @@ pair<int, int> Bot::getTurn() {
             this->createSuspiciousPointsByLastHit();
             return this->hitInSuspiciousPoint();
         } else {
-            //  не попали
-            // продолжаем стрелять, тк знаем что корабль жив еще есть точки
+            //  missed but was killing
+            //  keep shooting, enemy is alive
             return this->hitInSuspiciousPoint();
         }
     } else {
         if (this->lastTurnWasHit() && !this->lastTurnWasDestroy()) {
-            //логика убивания по второму попаданию
+            //second successful shot
             this->last_hits.push_back(this->hit_history.back());
             this->isKillingShip = true;
             this->createSuspiciousPointsByLastHit();
         } else {
-            //не убивали, не попали = промах, рандомим
+            //bot was not killing and missed = random
             this->nullify();
             return this->randomEmptyPoint();
         }
@@ -71,48 +71,40 @@ bool Bot::lastTurnWasDestroy() {
     return false;
 }
 
-//если мы попали в корабль, но не убили его, значит должны быть точки на кресте, где этот корабль еще жив
+//  if ship have been shoot, but not killed, there must be points on cross where ship is alive
 void Bot::createSuspiciousPointsByLastHit() {
     int row = this->hit_history.back().getRow();
     int col = this->hit_history.back().getCol();
 
     switch (this->killingDirection) {
         case UNDEFINED: {
-            //верхнекрестовая точка
             if (row - 1 > 0 && row - 1 < Field::field_size && !this->hasAlreadyShoot(row - 1, col)) {
                 this->suspicious_points.emplace_back(SuspiciousPoint(row - 1, col, VERTICAL));
             }
-            //нижнекрестовая точка
             if (row + 1 > 0 && row + 1 < Field::field_size && !this->hasAlreadyShoot(row + 1, col)) {
                 this->suspicious_points.emplace_back(SuspiciousPoint(row + 1, col, VERTICAL));
             }
-            //левокрестовая точка
             if (col - 1 > 0 && col - 1 < Field::field_size && !this->hasAlreadyShoot(row, col - 1)) {
                 this->suspicious_points.emplace_back(SuspiciousPoint(row, col - 1, HORISONTAL));
             }
-            //правокрестовая точка
             if (col + 1 > 0 && col + 1 < Field::field_size && !this->hasAlreadyShoot(row, col + 1)) {
                 this->suspicious_points.emplace_back(SuspiciousPoint(row, col + 1, HORISONTAL));
             }
             break;
         }
         case HORISONTAL: {
-            //левокрестовая точка
             if (col - 1 > 0 && col - 1 < Field::field_size && !this->hasAlreadyShoot(row, col - 1)) {
                 this->suspicious_points.emplace_back(SuspiciousPoint(row, col - 1, HORISONTAL));
             }
-            //правокрестовая точка
             if (col + 1 > 0 && col + 1 < Field::field_size && !this->hasAlreadyShoot(row, col + 1)) {
                 this->suspicious_points.emplace_back(SuspiciousPoint(row, col + 1, HORISONTAL));
             }
             break;
         }
         case VERTICAL: {
-            //верхнекрестовая точка
             if (row - 1 > 0 && row - 1 < Field::field_size && !this->hasAlreadyShoot(row - 1, col)) {
                 this->suspicious_points.emplace_back(SuspiciousPoint(row - 1, col, VERTICAL));
             }
-            //нижнекрестовая точка
             if (row + 1 > 0 && row + 1 < Field::field_size && !this->hasAlreadyShoot(row + 1, col)) {
                 this->suspicious_points.emplace_back(SuspiciousPoint(row + 1, col, VERTICAL));
             }

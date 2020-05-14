@@ -145,13 +145,14 @@ void Matrix::setMemoryContent() {
 int &Matrix::operator()(int row, int col) const {
     if (this->gettable(row, col))
         return this->contents[row][col];
-    string str = "Can not reach index " + to_string(row)+ " "+ to_string(col);
+    string str = "Can not reach index " + to_string(row) + " " + to_string(col);
     throw std::out_of_range(str);
 }
+
 int &Matrix::operator()(int row, int col) {
     if (this->gettable(row, col))
         return this->contents[row][col];
-    string str = "Can not reach index " + to_string(row)+ " "+ to_string(col);
+    string str = "Can not reach index " + to_string(row) + " " + to_string(col);
     throw std::out_of_range(str);
 }
 
@@ -248,7 +249,7 @@ istream &operator>>(istream &is, Matrix &matrix) {
 }
 
 bool Matrix::gettable(int row, int col) const {
-    return row >= 0 && row < this->size && col >=0 && col < this->size;
+    return row >= 0 && row < this->size && col >= 0 && col < this->size;
 }
 
 int Matrix::get(int row, int col) const {
@@ -256,16 +257,29 @@ int Matrix::get(int row, int col) const {
 }
 
 void Matrix::set(int row, int col, int val) const {
-   this->contents[row][col] = val;
+    this->contents[row][col] = val;
 }
 
 bool Matrix::contains(int number) const {
     for (int i = 0; i < this->size; ++i) {
         for (int j = 0; j < this->size; ++j) {
-            if(this->contents[i][j] == number){
+            if (this->contents[i][j] == number) {
                 return true;
             }
         }
     }
     return false;
+}
+
+bool Matrix::operator==(const Matrix &matrix) const {
+    if (this->size != matrix.getSize())
+        return false;
+    for (int i = 0; i < this->size; ++i) {
+        for (int j = 0; j < this->size; ++j) {
+            if (this->contents[i][j] != matrix(i, j)) {
+                return false;
+            }
+        }
+    }
+    return true;
 }

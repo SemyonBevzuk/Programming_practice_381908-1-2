@@ -52,7 +52,6 @@ void Ship::setPrimaryPoints() {
 
 
 void Ship::setSidePoints() {
-    //TODO get rid of points that are out of field range
     this->side_points = this->points;
     //filter primary points
     for (auto &point: this->primary_points) {
@@ -63,13 +62,12 @@ void Ship::setSidePoints() {
         }
     }
 
-    vector<int> del_index = vector<int>();
     //filter out of bounds points
     this->side_points.erase(remove_if(this->side_points.begin(), this->side_points.end(),
-              [this](const pair<int, int> p) {
-                  return p.first < 0 || p.first >= this->field_size
-                         || p.second < 0 || p.second >= this->field_size;
-              }), this->side_points.end());
+                                      [this](const pair<int, int> p) {
+                                          return p.first < 0 || p.first >= this->field_size
+                                                 || p.second < 0 || p.second >= this->field_size;
+                                      }), this->side_points.end());
 
 }
 

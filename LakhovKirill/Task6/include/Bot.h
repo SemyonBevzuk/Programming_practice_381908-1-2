@@ -16,7 +16,7 @@ class Bot : public Player {
 public:
     Bot(const string &name = "");
 
-    virtual pair<int, int> getTurn();
+    pair<int, int> getTurn() override;
 
 private:
     pair<int, int> randomEmptyPoint();

@@ -6,13 +6,20 @@
 #define TASK6_GAME_H
 
 #include "Player.h"
+
+using namespace std;
+
 class Game {
 public:
     Game(Player &player1, Player &player2);
+
     void start();
+
+    void gameOver();
+
 private:
-    Player& player1;
-    Player& player2;
+    Player &player1;
+    Player &player2;
     int turn;
     bool game_over;
 };
