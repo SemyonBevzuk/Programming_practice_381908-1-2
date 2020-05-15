@@ -54,12 +54,12 @@ public:
         for (int i = 0; i < size(); i++) {
             int sum = 0;
             for (int j = 0; j < size(); j++) {
-                sum += matrix[i][j] * (i != j);
+                sum += abs(matrix[i][j]) * (i != j);
             }
-            if (matrix[i][i] < sum) {
+            if (abs(matrix[i][i]) < sum) {
                 return false;
             }
-            greaterCount += matrix[i][i] > sum;
+            greaterCount += abs(matrix[i][i]) > sum;
         }
         return greaterCount > 0;
     }
@@ -113,28 +113,28 @@ Matrix operator*(const Matrix& a, const int scalar) {
 }
 
 ostream& operator<<(ostream& out, const Matrix& matr) {
-    cout << matr.size() << '\n';
+    out << matr.size() << '\n';
     for (auto x : matr.matrix) {
         for (auto y : x) {
-            cout << y << " ";
+            out << y << " ";
         }
-        cout << '\n';
+        out << '\n';
     }
     
     return out;
 }
 
-istream& operator>> (istream& out, Matrix& matr) {
+istream& operator>> (istream& in, Matrix& matr) {
     int sz;
-    cin >> sz;
+    in >> sz;
     matr.resize(sz);
     for (auto& x : matr.matrix) {
         for (auto& y : x) {
-            cin >> y;
+            in >> y;
         }
     }
 
-    return out;
+    return in;
 }
 
 
