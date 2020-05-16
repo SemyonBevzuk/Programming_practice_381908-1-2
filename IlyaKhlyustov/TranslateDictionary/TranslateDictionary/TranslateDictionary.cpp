@@ -42,14 +42,9 @@ public:
 
     vector<string> translate(const string word) {
         if (!contains(word)) {
-            cout << "No possible translations\n";
             return vector<string>();
         }
         else {
-            cout << "Possible translations:\n";
-            for (auto translation : dict[word]) {
-                cout << translation << '\n';
-            }
             return dict[word];
         }
     }
@@ -71,7 +66,7 @@ public:
     }
 
     bool contains(string word) const {
-        return !!dict.count(word);
+        return dict.count(word) == 1;
     }
 
     int count() const {
