@@ -41,19 +41,16 @@ public:
 	int PriceChange(int hour, int price);
 	int Places(int room, int places);
 
-	//friend ostream& operator<<(ostream& stream, const Cinema& obj)
-	//{
-	//	return stream << "Дата: " << obj.day << "." << obj.month << "." << obj.year <<
-	//		endl << "Время: " << obj.hour << ":" << obj.minute <<
-	//		endl << "Фильм: " << obj.name_film <<
-	//		endl << "Зал: " << obj.room <<
-	//		endl << "Мест занято: " << obj.booked_places <<
-	//		endl << "Мест всего: " << obj.all_places <<
-	//		endl << "Цена: " << obj.price;
-	//}
-
-
-
+	friend ostream& operator<<(ostream& stream, const Cinema& obj)
+	{
+		return stream << "Дата: " << obj.day << "." << obj.month << "." << obj.year <<
+			endl << "Время: " << obj.hour << ":" << obj.minute <<
+			endl << "Фильм: " << obj.name_film <<
+			endl << "Зал: " << obj.room <<
+			endl << "Мест занято: " << obj.booked_places <<
+			endl << "Мест всего: " << obj.all_places <<
+			endl << "Цена: " << obj.price;
+	}
 };
 
 #endif

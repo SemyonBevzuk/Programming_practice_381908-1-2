@@ -1,4 +1,4 @@
-#include "Ñinema.h"
+#include "Cinema.h"
 
 
 int Cinema::PriceChange(int hour, int price)

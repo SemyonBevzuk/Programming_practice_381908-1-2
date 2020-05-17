@@ -4,10 +4,7 @@ int main()
 {
 	SetConsoleCP(1251); //Установка кодовой страницы win-cp 1251 в поток ввода
 	SetConsoleOutputCP(1251); //В поток вывода
-	Date w1(13, 5, 2020, 13, 20); //Устанавливаем дату
-	TicketOffice t1;
 	vector<Cinema> film1; //Вектор, хранит данные о сеансах
-
 	//Добавляем сеансы
 	film1.push_back(Cinema(13, 05, 2020, 8, 00, "Побег из Шоушенка", 1, 300));
 	film1.push_back(Cinema(13, 05, 2020, 13, 15, "Темный рыцарь", 1, 300));
@@ -16,6 +13,9 @@ int main()
 	film1.push_back(Cinema(16, 05, 2020, 8, 00, "Брат", 2, 400));
 	film1.push_back(Cinema(16, 05, 2020, 12, 00, "Жмурки", 2, 400));
 	film1.push_back(Cinema(16, 05, 2020, 18, 00, "Хроники Нарнии", 2, 400));
+
+	TicketOffice t1(film1); //Передаем вектор в класс кассы
+	Date w1(13, 5, 2020, 13, 20); //Устанавливаем дату
 
 	int menu, t;
 	int day, month;
@@ -39,7 +39,7 @@ int main()
 		switch (menu)
 		{
 		case 1:
-			temp = t1.Print(film1); //Вывод всех сеансов
+			temp = t1.Print(); //Вывод всех сеансов
 			for (int i = 0; i < temp.size(); i++)
 			{
 				cout << endl << temp[i] << endl;
@@ -56,7 +56,7 @@ int main()
 			cout << endl << "Введите зону: (base/vip): ";
 			cin >> zone;
 
-			t = t1.Buy(film1, day, month, name_temp, quantity, zone, w1); //Покупка
+			t = t1.Buy(day, month, name_temp, quantity, zone, w1); //Покупка
 
 			if (t == 0)
 			{
@@ -74,7 +74,7 @@ int main()
 			cout << endl << "Введите название фильма: ";
 			getline(cin, name_temp);
 
-			t = t1.FindPlaces(film1, day, month, name_temp); //Свободные места
+			t = t1.FindPlaces(day, month, name_temp); //Свободные места
 			cout << endl << "Мест свободно: " << t;
 			break;
 		case 4:
@@ -88,7 +88,7 @@ int main()
 			cout << endl << "Введите зону: (base/vip): ";
 			cin >> zone;
 
-			t = t1.Reservation(film1, day, month, name_temp, quantity, zone); //Резерв
+			t = t1.Reservation(day, month, name_temp, quantity, zone); //Резерв
 
 			if (t == 0)
 			{
@@ -108,7 +108,7 @@ int main()
 			cout << endl << "Введите количество билетов для отмены: ";
 			cin >> quantity;
 
-			t = t1.Cancel(film1, day, month, name_temp, quantity); //Отмена
+			t = t1.Cancel(day, month, name_temp, quantity); //Отмена
 			if (t == 0)
 			{
 				cout << endl << "Столько купленых мест нет.";
@@ -126,8 +126,7 @@ int main()
 			cout << endl << "Введите название фильма: ";
 			getline(cin, name_temp);
 
-			temp_ticket = t1.CreateTicket(film1, day, month, name_temp); //Формирование
-
+			temp_ticket = t1.CreateTicket(day, month, name_temp); //Формирование
 			for (int i = 0; i < temp_ticket.size(); i++)
 			{
 				cout << endl << temp_ticket[i];

@@ -26,10 +26,10 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Сinema.h">
+    <ClInclude Include="TicketOffice.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="TicketOffice.h">
+    <ClInclude Include="Cinema.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>
