@@ -2,22 +2,19 @@
 #include <iostream>
 using namespace std;
 
-#define max(a,b)  (((a) > (b)) ? (a) : (b))
-#define min(a,b)  (((a) < (b)) ? (a) : (b))
-
 class Decimal
 {
 private:
 	unsigned char* arr; // динам.массив с целочисленными переменными (указатель)
-	int size; // размер массива
+	size_t size; // размер массива
 	char sign; // знак числа
 
 	Decimal add(const Decimal& num);
 	Decimal sub(const Decimal& num);
-	friend Decimal abs(const Decimal& num);
+	Decimal abs();
 public:
 	Decimal();
-	Decimal(const long long num); 
+	Decimal(const long long num);
 	Decimal(const Decimal& num);
 	~Decimal();
 
@@ -35,4 +32,3 @@ public:
 	friend istream& operator>> (istream& stream, Decimal& num);
 	friend ostream& operator<< (ostream& stream, const Decimal& num);
 };
-

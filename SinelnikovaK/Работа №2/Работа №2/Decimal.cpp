@@ -1,19 +1,47 @@
 #include "Decimal.h"
 
+size_t max(const size_t num1, const size_t num2)
+{
+	if (num1 > num2)
+		return num1;
+	return num2;
+}
+
+size_t min(const size_t num1, const size_t num2)
+{
+	if (num1 < num2)
+		return num1;
+	return num2;
+}
+
+Decimal max(Decimal num1, Decimal num2)
+{
+	if (num1 > num2)
+		return num1;
+	return num2;
+}
+
+Decimal min(Decimal num1, Decimal num2)
+{
+	if (num1 < num2)
+		return num1;
+	return num2;
+}
+
 Decimal Decimal::add(const Decimal& num)
 {
 	Decimal Result;
-	Result.size = max(size, num.size);
+	Result.size = __max(size, num.size);
 	Result.sign = sign;
 	Result.arr = new unsigned char[Result.size + 1];
 
-	for (int i = 0; i < size; i++)
+	for (size_t i = 0; i < size; i++)
 		Result.arr[i] = arr[i];
 
-	for (int i = size; i < Result.size + 1; i++)
+	for (size_t i = size; i < Result.size + 1; i++)
 		Result.arr[i] = 0;
 
-	for (int i = 0; i < num.size; i++)
+	for (size_t i = 0; i < num.size; i++)
 	{
 		Result.arr[i + 1] += (Result.arr[i] + num.arr[i]) / 10;
 		Result.arr[i] = (Result.arr[i] + num.arr[i]) % 10;
@@ -31,14 +59,15 @@ Decimal Decimal::add(const Decimal& num)
 
 Decimal Decimal::sub(const Decimal& num)
 {
-	Decimal Result = max(abs(*this), abs(num));
-	if (Result == abs(*this))
+	Decimal _num = num;
+	Decimal Result = max(this->abs(), _num.abs());
+	if (Result == this->abs())
 		Result.sign = '+';
 	else
 		Result.sign = '-';
-	Decimal tmp = min(abs(*this), abs(num));
+	Decimal tmp = min(this->abs(), _num.abs());
 	int f = 0;
-	for (int i = 0; i < tmp.size; i++)
+	for (size_t i = 0; i < tmp.size; i++)
 	{
 		if (Result.arr[i] < tmp.arr[i] + f)
 		{
@@ -51,12 +80,14 @@ Decimal Decimal::sub(const Decimal& num)
 			f = 0;
 		}
 	}
+	while (Result.arr[Result.size - 1] == 0 && Result.size > 1)
+		Result.size--;
 	return Result;
 }
 
 Decimal::Decimal() //конструктор по умолчанию
 {
-	arr = NULL;
+	arr = nullptr;
 	size = 0;
 	sign = '+';
 }
@@ -77,8 +108,8 @@ Decimal::Decimal(const long long num)
 		x /= 10;
 	}
 	arr = new unsigned char[size];
-	x = abs(num);
-	for (int i = 0; i < size; i++)
+	x = std::abs(num);
+	for (size_t i = 0; i < size; i++)
 	{
 		arr[i] = x % 10;
 		x /= 10;
@@ -92,7 +123,7 @@ Decimal::Decimal(const Decimal& num) //копирование
 
 Decimal::~Decimal()
 {
-	if (arr != NULL)
+	if (arr != nullptr)
 		delete[] arr;
 	size = 0;
 	sign = 0;
@@ -100,11 +131,13 @@ Decimal::~Decimal()
 
 Decimal& Decimal::operator= (const Decimal& num)
 {
-	if (arr != NULL && size > 0)
+	if (*this == num)
+		return *this;
+	if (arr != nullptr && (sign == '-' || sign == '+'))
 		delete[] arr;
 	size = num.size;
 	arr = new unsigned char[size];
-	for (int i = 0; i < size; i++)
+	for (size_t i = 0; i < size; i++)
 		arr[i] = num.arr[i];
 	sign = num.sign;
 	return *this;
@@ -144,7 +177,7 @@ bool Decimal::operator==(const Decimal& num)
 {
 	if (size != num.size || sign != num.sign)
 		return false;
-	for (int i = 0; i < size; i++)
+	for (size_t i = 0; i < size; i++)
 		if (arr[i] != num.arr[i])
 			return false;
 	return true;
@@ -164,7 +197,7 @@ bool Decimal::operator>(const Decimal& num)
 		if ((sign == '-' && size > num.size) || (sign == '+' && size < num.size)) return false;
 		else if ((sign == '-' && size < num.size) || (sign == '+' && size > num.size)) return true;
 	int x = 0;
-	for (int i = size - 1; i >= 0; i--)
+	for (size_t i = size - 1; i >= 0; i--)
 	{
 		if (arr[i] == num.arr[i]) x++;
 		if (sign == '+')
@@ -173,6 +206,8 @@ bool Decimal::operator>(const Decimal& num)
 		}
 		else
 			if (arr[i] > num.arr[i]) return false;
+		if (i == 0)
+			break;
 	}
 	if (x == size)
 		return false;
@@ -195,11 +230,10 @@ bool Decimal::operator<=(const Decimal& num)
 	return *this == num || *this < num;
 }
 
-Decimal abs(const Decimal& num)
+Decimal Decimal::abs()
 {
-	Decimal tmp = num;
-	tmp.sign = '+';
-	return tmp;
+	sign = '+';
+	return *this;
 }
 
 istream& operator>>(istream& stream, Decimal& num)
@@ -215,7 +249,7 @@ istream& operator>>(istream& stream, Decimal& num)
 		num.sign = '-';
 	}
 	num.arr = new unsigned char[num.size];
-	for (int i = 0; i < n; i++)
+	for (size_t i = 0; i < (size_t)n; i++)
 		num.arr[i] = strNum[n - 1 - i] - '0';
 
 	return stream;
@@ -225,7 +259,8 @@ ostream& operator<<(ostream& stream, const Decimal& num)
 {
 	if (num.sign == '-')
 		stream << '-';
-	for (int i = num.size - 1; i >= 0; i--)
+	for (size_t i = num.size - 1; i > 0; i--)
 		stream << (int)num.arr[i];
+	stream << (int)num.arr[0];
 	return stream;
 }
