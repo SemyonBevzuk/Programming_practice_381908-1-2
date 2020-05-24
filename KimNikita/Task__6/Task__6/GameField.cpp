@@ -96,8 +96,6 @@ char GameField::UserCell(int c)const
 }
 char GameField::AICell(int c)const
 {
-	if (c == 1)
-		return 'K';
 	if (c == -1 || c == 1)
 		return 'O';
 	if (c == 0)
