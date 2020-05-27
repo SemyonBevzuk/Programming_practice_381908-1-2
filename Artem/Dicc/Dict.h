@@ -27,28 +27,31 @@ public:
 	void set_eng_word(string word);
 	void set_rus_word(string word);
 
-	void show_word();
 	friend bool operator==(const Word& left, const Word& right);
+	friend ostream& operator<<(ostream& stream, const Word& dict);
 };
 
 class Dictionary {
-public:
+private:
 	Word* arr;
 	int size;
-
+public:
 	Dictionary();
 	Dictionary(const Word word);
+	Dictionary(const Dictionary& dict);
+	~Dictionary();
 
 	void AddWord(string word, string translation);
 	void ChangeTranslation(int index, string translation);
-	void ShowTranslation(int index);
+	string GetTranslation(int index);
 	int index_of_word(string word);
-	void number_of_words();
+	int number_of_words();
 	void Read(string filename);
 	void Load(string filename);
 	Word& operator[](const int index);
 	Dictionary& operator=(Dictionary& arr_);
 	Dictionary operator+(Dictionary& arr_);
+
 };
 
 #endif INCLUDE_CLASS_DICTIONARY_HPP_

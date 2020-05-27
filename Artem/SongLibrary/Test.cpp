@@ -2,7 +2,6 @@
 
 int main()
 {
-
 	int index;
 	int number;
 	string sname, author, composer, singer, album, date, str;
@@ -62,11 +61,7 @@ int main()
 			getline(cin, album);
 			cout << "Date of release: ";
 			getline(cin, date);
-			SongLibrary.arr[index].Set_Author(author);
-			SongLibrary.arr[index].Set_Composer(composer);
-			SongLibrary.arr[index].Set_Singer(singer);
-			SongLibrary.arr[index].Set_Album(album);
-			SongLibrary.arr[index].Set_Date(date);
+			SongLibrary.ChangeSongInfo(index, author, composer, singer, album, date);
 			cout << endl;
 			break;
 		case 3:
@@ -80,7 +75,7 @@ int main()
 			index = SongLibrary.index_of_Song_name_and_singer(sname, author);
 			if (index == -1) break;
 			cout << "About song: " << endl;
-			if (index != -1) SongLibrary.arr[index].SongInfo();
+			if (index != -1) SongLibrary.PrintSongInfo(index);
 			cout << endl;
 			break;
 		case 4:
@@ -106,7 +101,7 @@ int main()
 			break;
 		case 7:
 			system("cls");
-			cout << SongLibrary.size << endl;
+			cout << SongLibrary.NumberOfSongs() << endl;
 			break;
 		case 8:
 			system("cls");
@@ -129,6 +124,5 @@ int main()
 			exit(1);
 		}
 	}
-	delete[] SongLibrary.arr;
 	return 0;
 }

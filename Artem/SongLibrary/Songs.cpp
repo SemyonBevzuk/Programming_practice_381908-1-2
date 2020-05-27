@@ -1,15 +1,5 @@
 #include"Songs.h"
 
-Song::Song(string _sname, string _author, string _composer, string _singer, string _album, string _date) 
-{
-	sname = _sname;
-	author = _author;
-	composer = _composer;
-	singer = _singer;
-	album = _album;
-	date = _date;
-}
-
 MediaPlayer::MediaPlayer() 
 {
 	size = 0;
@@ -23,23 +13,27 @@ MediaPlayer::MediaPlayer(const Song _song)
 	arr[0] = _song;
 }
 
-
-void Song::SongInfo() 
+MediaPlayer::MediaPlayer(const MediaPlayer& player)
 {
-	cout << "Name of song: " << Get_Sname() << endl;
-	cout << "Author of song: " << Get_Author() << endl;
-	cout << "Author of music: " << Get_Composer() << endl;
-	cout << "Name of singer: " << Get_Singer() << endl;
-	cout << "Name of album: " << Get_Album() << endl;
-	cout << "Date of release: " << Get_Date() << endl << endl;;
+	size = player.size;
+	arr = new Song[size];
+	for (int i = 0; i < size; i++)
+		arr[i] = player.arr[i];
 }
 
-void MediaPlayer::Add(string a, string b, string c, string d, string e, string f)
+MediaPlayer::~MediaPlayer()
+{
+	if(arr!=nullptr)
+		delete[] arr;
+	size = 0;
+}
+
+void MediaPlayer::Add(string _sname, string _author, string _composer, string _singer, string _album, string _date)
 {
 	if (size == 0) {
 		size = 1;
 		arr = new Song[size];
-		arr[0] = Song(a, b, c, d, e, f);
+		arr[0] = Song(_sname, _author, _composer, _singer, _album, _date);
 		return;
 	}
 	size += 1;
@@ -54,7 +48,7 @@ void MediaPlayer::Add(string a, string b, string c, string d, string e, string f
 		arr[i] = tmp[i];
 	}
 	delete[] tmp;
-	arr[size - 1] = Song(a, b, c, d, e, f);
+	arr[size - 1] = Song(_sname, _author, _composer, _singer, _album, _date);
 
 	for (int i = 0; i < size - 1; ++i) {
 		for (int j = (size - 1); j > i; --j) {
@@ -67,51 +61,22 @@ void MediaPlayer::Add(string a, string b, string c, string d, string e, string f
 	}
 }
 
-void Song::Set_Sname(string _sname)
-{
-	sname = _sname;
-}
-
-void Song::Set_Composer(string _composer) 
-{
-	composer = _composer;
-}
-
-void Song::Set_Singer(string _singer) 
-{
-	singer = _singer;
-}
-
-void Song::Set_Album(string _album) 
-{
-	album = _album;
-}
-
-void Song::Set_Date(string _date) 
-{
-	date = _date;
-}
-
-void Song::Set_Author(string _author) 
-{
-	author = _author;
-}
-
 int MediaPlayer::index_of_Song_name(string a) 
 {
-	for (int i = 0; i < size; ++i) {
-		if (arr[i].Get_Sname() == a) {
+	for (int i = 0; i < size; ++i)
+	{
+		if (arr[i].Get_Sname() == a)
 			return i;
-		}
 	}
 	cout << "Song wasnt found" << endl << endl;
 	return -1;
 }
 
-int MediaPlayer::index_of_Song_name_and_singer(string a, string b) 
+int MediaPlayer::index_of_Song_name_and_singer(string _sname, string _singer) 
 {
 	for (int i = 0; i < size; ++i) {
-		if (arr[i].Get_Sname() == a && arr[i].Get_Singer() == b) {
+		if (arr[i].Get_Sname() == _sname && arr[i].Get_Singer() == _singer) 
+		{
 			cout << "Song was found" << endl;
 			return i;
 		}
@@ -120,24 +85,36 @@ int MediaPlayer::index_of_Song_name_and_singer(string a, string b)
 	return -1;
 }
 
+void MediaPlayer::ChangeSongInfo(int a, string _author, string _composer, string _singer, string _album, string _date)
+{
+	if (a != -1)
+	{
+		arr[a].Set_Author(_author);
+		arr[a].Set_Composer(_composer);
+		arr[a].Set_Singer(_singer);
+		arr[a].Set_Album(_album);
+		arr[a].Set_Date(_date);
+	}
+}
+
 void MediaPlayer::AuthorSongs(string a)
 {
 	for (int i = 0; i < size; ++i) {
-		if (arr[i].Get_Author() == a) arr[i].SongInfo();
+		if (arr[i].Get_Author() == a) PrintSongInfo(i);
 	}
 }
 
 void MediaPlayer::ComposerSongs(string a)
 {
 	for (int i = 0; i < size; ++i) {
-		if (arr[i].Get_Author() == a) arr[i].SongInfo();
+		if (arr[i].Get_Author() == a) PrintSongInfo(i);
 	}
 }
 
 void MediaPlayer::SingerSongs(string a)
 {
 	for (int i = 0; i < size; ++i) {
-		if (arr[i].Get_Singer() == a) arr[i].SongInfo();
+		if (arr[i].Get_Singer() == a) PrintSongInfo(i);
 	}
 }
 
@@ -218,15 +195,18 @@ void MediaPlayer::Read()
 	fout.close();
 }
 
-bool operator==(const Song& left, const Song& right) 
+int MediaPlayer::NumberOfSongs()
 {
-	if (left.Get_Composer() == right.Get_Composer() &&
-		left.Get_Author() == right.Get_Author() &&
-		left.Get_Date() == right.Get_Date() &&
-		left.Get_Album() == right.Get_Album() &&
-		left.Get_Singer() == right.Get_Singer() &&
-		left.Get_Sname() == right.Get_Sname()) {
-		return 1;
-	}
-	else return 0;
+	return size;
+}
+
+void MediaPlayer::PrintSongInfo(int index)
+{
+	cout << "Name of song: " << arr[index].Get_Sname() << endl;
+	cout << "Author of song: " << arr[index].Get_Author() << endl;
+	cout << "Author of music: " << arr[index].Get_Composer() << endl;
+	cout << "Name of singer: " << arr[index].Get_Singer() << endl;
+	cout << "Name of album: " << arr[index].Get_Album() << endl;
+	cout << "Date of release: " << arr[index].Get_Date() << endl << endl;;
+
 }

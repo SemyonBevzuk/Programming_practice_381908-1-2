@@ -1,39 +1,5 @@
 #include"Dict.h"
 
-Word::Word() 
-{
-	eng_word = "";
-	rus_word = "";
-}
-
-Word::Word(string word, string translation) 
-{
-	eng_word = word;
-	rus_word = translation;
-}
-
-void Word::set_eng_word(string word) 
-{
-	eng_word = word;
-}
-
-void Word::set_rus_word(string word) 
-{
-	rus_word = word;
-}
-
-void Word::show_word() 
-{
-	cout << eng_word << " - " << rus_word << endl;
-}
-
-bool operator==(const Word& left, const Word& right) 
-{
-	if ((left.eng_word == right.eng_word) && (left.rus_word == right.rus_word))
-		return 1;
-	else return 0;
-}
-
 Dictionary::Dictionary() 
 {
 	size = 0;
@@ -45,6 +11,21 @@ Dictionary::Dictionary(const Word word)
 	size = 1;
 	arr = new Word[size];
 	arr[0] = word;
+}
+
+Dictionary::Dictionary(const Dictionary& dict)
+{
+	size = dict.size;
+	arr = new Word[size];
+	for (int i = 0; i < size; i++)
+		arr[i] = dict.arr[i];
+}
+
+Dictionary::~Dictionary()
+{
+	if(arr!=nullptr)
+		delete[] arr;
+	size = 0;
 }
 
 void Dictionary::AddWord(string word, string translation) 
@@ -65,25 +46,34 @@ void Dictionary::AddWord(string word, string translation)
 	}
 	delete[] arr;
 	arr = new Word[size];
-	for (int i = 0; i < size - 1; ++i) 
-	{
+	for (int i = 0; i < size - 1; ++i)
 		arr[i] = tmp[i];
-	}
 	delete[] tmp;
 	arr[size - 1] = Word(word, translation);
+
+	for (int i = 0; i < size - 1; ++i)
+	{
+		for (int j = (size - 1); j > i; --j)
+		{
+			if (arr[j - 1].get_eng_word() > arr[j].get_eng_word())
+			{
+				Word temp = arr[j - 1];
+				arr[j - 1] = arr[j];
+				arr[j] = temp;
+			}
+		}
+	}
 }
 
 void Dictionary::ChangeTranslation(int index, string translation) 
 {
 	if (index != -1) 
-	{
 		arr[index].set_rus_word(translation);
-	}
 }
 
-void Dictionary::ShowTranslation(int index)
+string Dictionary::GetTranslation(int index)
 {
-	cout << arr[index].get_rus_word() << endl;
+	return arr[index].get_rus_word();
 }
 
 int Dictionary::index_of_word(string word) 
@@ -100,9 +90,9 @@ int Dictionary::index_of_word(string word)
 	return -1;
 }
 
-void Dictionary::number_of_words()
+int Dictionary::number_of_words()
 {
-	cout << "Number of words: " << size << endl;
+	return size;
 }
 
 void Dictionary::Read(string filename)
@@ -152,12 +142,13 @@ Word& Dictionary::operator[](const int index)
 
 Dictionary& Dictionary::operator=(Dictionary& arr_)
 {
-	size = arr_.size;
-	delete[] arr;
-	arr = new Word[size];
-	for (int i = 0; i < size; ++i) 
+if (this != &arr_)
 	{
-		arr[i] = arr_[i];
+		size = arr_.size;
+		delete[] arr;
+		arr = new Word[size];
+		for (int i = 0; i < size; ++i)
+			arr[i] = arr_[i];
 	}
 	return *this;
 }

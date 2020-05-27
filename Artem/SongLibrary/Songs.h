@@ -35,17 +35,20 @@ public:
 	void Set_Album(string _album);
 	void Set_Date(string _date);
 
-	void SongInfo();
 	friend bool operator==(const Song& left, const Song& right);
 };
 
 class MediaPlayer {
-public:
+private:
 	Song* arr;
 	int size;
-
+public:
 	MediaPlayer();
 	MediaPlayer(const Song _song);
+	MediaPlayer(const MediaPlayer& player);
+	~MediaPlayer();
+
+	void PrintSongInfo(int index);
 	void Add(string a, string b, string c, string d, string e, string f);
 	void AuthorSongs(string a);
 	void ComposerSongs(string a);
@@ -53,6 +56,8 @@ public:
 	void Delete(int index);
 	void Load();
 	void Read();
+	void ChangeSongInfo(int a, string _author, string _composer, string _singer, string _album, string _date);
+	int NumberOfSongs();
 
 	int index_of_Song_name(string a);
 	int index_of_Song_name_and_singer(string a, string b);

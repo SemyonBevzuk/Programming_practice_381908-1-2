@@ -140,6 +140,7 @@
   <ItemGroup>
     <ClCompile Include="Dict.cpp" />
     <ClCompile Include="Test.cpp" />
+    <ClCompile Include="Word.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Dict.h" />
