@@ -1,4 +1,5 @@
 #include "Film.h"
+using namespace std;
 
 // По умолчанию
 Film::Film()
@@ -43,8 +44,8 @@ Film& Film::operator=(const Film& film)
 }
 
 // Заполнение информации о фильме
-void Film::NewFilm(const std::string _name, const std::string _producer, const std::string _screenwriter,
-	const std::string _composer, const int _day, const int _mount, const int _year, const ll _fundraising)
+void Film::UpdateFilm(const string _name, const string _producer, const string _screenwriter,
+	const string _composer, const int _day, const int _mount, const int _year, const ll _fundraising)
 {
 	name = _name;
 	producer = _producer;
@@ -57,34 +58,34 @@ void Film::NewFilm(const std::string _name, const std::string _producer, const s
 }
 
 // Инициализация
-Film::Film(const std::string _name, const std::string _producer, const std::string _screenwriter,
-	const std::string _composer, const int _day, const int _mount, const int _year, const ll _fundraising)
+Film::Film(const string _name, const string _producer, const string _screenwriter,
+	const string _composer, const int _day, const int _mount, const int _year, const ll _fundraising)
 {
-	this->NewFilm(_name, _producer, _screenwriter, _composer, _day, _mount, _year, _fundraising);
+	this->UpdateFilm(_name, _producer, _screenwriter, _composer, _day, _mount, _year, _fundraising);
 }
 
 // Считывание строки
-std::string readString(const std::string comment)
+string readString(const string comment)
 {
-	std::string str;
-	std::cout << comment << ": ";
-	std::getline(std::cin, str);
+	string str;
+	cout << comment << ": ";
+	getline(cin, str);
 	return str;
 }
 
 // Изменение числовой информации в фильме (если строка не пуста)
-ll newNumber(const ll num, const std::string comment)
+ll UpdateNumber(const ll num, const string comment)
 {
-	std::string str = readString(comment);
+	string str = readString(comment);
 	if (str != "")
-		return std::stoll(str);
+		return stoll(str);
 	return num;
 }
 
 // Изменение текстовой информации о фильме (если строка не пуста)
-std::string newString(const std::string str, const std::string comment)
+string UpdateString(const string str, const string comment)
 {
-	std::string newStr = readString(comment);
+	string newStr = readString(comment);
 	if (newStr != "")
 		return newStr;
 	return str;
@@ -93,14 +94,14 @@ std::string newString(const std::string str, const std::string comment)
 // Считывание информации о фильме с консоли
 Film& Film::Read()
 {
-	name = newString(name, "Название");
-	producer = newString(producer, "Режиссёр");
-	screenwriter = newString(screenwriter, "Сценарист");
-	composer = newString(composer, "Композитор");
-	day = (int)newNumber(day, "День выхода");
-	mount = (int)newNumber(mount, "Месяц выхода");
-	year = (int)newNumber(year, "Год выхода");
-	fundraising = newNumber(fundraising, "Сборы");
+	name = UpdateString(name, "Название");
+	producer = UpdateString(producer, "Режиссёр");
+	screenwriter = UpdateString(screenwriter, "Сценарист");
+	composer = UpdateString(composer, "Композитор");
+	day = (int)UpdateNumber(day, "День выхода");
+	mount = (int)UpdateNumber(mount, "Месяц выхода");
+	year = (int)UpdateNumber(year, "Год выхода");
+	fundraising = UpdateNumber(fundraising, "Сборы");
 	return *this;
 }
 
@@ -109,7 +110,7 @@ bool Film::Write()
 {
 	if (name == "")
 		return false;
-	std::cout << "Название:    " << name << "\nРежиссер:    " << producer
+	cout << "Название:    " << name << "\nРежиссер:    " << producer
 		<< "\nСценарист:   " << screenwriter << "\nКомпозитор:  " << composer
 		<< "\nДата выхода: " << day << "." << mount << "." << year
 		<< "\nСборы:       " << fundraising << "р.\n";
@@ -132,22 +133,22 @@ void swap(Film& f1, Film& f2)
 }
 
 // Считывание информации о фильме с файла
-std::istream& operator>> (std::istream& stream, Film& film)
+istream& operator>> (istream& stream, Film& film)
 {
-	std::getline(stream, film.name);
-	std::getline(stream, film.producer);
-	std::getline(stream, film.screenwriter);
-	std::getline(stream, film.composer);
+	getline(stream, film.name);
+	getline(stream, film.producer);
+	getline(stream, film.screenwriter);
+	getline(stream, film.composer);
 	stream >> film.day >> film.mount >> film.year >> film.fundraising;
 	return stream;
 }
 
 // Вывод информации о фильме в файл
-std::ostream& operator<< (std::ostream& stream, const Film& film)
+ostream& operator<< (ostream& stream, const Film& film)
 {
-	stream << film.name << std::endl << film.producer
-		<< std::endl << film.screenwriter << std::endl << film.composer
-		<< std::endl << film.day << ' ' << film.mount << ' ' << film.year
-		<< ' ' << film.fundraising << std::endl;
+	stream << film.name << endl << film.producer
+		<< endl << film.screenwriter << endl << film.composer
+		<< endl << film.day << ' ' << film.mount << ' ' << film.year
+		<< ' ' << film.fundraising << endl;
 	return stream;
 }

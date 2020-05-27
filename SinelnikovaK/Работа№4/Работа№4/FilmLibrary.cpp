@@ -1,7 +1,8 @@
 #include "FilmLibrary.h"
+using namespace std;
 
 // Сравнение 2 строк на алфавитный порядок
-bool __comparison(std::string str1, std::string str2)
+bool __comparison(string str1, string str2)
 {
 	size_t len = str1.length();
 	size_t len1 = str2.length();
@@ -21,10 +22,10 @@ bool __comparison(std::string str1, std::string str2)
 }
 
 // Переход в новую строку (считывание мусора)
-void __bin(std::istream& in)
+void __bin(istream& in)
 {
-	std::string bin;
-	std::getline(in, bin);
+	string bin;
+	getline(in, bin);
 }
 
 // По умолчанию
@@ -81,7 +82,7 @@ bool FilmLibrary::PrintLibrary()
 	for (int i = 0; i < quantity; i++)
 	{
 		films[i].Write();
-		std::cout << '\n';
+		cout << '\n';
 	}
 	return true;
 }
@@ -90,7 +91,7 @@ bool FilmLibrary::PrintLibrary()
 bool FilmLibrary::AddFilm()
 {
 	Film film;
-	__bin(std::cin);
+	__bin(cin);
 	film.Read(); // Считывание информации о фильме
 	return this->AddFilm(film);
 }
@@ -123,7 +124,7 @@ bool FilmLibrary::AddFilm(Film& film)
 }
 
 // Поиск позиции фильма для удаления или изменения данных
-int FilmLibrary::search(const std::string comment, const std::string name)
+int FilmLibrary::search(const string comment, const string name)
 {
 	int f = -1;
 	for (int i = 0; i < quantity; i++)
@@ -139,14 +140,14 @@ int FilmLibrary::search(const std::string comment, const std::string name)
 		l++;
 	if (l - 1 != f) // Если есть несколько фильмов с одинаковым названием
 	{
-		std::cout << "Выберите фильм, который хотите " << comment << ":\n";
+		cout << "Выберите фильм, который хотите " << comment << ":\n";
 		for (int i = f; i < l - 1; i++)
-			std::cout << "\nФильм " << i - f + 1 << ":\n" << films[i];
+			cout << "\nФильм " << i - f + 1 << ":\n" << films[i];
 		int x = 0;
 		while (x < 1 || x > l - f - 1)
 		{
-			std::cout << "\nВведите номер: ";
-			std::cin >> x;
+			cout << "\nВведите номер: ";
+			cin >> x;
 		}
 		f += x - 1;
 	}
@@ -154,21 +155,21 @@ int FilmLibrary::search(const std::string comment, const std::string name)
 }
 
 // Изменить данные фильма
-bool FilmLibrary::ChangeFilm(const std::string name)
+bool FilmLibrary::ChangeFilm(const string name)
 {
 	int f = this->search("изменить", name);
 	if (f == -1)
 		return false;
 	films[f].Write();
-	std::cout << std::endl;
-	std::cout << "Введите новую информацию или оставьте строчку пустой: \n";
+	cout << endl;
+	cout << "Введите новую информацию или оставьте строчку пустой: \n";
 	films[f].Read();
 	insert(f);
 	return true;
 }
 
 // Поиск фильма 
-Film FilmLibrary::SearchFilm(const std::string name, const int year)
+Film FilmLibrary::SearchFilm(const string name, const int year)
 {
 	for (int i = 0; i < quantity; i++)
 		if (Name(films[i]) == name)
@@ -184,7 +185,7 @@ Film FilmLibrary::SearchFilm(const std::string name, const int year)
 }
 
 // Поиск списка фильмов по Режиссеру или Году
-FilmLibrary FilmLibrary::__listfilms(const std::string producer, const int year)
+FilmLibrary FilmLibrary::__listfilms(const string producer, const int year)
 {
 	FilmLibrary library;
 	for (int i = 0; i < quantity; i++)
@@ -194,7 +195,7 @@ FilmLibrary FilmLibrary::__listfilms(const std::string producer, const int year)
 }
 
 // Поиск фильмов указанного режиссера
-FilmLibrary FilmLibrary::ProducerFilms(const std::string producer)
+FilmLibrary FilmLibrary::ProducerFilms(const string producer)
 {
 	return __listfilms(producer, 0);
 }
@@ -250,7 +251,7 @@ int FilmLibrary::CountFilms()
 }
 
 // Удаление фильма
-bool FilmLibrary::DeleteFilm(const std::string name)
+bool FilmLibrary::DeleteFilm(const string name)
 {
 	int f = this->search("удалить", name);
 	if (f == -1)
@@ -262,9 +263,9 @@ bool FilmLibrary::DeleteFilm(const std::string name)
 }
 
 // Считывание библиотеки с файла
-void ReadFilms(FilmLibrary& library, const std::string str)
+void ReadFilms(FilmLibrary& library, const string str)
 {
-	std::ifstream fin(str);
+	ifstream fin(str);
 	fin >> library.quantity;
 
 	if (library.bufsize <= library.quantity)
@@ -278,10 +279,10 @@ void ReadFilms(FilmLibrary& library, const std::string str)
 }
 
 // Запись библиотеки в файл
-void SaveFilms(const FilmLibrary& library, const std::string str)
+void SaveFilms(const FilmLibrary& library, const string str)
 {
-	std::ofstream fout(str);
-	fout << library.quantity << std::endl;
+	ofstream fout(str);
+	fout << library.quantity << endl;
 	for (int i = 0; i < library.quantity; i++)
 		fout << library.films[i];
 	fout.close();
@@ -328,7 +329,7 @@ void FilmLibrary::fundsort(ll* mas, int first, int last) const
 		if (l <= r)
 		{
 			if (l != r)
-				std::swap(mas[l], mas[r]);
+				swap(mas[l], mas[r]);
 			l++;
 			r--;
 		}

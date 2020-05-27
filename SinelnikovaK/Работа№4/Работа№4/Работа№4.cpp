@@ -1,9 +1,9 @@
 ﻿#include "FilmLibrary.h"
-
+using namespace std;
 // Информация по работе с инструментами
 void info()
 {
-    std::cout << "    /add - Добавить фильм\n    /change - изменить фильм по названию\n"
+    cout << "    /add - Добавить фильм\n    /change - изменить фильм по названию\n"
         << "    /search - найти фильм по названию и году\n    /producer - выдать фильмы заданного режиссёра\n"
         << "    /year - выдать фильмы за указанный год\n    /fund - выдать указанное количество самых кассовых фильмов\n"
         << "    /fundyear - выдать указанное количество самых кассовых фильмов за указанный год\n"
@@ -40,7 +40,7 @@ void clrscr()
 }
 
 // Обработка команд
-void check(std::string& str)
+void check(string& str)
 {
     int i = 0;
     while (str[i] != 0)
@@ -52,10 +52,10 @@ void check(std::string& str)
 }
 
 // Переход в новую строку (считывание мусора)
-void bin(std::istream& in)
+void bin(istream& in)
 {
-    std::string bin;
-    std::getline(in, bin);
+    string bin;
+    getline(in, bin);
 }
 
 int main()
@@ -64,9 +64,9 @@ int main()
     SetConsoleCP(1251);
     SetConsoleOutputCP(1251);
 
-    std::cout << "Подготовка к работе... ";
+    cout << "Подготовка к работе... ";
 
-    std::string command, filename;
+    string command, filename;
     FilmLibrary library;
 
     filename = "Фильмы.txt";
@@ -74,8 +74,8 @@ int main()
     ReadFilms(library, filename);
 
     clrscr();
-    std::cout << "/help - помощь\n    Введите команду: ";
-    std::cin >> command;
+    cout << "/help - помощь\n    Введите команду: ";
+    cin >> command;
     check(command);
     while (command != "/exit")
     {
@@ -86,95 +86,95 @@ int main()
         else if (command == "/add")
         {
             if (library.AddFilm())
-                std::cout << "    Готово!\n";
+                cout << "    Готово!\n";
             else
-                std::cout << "    Такой фильм уже есть!\n";
+                cout << "    Такой фильм уже есть!\n";
         }
         else if (command == "/change")
         {
-            std::string name;
-            bin(std::cin);
-            std::cout << "Введите название: ";
-            std::getline(std::cin, name);
+            string name;
+            bin(cin);
+            cout << "Введите название: ";
+            getline(cin, name);
             if (library.ChangeFilm(name))
-                std::cout << "    Готово!\n";
+                cout << "    Готово!\n";
             else
-                std::cout << "    Фильм не найден!\n";
+                cout << "    Фильм не найден!\n";
         }
         else if (command == "/search")
         {
-            std::string name;
+            string name;
             int year;
-            bin(std::cin);
-            std::cout << "Введите название фильма: ";
-            std::getline(std::cin, name);
-            std::cout << "Введите год премьеры фильма: ";
-            std::cin >> year;
+            bin(cin);
+           cout << "Введите название фильма: ";
+            getline(cin, name);
+            cout << "Введите год премьеры фильма: ";
+            cin >> year;
             if (!library.SearchFilm(name, year).Write())
-                std::cout << "Фильм не найден!\n";
+                cout << "Фильм не найден!\n";
         }
         else if (command == "/producer")
         {
-            std::string producer;
-            bin(std::cin);
-            std::cout << "Введите режиссера: ";
-            std::getline(std::cin, producer);
+            string producer;
+            bin(cin);
+            cout << "Введите режиссера: ";
+            getline(cin, producer);
             if (!library.ProducerFilms(producer).PrintLibrary())
-                std::cout << "Фильмы данного режиссера не найдены!\n";
+                cout << "Фильмы данного режиссера не найдены!\n";
         }
         else if (command == "/year")
         {
             int year;
-            std::cout << "Введите год: ";
-            std::cin >> year;
+            cout << "Введите год: ";
+            cin >> year;
             if (!library.YearFilms(year).PrintLibrary())
-                std::cout << "Фильмов за указанный год нет!\n";
+                cout << "Фильмов за указанный год нет!\n";
         }
         else if (command == "/fund")
         {
             int fund;
-            std::cout << "Введите количество фильмов: ";
-            std::cin >> fund;
+            cout << "Введите количество фильмов: ";
+            cin >> fund;
             if (!library.FundFilms(fund).PrintLibrary())
-                std::cout << "    Нет фильмов!\n";
+                cout << "    Нет фильмов!\n";
         }
         else if (command == "/fundyear")
         {
             int year, fund;
-            std::cout << "Введите количество фильмов и год: ";
-            std::cin >> fund >> year;
+           cout << "Введите количество фильмов и год: ";
+            cin >> fund >> year;
             if (!library.FundYearFilms(fund, year).PrintLibrary())
-                std::cout << "Фильмов за указанный год нет!\n";
+               cout << "Фильмов за указанный год нет!\n";
         }
         else if (command == "/count")
         {
-            std::cout << "Количество фильмов: " << library.CountFilms() << std::endl;
+            cout << "Количество фильмов: " << library.CountFilms() << endl;
         }
         else if (command == "/delete")
         {
-            std::string name;
-            bin(std::cin);
-            std::cout << "Введите название фильма: ";
-            std::getline(std::cin, name);
+            string name;
+            bin(cin);
+            cout << "Введите название фильма: ";
+            getline(cin, name);
             if (library.DeleteFilm(name))
-                std::cout << "    Готово!\n";
+                cout << "    Готово!\n";
             else
-                std::cout << "    Фильм для удаления не найден!\n";
+                cout << "    Фильм для удаления не найден!\n";
         }
         else if (command == "/print")
         {
             if (!library.PrintLibrary())
-                std::cout << "    Нет фильмов!\n";
+                cout << "    Нет фильмов!\n";
         }
         else
-            std::cout << "    Данной команды нет!\n";
-        std::cout << "    Введите команду: ";
-        std::cin >> command;
+            cout << "    Данной команды нет!\n";
+        cout << "    Введите команду: ";
+        cin >> command;
         check(command);
     }
 
     clrscr();
-    std::cout << "Завершение работы...\n";
+    cout << "Завершение работы...\n";
     SaveFilms(library, filename);
 
     return 0;
