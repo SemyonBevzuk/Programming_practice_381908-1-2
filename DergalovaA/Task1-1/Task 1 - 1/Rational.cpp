@@ -21,7 +21,7 @@ Rational::Rational()
 
 Rational::Rational(int a, int b)
 {
-	/*try
+	try
 	{
 	if (b == 0)
 		throw "Division to 0!";
@@ -31,8 +31,8 @@ Rational::Rational(int a, int b)
 		cout << "Division to 0!" << endl;
 	}
 	n = a; m = b;
-	simplify(); */
-	try
+	simplify();
+	/*	try
 	{
 		if (b == 0)
 			throw 0;
@@ -43,6 +43,7 @@ Rational::Rational(int a, int b)
 	{
 		cout << "Division to 0!" << endl;
 	}
+	*/
 }
 
 Rational::Rational(int x)
