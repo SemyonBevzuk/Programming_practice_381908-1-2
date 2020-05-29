@@ -1,4 +1,5 @@
 #include "ClassContacts.h"
+#include "ClassMainMenu.h"
 #include <iostream>
 #include <clocale>
 

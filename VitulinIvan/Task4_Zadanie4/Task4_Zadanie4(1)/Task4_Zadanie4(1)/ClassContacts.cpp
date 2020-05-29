@@ -1,120 +1,123 @@
 #include "ClassContacts.h"
+#include "ClassMainMenu.h"
 #include <algorithm>
 #include <fstream>
 #include <string>
 #include <iostream>
 
+using namespace std;
+
 Contacts::Contacts()
 {
-	MyContacts = new std::vector <Contact>();
-	MyElectContactsIndex = new std::vector <int>();
+	
 }
 
 Contacts::Contacts(const Contacts& copy)
 {
-	MyContacts = new std::vector <Contact>(*copy.MyContacts);
-	MyElectContactsIndex = new std::vector <int>(*copy.MyElectContactsIndex);
+	MyContacts = copy.MyContacts;
+	MyElectContactsIndex = copy.MyElectContactsIndex;
 }
 
 void Contacts::AddContact(Contact& NewContact)
 {
-	MyContacts->push_back(NewContact);
+	MyContacts.push_back(NewContact);
 }
 
-Contact& Contacts::SearchByFIO(std::string FIO)
+Contact& Contacts::SearchByFIO(string FIO)
 {
-	for (int i = 0; i < MyContacts->size(); i++)
+	for (int i = 0; i < MyContacts.size(); i++)
 	{
-		if (FIO == (*MyContacts)[i].FIO)
-			return (*MyContacts)[i];
+		if (FIO == MyContacts[i].FIO)
+			return MyContacts[i];
 		
 	}
-	return (*new Contact());
+	throw exception("Контакты не найдены");
 }
 
-Contact& Contacts::SearchByNumber(std::string number)
+Contact& Contacts::SearchByNumber(string number)
 {
-	for (int i = 0; i < MyContacts->size(); i++)
+	for (int i = 0; i < MyContacts.size(); i++)
 	{
-		if (number == (*MyContacts)[i].number)
-			return (*MyContacts)[i];
+		if (number == MyContacts[i].number)
+			return MyContacts[i];
 	}
-	return (*new Contact());
+	
+	throw exception("Контакты не найдены");
 }
 
 
-std::vector<Contact>& Contacts::Search(char Symbol)
+vector<Contact> Contacts::SearchBySymbol(char Symbol)
 {
-	std::vector <Contact>* tmp = new std::vector<Contact>();
-	for (int i = 0; i < MyContacts->size(); i++)
+	vector <Contact> tmp;
+	for (int i = 0; i < MyContacts.size(); i++)
 	{
-		if (Symbol == (*MyContacts)[i].FIO[0])
-			(*tmp).push_back((*MyContacts)[i]);
+		if (Symbol == MyContacts[i].FIO[0])
+			tmp.push_back(MyContacts[i]);
 	}
-	return *tmp;
+	return tmp;
 }
 
 int Contacts::GetNumberContacts()
 {
-	return (*MyContacts).size();
+	return MyContacts.size();
 }
 
-void Contacts::AddElect(std::string FIO)
+void Contacts::AddElect(string FIO)
 {
-	for (int i = 0; i < MyContacts->size(); i++)
+	for (int i = 0; i < MyContacts.size(); i++)
 	{
 
-		if ((*MyContacts)[i].FIO == FIO)
+		if ((MyContacts)[i].FIO == FIO)
 		{
-			if ((std::find(MyElectContactsIndex->begin(), MyElectContactsIndex->end(), i)) == (MyElectContactsIndex->end()))
-				(*MyElectContactsIndex).push_back(i);
+			if ((find(MyElectContactsIndex.begin(), MyElectContactsIndex.end(), i)) == (MyElectContactsIndex.end()))
+				MyElectContactsIndex.push_back(i);
 		}
 
 	}
 }
 
-void Contacts::RemoveFromElect(std::string FIO)
+void Contacts::RemoveFromElect(string FIO)
 {
-	for (int i = 0; i < MyContacts->size(); i++)
+	for (int i = 0; i < MyContacts.size(); i++)
 	{
 
-		if ((*MyContacts)[i].FIO == FIO)
+		if (MyContacts[i].FIO == FIO)
 		{
-			auto Index = (std::find(MyElectContactsIndex->begin(), MyElectContactsIndex->end(), i));
-			if (Index != (MyElectContactsIndex->end()))
-				(*MyElectContactsIndex).erase(Index);
+			auto Index = (find(MyElectContactsIndex.begin(), MyElectContactsIndex.end(), i));
+			if (Index != (MyElectContactsIndex.end()))
+				MyElectContactsIndex.erase(Index);
 		}
 
 	}
 }
 
-std::vector <Contact>& Contacts::ShowElect()
+vector <Contact> Contacts::ShowElect()
 {
-	std::vector <Contact>* tmp = new std::vector <Contact>;
-	for (int i = 0; i < MyElectContactsIndex->size(); i++)
+	vector <Contact> tmp;
+	for (int i = 0; i < MyElectContactsIndex.size(); i++)
 	{
-		tmp->push_back((*MyContacts)[(*MyElectContactsIndex)[i]]);
+		tmp.push_back(MyContacts[MyElectContactsIndex[i]]);
 	}
-	return *tmp;
+	return tmp;
 }
 
-void Contacts::RemoveContact(std::string number)
+void Contacts::RemoveContact(string number)
 {
-	for (int i = 0; i < (*MyContacts).size(); i++)
+	for (int i = 0; i < MyContacts.size(); i++)
 	{
-		if ((*MyContacts)[i].number == number)
+		if (MyContacts[i].number == number)
 		{
 			
-			(*MyContacts).erase(MyContacts->begin() + i);
-			for (int j = 0; j < (*MyElectContactsIndex).size(); j++)
+			MyContacts.erase(MyContacts.begin() + i);
+			for (int j = 0; j < MyElectContactsIndex.size(); j++)
 			{
-				if ((*MyElectContactsIndex)[j] == i)
+				if (MyElectContactsIndex[j] == i)
 				{
-					(*MyElectContactsIndex).erase(MyElectContactsIndex->begin() + j);
+					MyElectContactsIndex.erase(MyElectContactsIndex.begin() + j);
 					j--;
 				}
-				else if ((*MyElectContactsIndex)[j] > i)
-						(*MyElectContactsIndex)[j]--;
+				else if (MyElectContactsIndex[j] > i)
+						MyElectContactsIndex[j]--;
 				
 			}
 		}
@@ -122,36 +125,36 @@ void Contacts::RemoveContact(std::string number)
 	}
 }
 
-void Contacts::ReadFile(std::string path)
+void Contacts::ReadFile(string path)
 {
-	std::string FIO;
-	std::string number;
-	std::string Data;
-	std::string ElectContactsIndexes;
+	string FIO;
+	string number;
+	string Data;
+	string ElectContactsIndexes;
 
 	int numberContacts;
-	std::ifstream fin;
+	ifstream fin;
 	fin.open(path);
 	fin>>numberContacts;
     fin.get();
-	MyContacts->clear();
+	MyContacts.clear();
 	for (int i = 0; i < numberContacts; i++)
 	{
-		std::getline(fin, FIO);
-		std::getline(fin, number);
-		std::getline(fin, Data);
-		MyContacts->push_back(*(new Contact(FIO, number, Data::ParseData(Data))));
+		getline(fin, FIO);
+		getline(fin, number);
+		getline(fin, Data);
+		MyContacts.push_back(*(new Contact(FIO, number, Data::ParseData(Data))));
 	}
-	std::getline(fin, ElectContactsIndexes);
-	std::string tmp;
-	MyElectContactsIndex->clear();
+	getline(fin, ElectContactsIndexes);
+	string tmp;
+	MyElectContactsIndex.clear();
 	for (int i = 0; i < ElectContactsIndexes.size(); i++)
 	{
 		if ((ElectContactsIndexes[i] == ' '))
 		{
 			if (tmp != "")
 			{
-				MyElectContactsIndex->push_back(atoi(tmp.c_str()));
+				MyElectContactsIndex.push_back(atoi(tmp.c_str()));
 				tmp = "";
 			}
 		}
@@ -159,35 +162,35 @@ void Contacts::ReadFile(std::string path)
 			tmp += ElectContactsIndexes[i];
 	}
 	if(tmp!="")
-		MyElectContactsIndex->push_back(atoi(tmp.c_str()));
+		MyElectContactsIndex.push_back(atoi(tmp.c_str()));
 	fin.close();
 }
 
-void Contacts::RecordFile(std::string path)
+void Contacts::RecordFile(string path)
 {
-	std::ofstream fout;
+	ofstream fout;
 	fout.open(path);
-	fout << MyContacts->size() << std::endl;
-	for (int i = 0; i < MyContacts->size(); i++)
+	fout << MyContacts.size() << endl;
+	for (int i = 0; i < MyContacts.size(); i++)
 	{
-		fout << (*MyContacts)[i].FIO << std::endl;
-		fout << (*MyContacts)[i].number << std::endl;
-		fout << Data::ToString((*MyContacts)[i].burthday) << std::endl;
+		fout << MyContacts[i].FIO << endl;
+		fout << MyContacts[i].number << endl;
+		fout << Data::ToString(MyContacts[i].burthday) << endl;
 	}
-	std::string ElectContactsString;
-	for (int i = 0; i < MyElectContactsIndex->size(); i++)
+	string ElectContactsString;
+	for (int i = 0; i < MyElectContactsIndex.size(); i++)
 	{
-		ElectContactsString += std::to_string((*MyElectContactsIndex)[i]) + " ";
+		ElectContactsString += to_string(MyElectContactsIndex[i]) + " ";
 	}
-	fout << ElectContactsString << std::endl;
+	fout << ElectContactsString << endl;
 	fout.close();
 }
 
-Data Data::ParseData(std::string DataStr)
+Data Data::ParseData(string DataStr)
 {
 	int i = 0;
 	Data res;
-	std::string tmp;
+	string tmp;
 	while (DataStr[i] != '.')
 	{
 		tmp += DataStr[i];
@@ -213,10 +216,10 @@ Data Data::ParseData(std::string DataStr)
 	return res;
 }
 
-std::string Data::ToString(Data Date)
+string Data::ToString(Data Date)
 {
-	std::string res = "";
-	res += std::to_string(Date.day) + "." + std::to_string(Date.month) + "." + std::to_string(Date.year);
+	string res = "";
+	res += to_string(Date.day) + "." + to_string(Date.month) + "." + to_string(Date.year);
 	return res;
 }
 
@@ -227,16 +230,16 @@ Contact::Contact()
     burthday = Data();
 }
 
-Contact::Contact(std::string FIO,std::string number, Data burthday)
+Contact::Contact(string FIO,string number, Data burthday)
 {
     this->FIO = FIO;
     this->number = number;
     this->burthday = burthday;
 }
 
-std::string Contact::ToString()
+string Contact::ToString()
 {
-    std::string res = "";
+    string res = "";
     res += "\n" + FIO + "\nТелефон: " + number + "\nДата рождения: " + Data::ToString(burthday) + "\n";
     return res;
 }
@@ -254,7 +257,7 @@ void MainMenu::Start()
 void MainMenu::printHead()
 {
 	system("cls");
-	std::cout << "\t -----ТЕЛЕФОННАЯ КНИГА----\t\tВсего контактов: "<< myContacts->GetNumberContacts() <<"\n\n";
+	cout << "\t -----ТЕЛЕФОННАЯ КНИГА----\t\tВсего контактов: "<< myContacts->GetNumberContacts() <<"\n\n";
 }
 
 void MainMenu::MenuHandler()
@@ -286,14 +289,14 @@ int MainMenu::Menu()
 {
 	PrintMainMenu();
 	int answer;
-	std::cin >> answer;
+	cin >> answer;
 	return answer;
 }
 
 void MainMenu::PrintMainMenu()
 {
 	printHead();
-	std::cout <<
+	cout <<
 		"\tГлавное меню:\n" <<
 		"1-Создать новый контакт\n" <<
 		"2-Найти контакт по ФИО\n" <<
@@ -314,13 +317,13 @@ void MainMenu::PrintMainMenu()
 void MainMenu::IncorrectAnswer()
 {
 	printHead();
-	std::cout << "\nОшибка: неверная опция";
+	cout << "\nОшибка: неверная опция";
 	Waiting();
 }
 
 void MainMenu::Waiting()
 {
-	std::cout << "\nНажмите любую клавишу для продолжения...";
+	cout << "\nНажмите любую клавишу для продолжения...";
 	getchar();
 	getchar();
 }
@@ -329,98 +332,129 @@ void MainMenu::Waiting()
 void MainMenu::AddContact()
 {
     printHead();
-    std::cout << "Добавление контакта\n\n";
-    std::string FIO, dataStr;
-	std::string number;
+    cout << "Добавление контакта\n\n";
+    string FIO, dataStr;
+	string number;
 	getchar();
-    std::cout << "Введите Ф.И.О: ";
-    std::getline(std::cin, FIO);
-    std::cout << "Введите номер: ";
-    std::getline(std::cin,number);
-    std::cout << "Введите дату рождения: ";
-    std::getline(std::cin, dataStr);
+    cout << "Введите Ф.И.О: ";
+    getline(cin, FIO);
+    cout << "Введите номер: ";
+    getline(cin,number);
+    cout << "Введите дату рождения: ";
+    getline(cin, dataStr);
     myContacts->AddContact(*(new Contact(FIO, number, Data::ParseData(dataStr))));
-    std::cout << "Контакт добавлен успешно!\n";
+    cout << "Контакт добавлен успешно!\n";
     Waiting();
 }
 
 void MainMenu::SearcheByFIO()
 {
-    printHead();
-    std::cout << "Поиск контакта\n\n";
-    std::string FIO;
+	Contact res;
+	printHead();
+    cout << "Поиск контакта\n\n";
+    string FIO;
     getchar();
-    std::cout << "Введите Ф.И.О: ";
-    std::getline(std::cin, FIO);
-    Contact res = myContacts->SearchByFIO(FIO);
-    if (res.number == "" && res.FIO == "")
-        std::cout << "Контакт не найден!";
-    else
-        std::cout << "Контакт найден: " << res.ToString();
+    cout << "Введите Ф.И.О: ";
+    getline(cin, FIO);
+	bool FoundContact = true;
+	try
+	{
+		res = myContacts->SearchByFIO(FIO);
+	}
+	catch(exception)
+	{
+		cout << "Контакт не найден!";
+		FoundContact = false;
+	}
+	
+	if (FoundContact) 
+		cout << "Контакт найден: " << res.ToString();
     Waiting();
 }
 
 void MainMenu::ChangeByFIO()
 {
-    printHead();
-    std::cout << "Изменение контакта\n\n";
-    std::string FIO;
+	Contact res;
+	printHead();
+    cout << "Изменение контакта\n\n";
+    string FIO;
     getchar();
-    std::cout << "Введите Ф.И.О: ";
-    std::getline(std::cin, FIO);
-    Contact& res = myContacts->SearchByFIO(FIO);
-	if (res.number == "" && res.FIO == "")
+    cout << "Введите Ф.И.О: ";
+    getline(cin, FIO);
+	
+	bool FoundContact = true;
+	try
 	{
-		std::cout << "Контакт не найден!";
+		res = myContacts->SearchByFIO(FIO);
+	}
+	catch (exception)
+	{
+		cout << "Контакт не найден!";
+		FoundContact = false;
 		Waiting();
 	}
-    else
-        std::cout << "Контакт найден: " << res.ToString();
-    std::cout << "Введите новые данные:\n";
-    std::string dataStr;
-    std::cout << "Введите Ф.И.О: ";
-    std::getline(std::cin, res.FIO);
-    std::cout << "Введите номер: ";
-    std::getline(std::cin,res.number);
-    std::cout << "Введите дату рождения: ";
-    std::getline(std::cin, dataStr);
-    res.burthday = Data::ParseData(dataStr);
-    std::cout << "Изменено!\n";
-    Waiting();
+	if (FoundContact)
+	{
+		cout << "Контакт найден: " << res.ToString();
+		cout << "Введите новые данные:\n";
+		string dataStr;
+		cout << "Введите Ф.И.О: ";
+		getline(cin, res.FIO);
+		cout << "Введите номер: ";
+		getline(cin, res.number);
+		cout << "Введите дату рождения: ";
+		getline(cin, dataStr);
+		res.burthday = Data::ParseData(dataStr);
+		cout << "Изменено!\n";
+		Waiting();
+	}
 }
 
 void MainMenu::SearcheByNumber()
 {
-    printHead();
-    std::cout << "Поиск контакта\n\n";
-	std::string number;
+	Contact res;
+	printHead();
+    cout << "Поиск контакта\n\n";
+	string number;
 	getchar();
-    std::cout << "Введите номер: ";
-    std::getline(std::cin , number);
-    Contact res = myContacts->SearchByNumber(number);
-    if (res.number == "" && res.FIO == "")
-        std::cout << "Контакт не найден!";
-    else
-        std::cout << "Контакт найден: " << res.ToString();
-    Waiting();
+    cout << "Введите номер: ";
+    getline(cin , number);
+	bool FoundContact = true;
+	try
+	{
+		res = myContacts->SearchByNumber(number);
+	}
+	catch (exception)
+	{
+		cout << "Контакт не найден!";
+		FoundContact = false;
+		Waiting();
+	}
+
+	if (FoundContact)
+	{
+		cout << "Контакт найден: " << res.ToString();
+		Waiting();
+	}
+	
 }
 
 void MainMenu::GetContactsWhenFirstChar()
 {
     printHead();
-    std::cout << "Поиск контактов\n\n";
+    cout << "Поиск контактов\n\n";
     char ch;
     getchar();
-    std::cout << "Введите первую букву: ";
-    std::cin >> ch;
-    std::vector<Contact> res = myContacts->Search(ch);
+    cout << "Введите первую букву: ";
+    cin >> ch;
+    vector<Contact> res = myContacts->SearchBySymbol(ch);
     if (res.size() == 0)
-        std::cout << "Контакты не найден!";
+        cout << "Контакты не найден!";
     else {
-        std::cout << "Найдено "<<res.size()<<" контактов: ";
+        cout << "Найдено "<<res.size()<<" контактов: ";
         for (int i = 0; i < res.size(); i++)
         {
-            std::cout << res[i].ToString() << "\n";
+            cout << res[i].ToString() << "\n";
         }
     }
     getchar();
@@ -430,61 +464,83 @@ void MainMenu::GetContactsWhenFirstChar()
 void MainMenu::GetContactsCount()
 {
     printHead();
-    std::cout << "Всего контактов в базе: " << myContacts->GetNumberContacts()<<"\n";
+    cout << "Всего контактов в базе: " << myContacts->GetNumberContacts()<<"\n";
 	getchar();
 	Waiting();
 }
 
 void MainMenu::AddContactToElectListByFIO()
 {
-    printHead();
+	Contact res;
+	printHead();
     getchar();
-    std::cout << "Добавление контакта в избраные\n\n";
-    std::string FIO;
-    std::cout << "Введите Ф.И.О: ";
-    std::getline(std::cin, FIO);
-    Contact res = myContacts->SearchByFIO(FIO);
-    if (res.number == "" && res.FIO == "")
-        std::cout << "Контакт не найден!";
-    else {
-        std::cout << "Контакт найден: " << res.ToString();
-        myContacts->AddElect(FIO);
-        std::cout << "\nДобавлен в избраные!\n";
-    }
-    Waiting();
+    cout << "Добавление контакта в избраные\n\n";
+    string FIO;
+    cout << "Введите Ф.И.О: ";
+    getline(cin, FIO);
+	bool FoundContact = true;
+	try
+	{
+		res = myContacts->SearchByFIO(FIO);
+	}
+	catch (exception)
+	{
+		cout << "Контакт не найден!";
+		FoundContact = false;
+		Waiting();
+	}
+
+	if (FoundContact)
+	{
+		cout << "Контакт найден: " << res.ToString();
+		myContacts->AddElect(FIO);
+		cout << "\nДобавлен в избраные!\n";
+		Waiting();
+	}
 }
 
 void MainMenu::RemoveContactFromElectListByFIO()
 {
-    printHead();
+	Contact res;
+	printHead();
     getchar();
-    std::cout << "Удаление контакта из избраных\n\n";
-    std::string FIO;
-    std::cout << "Введите Ф.И.О: ";
-    std::getline(std::cin, FIO);
-    Contact res = myContacts->SearchByFIO(FIO);
-    if (res.number == "" && res.FIO == "")
-        std::cout << "Контакт не найден!";
-    else {
-        std::cout << "Контакт найден: " << res.ToString();
-        myContacts->RemoveFromElect(FIO);
-        std::cout << "\nУдален из избраных!\n";
-    }
-    Waiting();
+    cout << "Удаление контакта из избраных\n\n";
+    string FIO;
+    cout << "Введите Ф.И.О: ";
+    getline(cin, FIO);
+	bool FoundContact = true;
+	try
+	{
+		res = myContacts->SearchByFIO(FIO);;
+	}
+	catch (exception)
+	{
+		cout << "Контакт не найден!";
+		FoundContact = false;
+		Waiting();
+	}
+
+	if (FoundContact)
+	{
+		cout << "Контакт найден: " << res.ToString();
+		myContacts->RemoveFromElect(FIO);
+		cout << "\nУдален из избраных!\n";
+		Waiting();
+	}
 }
 
 void MainMenu::GetElectContacts()
 {
     printHead();
-    std::cout << "Список избранных контактов\n\n";
-    std::vector<Contact> res = myContacts->ShowElect();
+    cout << "Список избранных контактов\n\n";
+    vector<Contact> res = myContacts->ShowElect();
     if (res.size() == 0)
-        std::cout << "Нет избраных контактов!";
+        cout << "Нет избраных контактов!";
     else {
-        std::cout << "Всего " << res.size() << " избраных контактов: ";
+        cout << "Всего " << res.size() << " избраных контактов: ";
         for (int i = 0; i < res.size(); i++)
         {
-            std::cout << res[i].ToString() << "\n";
+            cout << res[i].ToString() << "\n";
         }
     }
     Waiting();
@@ -493,26 +549,26 @@ void MainMenu::GetElectContacts()
 void MainMenu::RemoveContactByNumber()
 {
     printHead();
-    std::cout << "Удаление контакта\n\n";
-	std::string number;
-    std::cout << "Введите номер: ";
+    cout << "Удаление контакта\n\n";
+	string number;
+    cout << "Введите номер: ";
 	getchar();
-    std::getline(std::cin, number);
+    getline(cin, number);
     myContacts->RemoveContact(number);
-    std::cout << "\nКонтакт удален!\n";
+    cout << "\nКонтакт удален!\n";
     Waiting();
 }
 
 void MainMenu::SaveContactsToFile()
 {
     printHead();
-    std::cout << "Сохранение в файл\n\n";
-    std::string Path;
+    cout << "Сохранение в файл\n\n";
+    string Path;
     getchar();
-    std::cout << "Укажите путь: ";
-    std::getline(std::cin, Path);
+    cout << "Укажите путь: ";
+    getline(cin, Path);
     myContacts->RecordFile(Path);
-    std::cout << "Записанно " + Path;
+    cout << "Записанно " + Path;
     Waiting();
 }
 
@@ -520,11 +576,11 @@ void MainMenu::ReadContactsFromFile()
 {
     printHead();
     getchar();
-    std::cout << "Чтение контактов из файла\n\n";
-    std::string Path;
-    std::cout << "Укажите путь: ";
-    std::getline(std::cin, Path);
+    cout << "Чтение контактов из файла\n\n";
+    string Path;
+    cout << "Укажите путь: ";
+    getline(cin, Path);
     myContacts->ReadFile(Path);
-    std::cout << "Прочитанно " << myContacts->GetNumberContacts() << " контактов";
+    cout << "Прочитанно " << myContacts->GetNumberContacts() << " контактов";
     Waiting();
 }
