@@ -3,6 +3,7 @@
 //libs there
 using namespace std;
 
+int sums[] = {100000, 500000, 1000000, 3000000};
 int CountPercent(int srok, int summ);
 int CountPayment(int sum, int srok, int percent);
 

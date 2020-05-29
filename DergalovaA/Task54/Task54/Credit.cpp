@@ -6,61 +6,61 @@ int CountPercent(int srok, int summ)
 	switch (srok) //years
 	{
 	case 1:
-		if (summ < 100000)
+		if (summ < sums[0])
 			percent = 16;
 		else
-			if (summ < 500000)
+			if (summ < sums[1])
 				percent = 15;
 			else
-				if (summ < 1000000)
+				if (summ < sums[2])
 					percent = 13;
 				else
 					percent = 12;
 		break;
 	case 2:
-		if (summ < 100000)
+		if (summ < sums[0])
 			percent = 15;
 		else
-			if (summ < 500000)
+			if (summ < sums[1])
 				percent = 14;
 			else
-				if (summ < 1000000)
+				if (summ < sums[2])
 					percent = 13;
 				else
 					percent = 12;
 		break;
 	case 3:
-		if (summ < 100000)
+		if (summ < sums[0])
 			percent = 14;
 		else
-			if (summ < 500000)
+			if (summ < sums[1])
 				percent = 13;
 			else
-				if (summ < 1000000)
+				if (summ < sums[2])
 					percent = 12;
 				else
 					percent = 10;
 		break;
 	case 5:
-		if (summ < 100000)
+		if (summ < sums[0])
 			percent = 12;
 		else
-			if (summ < 500000)
+			if (summ < sums[1])
 				percent = 11;
 			else
-				if (summ < 1000000)
+				if (summ < sums[2])
 					percent = 10;
 				else
 					percent = 9;
 		break;
 	case 15:
-		if (summ < 100000)
+		if (summ < sums[0])
 			percent = 12;
 		else
-			if (summ < 500000)
+			if (summ < sums[1])
 				percent = 10;
 			else
-				if (summ < 1000000)
+				if (summ < sums[2])
 					percent = 9;
 				else
 					percent = 8;
@@ -92,8 +92,8 @@ void Credit::Search(ProcCenter & c) {
 	} while (i < c.n && !f);
 
 	if (f)
-	{ //login exist
-	  //i is numer
+	{ //login exists
+	  //i is number
 		if (c.pers[i].password == pass) {
 			acc = i;
 			wrongpass = 0;
@@ -245,7 +245,7 @@ void Credit::GetCredit(ProcCenter &c) {
 			{
 				cout << "Enter the amount (< 3 000 000): ";
 				cin >> summ;
-			} while (summ < 1 || summ > 3000000);
+			} while (summ < 1 || summ > sums[3]);
 
 			do {
 				cout << "Choose a period: 1, 2, 3, 5 or 15 years (enter only a number): ";
@@ -277,7 +277,7 @@ void Credit::CreditAbility(ProcCenter &c) {
 		do {
 			cout << "Enter the amount (< 3 000 000): ";
 			cin >> summ;
-		} while (summ < 1 || summ > 3000000);
+		} while (summ < 1 || summ > sums[3]);
 		int v;
 		cout << endl;
 		do {
