@@ -1,0 +1,17 @@
+8
+time
+время
+sadness
+грусть
+happiness
+счастье
+chair
+стул
+window
+окно
+sky
+небо
+nature
+природа
+expectation
+ожидание
