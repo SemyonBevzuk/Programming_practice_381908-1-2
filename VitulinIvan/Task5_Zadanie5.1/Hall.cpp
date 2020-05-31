@@ -1,5 +1,6 @@
 #include "Hall.h"
 
+
 Hall Halls::getHall(int num)
 {
     switch (num)

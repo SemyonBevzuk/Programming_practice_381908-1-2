@@ -1,5 +1,6 @@
 #include "TicketOffice.h"
 
+
 void TicketOffice::AddSession(string Name, DateTime time, int Hall)
 {
     myFilmSessionsMap[Name].AddSession(Name, time, Hall);

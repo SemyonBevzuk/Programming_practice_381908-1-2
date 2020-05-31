@@ -1,4 +1,5 @@
 #pragma once
+
 class Hall {
 public:
     int myTicketsRowCount, myTicketsColumnCount, myVIPTicketsRowCount, myVIPTicketsColumnCount;

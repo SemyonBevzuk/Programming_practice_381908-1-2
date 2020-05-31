@@ -1,5 +1,6 @@
 #pragma once
 #include"TicketOffice.h"
+
 class Cinema
 {
 public:

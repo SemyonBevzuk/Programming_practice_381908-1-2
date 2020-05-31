@@ -1,7 +1,6 @@
 #include"TicketOffice.h"
 #include "Cinema.h"
 
-
 int main() {
     setlocale(LC_CTYPE, "Russian");
     TicketOffice to;

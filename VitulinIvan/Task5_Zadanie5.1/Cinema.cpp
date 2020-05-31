@@ -3,6 +3,7 @@
 Cinema::Cinema(TicketOffice to) {
     myOffice = to;
 }
+
 void Cinema::Start()
 {
     MenuHandler();
