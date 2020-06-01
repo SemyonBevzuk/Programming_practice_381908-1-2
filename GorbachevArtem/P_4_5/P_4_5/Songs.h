@@ -14,10 +14,10 @@ public:
 	void AddSong(Song S);
 	void ChangeSong(string title, char ch, string info = "", Date date = Date());
 	Song FindSong(string title, string singer) const;
-	void AllByPoet(string poet) const;
-	void AllByComposer(string composer) const;
-	void AllBySinger(string singer) const;
-	int Number() const;
+	vector<Song> AllByPoet(string poet) const;
+	vector<Song> AllByComposer(string composer) const;
+	vector<Song> AllBySinger(string singer) const;
+	int GetSize() const;
 	void Delete(string title);
 };
 

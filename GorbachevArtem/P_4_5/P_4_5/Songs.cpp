@@ -58,31 +58,37 @@ Song Songs::FindSong(string title, string singer) const
 	return Song();
 }
 
-void Songs::AllByPoet(string poet) const
+vector<Song> Songs::AllByPoet(string poet) const
 {
+	vector<Song> vec;
 	int size = songs.size();
 	for (int i = 0; i < size; i++)
 		if (songs[i].poet == poet)
-			cout << songs[i] << endl;
+			vec.push_back(songs[i]);
+	return vec;
 }
 
-void Songs::AllByComposer(string composer) const
+vector<Song> Songs::AllByComposer(string composer) const
 {
+	vector<Song> vec;
 	int size = songs.size();
 	for (int i = 0; i < size; i++)
 		if (songs[i].composer == composer)
-			cout << songs[i] << endl;
+			vec.push_back(songs[i]);
+	return vec;
 }
 
-void Songs::AllBySinger(string singer) const
+vector<Song> Songs::AllBySinger(string singer) const
 {
+	vector<Song> vec;
 	int size = songs.size();
 	for (int i = 0; i < size; i++)
 		if (songs[i].singer == singer)
-			cout << songs[i] << endl;
+			vec.push_back(songs[i]);
+	return vec;
 }
 
-int Songs::Number() const
+int Songs::GetSize() const
 {
 	return songs.size();
 }
@@ -106,7 +112,7 @@ void Songs::Delete(string title)
 
 ofstream & operator<<(ofstream & out, const Songs & S)
 {
-	int n = S.Number();
+	int n = S.GetSize();
 	out << n << endl;
 	for (int i = 0; i < n; i++)
 		out << S.songs[i];

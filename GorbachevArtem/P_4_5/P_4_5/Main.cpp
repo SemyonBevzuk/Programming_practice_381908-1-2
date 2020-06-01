@@ -6,6 +6,7 @@ void main()
 	Songs S;
 	Song song;
 	string str, str1;
+	vector<Song> vec;
 	ofstream os;
 	ifstream is;
 	char c;
@@ -80,18 +81,24 @@ void main()
 			break;
 		case '5':
 			cout << "Поэт: "; cin >> str;
-			S.AllByPoet(str);
+			vec = S.AllByPoet(str);
+			for (int i = 0; i < vec.size(); i++)
+				cout << vec[i] << endl;
 			break;
 		case '6':
 			cout << "Композитор: "; cin >> str;
-			S.AllByComposer(str);
+			vec = S.AllByComposer(str);
+			for (int i = 0; i < vec.size(); i++)
+				cout << vec[i] << endl;
 			break;
 		case '7':
 			cout << "Исполнитель: "; cin >> str;
-			S.AllBySinger(str);
+			vec = S.AllBySinger(str);
+			for (int i = 0; i < vec.size(); i++)
+				cout << vec[i] << endl;
 			break;
 		case '8':
-			cout << "Всего песен: " << S.Number() << endl;
+			cout << "Всего песен: " << S.GetSize() << endl;
 			break;
 		case '9':
 			cout << "Название: "; cin >> str;
