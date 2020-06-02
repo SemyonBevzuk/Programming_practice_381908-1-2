@@ -20,8 +20,8 @@ void main()
 		cout << "Попытайтесь отгадать число: "; cin >> number;
 		if (game.VerifyNumber(number))
 		{
-			cout << "Количество ""коров"": " << game.GetCows() << endl;
-			cout << "Количество ""быков"": " << game.GetBulls() << endl;
+			cout << "Количество \"коров\": " << game.GetCows() << endl;
+			cout << "Количество \"быков\": " << game.GetBulls() << endl;
 		}
 		else
 			cout << "Введите число длины " << n << " с неповторяющимися цифрами!" << endl;
